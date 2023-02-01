@@ -55,33 +55,33 @@ liposomes = function(n, r, center=c(0, 0), phi=c(0, 0), d=0, ...){
 
 ### Glandular Duct ###
 #' @export
-duct = function(n, R = c(5, 7), nc.r=1/2) {
-  c1 = pointsCircle(n, r=R[1]);
-  c2 = pointsCircle(n, r=R[2]);
-  
+duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), new = TRUE) {
+  c1 = pointsCircle(n, r=R[1], center=center);
+  c2 = pointsCircle(n, r=R[2], center=center);
+
   ### X
   cbx = rbind(c2$x, c1$x)
   cbx = cbind(cbx[, -1], cbx[,1])
-  
+
   cells.x = rbind(c1$x, c2$x, cbx, c1$x)
-  
-  
+
+
   ### Y
   cby = rbind(c2$y, c1$y)
   cby = cbind(cby[, -1], cby[,1])
-  
+
   cells.y = rbind(c1$y, c2$y, cby, c1$y)
-  
+
   plot.base(xlim=c(-10,10), ylim=c(-10,10))
   polygon(cells.x, cells.y)
-  
+
   ### Nuclei:
   shift = function(x) c(x[-1], x[1]);
-  
+
   mid1.x = (c1$x + shift(c1$x))/2;
   mid2.x = (c2$x + shift(c2$x))/2;
   mid.x = (mid1.x + mid2.x)/2;
-  
+
   mid1.y = (c1$y + shift(c1$y))/2;
   mid2.y = (c2$y + shift(c2$y))/2;
   mid.y = (mid1.y + mid2.y)/2;
