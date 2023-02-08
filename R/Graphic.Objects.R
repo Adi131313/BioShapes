@@ -55,7 +55,7 @@ liposomes = function(n, r, center=c(0, 0), phi=c(0, 0), d=0, ...){
 
 ### Glandular Duct ###
 #' @export
-duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), new = TRUE) {
+duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), nc.fill = "#E03232", new = TRUE) {
   c1 = pointsCircle(n, r=R[1], center=center);
   c2 = pointsCircle(n, r=R[2], center=center);
 
@@ -64,6 +64,9 @@ duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), new = TRUE) {
   cbx = cbind(cbx[, -1], cbx[,1])
 
   cells.x = rbind(c1$x, c2$x, cbx, c1$x)
+  cells.x = lapply(seq(ncol(cells.x)), function(nc){
+    cells.x[, nc]
+  })
 
 
   ### Y
@@ -71,9 +74,21 @@ duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), new = TRUE) {
   cby = cbind(cby[, -1], cby[,1])
 
   cells.y = rbind(c1$y, c2$y, cby, c1$y)
+  cells.y = lapply(seq(ncol(cells.y)), function(nc){
+    cells.y[, nc]
+  })
 
-  plot.base(xlim=c(-10,10), ylim=c(-10,10))
-  polygon(cells.x, cells.y)
+  cells = lapply(seq(n), function(id){
+    l = list(x = cells.x[[id]], y = cells.y[[id]])
+    class(l) = c("polygon", "list")
+    return(l)
+  })
+  # attr(cells, "type") = "polygons";
+
+
+
+  # plot.base(xlim=c(-10,10), ylim=c(-10,10))
+  # polygon(cells.x, cells.y)
 
   ### Nuclei:
   shift = function(x) c(x[-1], x[1]);
@@ -86,8 +101,13 @@ duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), new = TRUE) {
   mid2.y = (c2$y + shift(c2$y))/2;
   mid.y = (mid1.y + mid2.y)/2;
   # Centers:
-  nuclei = list(x = mid.x, y = mid.y);
-  testFilledCircle(nuclei,r=nc.r, add=TRUE, line=FALSE)
+  nuclei = list(center = cbind(mid.x, mid.y), r = nc.r, fill = nc.fill);
+  class(nuclei) = c("circle", "list")
+  cells = c(cells, list(nuclei));
+  # TODO
+  # testFilledCircle(nuclei,r=nc.r, add=TRUE, line=FALSE)
+  class(cells) = c("bioshape", "list")
+  return(cells);
 }
 
 # n = number of loops;
