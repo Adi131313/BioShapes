@@ -69,11 +69,11 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
             mid = lst$center, lcol=col, col=fill, lwd=lwd, ...);
         }
 
-       } else if(inherits(lst, "polygon")) {
+    } else if(inherits(lst, "polygon")) {
       if(is.null(fill)) fill = lst$fill;
       col0 = lst$col;
       col  = if(is.null(col0)) col else col0;
-      polygon(lst$x, lst$y, col=fill, border=col, ...);
+      polygon(lst$x, lst$y, col=fill, border=col, lwd = lwd, ...);
     } else lines(lst$x, lst$y, lwd=lwd, col=col, ...);
   }
   lapply(x, basef, ...);
@@ -144,3 +144,4 @@ lines.circles = function(x, R, fill="#B0B032", col=NULL, col.line="green", line=
     shape::plotcircle(r=R, mid=center, lcol=col.line, col=NULL);
   }
 }
+
