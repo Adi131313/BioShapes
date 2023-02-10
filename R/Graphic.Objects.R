@@ -53,11 +53,23 @@ liposomes = function(n, r, center=c(0, 0), phi=c(0, 0), d=0, ...){
   return(obj);
 }
 
+### Ring ###
+#' @export
+
+ring = function(n, R = c(5, 7), center = c(0,0),
+               col = 1, fill = NULL, phi = c(0,0)){
+  return(duct(n = n, R = R, nc.r = NULL, center = center,
+              col = col, fill = fill, phi = phi))
+}
+
 ### Glandular Duct ###
 #' @export
-duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), nc.fill = "#E03232", new = TRUE) {
-  c1 = pointsCircle(n, r=R[1], center=center);
-  c2 = pointsCircle(n, r=R[2], center=center);
+duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0),
+              col = 1, fill = NULL,  nc.fill = "#E03232", phi=c(0,0)) {
+
+  if(length(phi) == 1) phi = c(phi, phi);
+  c1 = pointsCircle(n, r=R[1], center=center, phi=phi[1]);
+  c2 = pointsCircle(n, r=R[2], center=center, phi=phi[2]);
 
   ### X
   cbx = rbind(c2$x, c1$x)
@@ -80,17 +92,20 @@ duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), nc.fill = "#E03232", ne
 
   cells = lapply(seq(n), function(id){
     l = list(x = cells.x[[id]], y = cells.y[[id]])
+    l$col = col; l$fill = fill;
     class(l) = c("polygon", "list")
     return(l)
   })
-  # attr(cells, "type") = "polygons";
-
-
 
   # plot.base(xlim=c(-10,10), ylim=c(-10,10))
   # polygon(cells.x, cells.y)
 
   ### Nuclei:
+  if(is.null(nc.r)){
+    class(cells) = c("bioshape", "list")
+    return(cells);
+  }
+
   shift = function(x) c(x[-1], x[1]);
 
   mid1.x = (c1$x + shift(c1$x))/2;
@@ -108,6 +123,14 @@ duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0), nc.fill = "#E03232", ne
   # testFilledCircle(nuclei,r=nc.r, add=TRUE, line=FALSE)
   class(cells) = c("bioshape", "list")
   return(cells);
+}
+
+### Virus
+#' @export
+
+virus = function(n, R = 5, sp.r = 1/2, center = c(0,0),
+                col = 1, fill = NULL,  sp.fill = "#E03232", phi = 0) {
+
 }
 
 # n = number of loops;
