@@ -264,3 +264,41 @@ cellBrushBorder = function(p1, w, h, n=6.5, A=1, slope=0, lwd=1, N=128, phi=0) {
   return(brush);
 }
 
+# Generates a star polygon
+#' @export
+star = function(n, R = c(2,1), center = c(0,0), lwd=1, phi = pi/2,
+                col=1, fill = NULL) {
+  c1 = pointsCircle(n, r=R[1], center=center, phi=phi[1]);
+  c2 = pointsCircle(n, r=R[2], center=center, phi=phi[1] + pi/n);
+  x = as.vector(rbind(c1$x, c2$x));
+  y = as.vector(rbind(c1$y, c2$y));
+  lst = list(x = x, y = y, col = col, lwd = lwd);
+  if(! is.null(fill)){
+    lst$fill = fill;
+  }
+  class(lst) = c("polygon", "list");
+  lst = list(lst);
+  class(lst) = c("bioshape", "list");
+  return(invisible(lst));
+}
+
+virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(-0.1, 1),
+                 r.spike=0.25, phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
+                 col.spike = "#D06432", col = "#D06432") {
+
+  c1 = pointsCircle(n.spike, r = R + off.spike[1], center = center, phi = phi.spike);
+  c2 = pointsCircle(n.spike, r = R + off.spike[2], center = center, phi = phi.spike);
+  spike = lapply(seq(n.spike), function(id){
+    list(x = c(c1$x[id], c2$x[id]), y = c(c1$y[id], c2$y[id]));
+  });
+  spike$lwd = lwd.spike;
+  spike$col = col.spike;
+  virus = list(spike);
+  vc = list(r = R, center = center, lwd = lwd, col = col);
+  class(vc) = c("circle", "list");
+  c2 = cbind(c2$x, c2$y);
+  # TO DO check return value of pointsCircle
+  virus$virus = vc;
+  class(virus) = c("bioshape", "list");
+  return(invisible(virus));
+}
