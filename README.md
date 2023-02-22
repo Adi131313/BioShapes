@@ -4,7 +4,6 @@ West University Of Timișoara, Timiș County, Romania
 
 # Graduate
 Cotoc Adrian-Valentin
-Vodă Darian-Florian
 
 Group 3, Subgroup 3, Year 3
 
