@@ -35,6 +35,7 @@ plot.base = function(xlim=c(-2,10), ylim=c(-2,10), axt=c(1,2), set.par=TRUE) {
 ### Plot:
 #' @export
 lines.list = function(x, y, lwd=NULL, ...) {
+  warning("Class is missing: Only list !");
   sapply(x, function(lst) {
     lwd = if(is.null(lwd)) {
       if(is.null(lst$lwd)) 1 else lst$lwd;
@@ -70,11 +71,24 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
         }
 
     } else if(inherits(lst, "polygon")) {
+      # warning("Only lines");
       if(is.null(fill)) fill = lst$fill;
       col0 = lst$col;
       col  = if(is.null(col0)) col else col0;
       polygon(lst$x, lst$y, col=fill, border=col, lwd = lwd, ...);
-    } else lines(lst$x, lst$y, lwd=lwd, col=col, ...);
+    } else {
+      # warning("Only lines");
+      if(is.null(lst$x)){
+        lwd = lst$lwd;
+        col = lst$col;
+        lst$lwd = NULL; lst$col = 
+        lapply(lst, function(lst){
+          lines(lst$x, lst$y, lwd=lwd, col=col, ...);
+        });
+      } else {
+        lines(lst$x, lst$y, lwd=lwd, col=col, ...);
+      }
+    }
   }
   lapply(x, basef, ...);
   invisible();
@@ -144,4 +158,3 @@ lines.circles = function(x, R, fill="#B0B032", col=NULL, col.line="green", line=
     shape::plotcircle(r=R, mid=center, lcol=col.line, col=NULL);
   }
 }
-
