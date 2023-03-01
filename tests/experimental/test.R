@@ -2,11 +2,14 @@
 
 n = 10
 R = c(3, 5)
-tmp = duct(n = n, center = c(1,3))
+tmp = duct(n = n, R = R, center = c(1,3))
 plot.base(xlim = c (-10, 10), ylim = c(-10, 10))
 lines(tmp)
-tmp = duct(n = n, R = R)
-lines(tmp)
+#tmp = duct(n = n, R = R)
+#lines(tmp)
+
+tmp = ngon.circle(4, N = n, R = R[2], center = c(1,3))
+lines(tmp, col = "blue")
 
 
 n = c(20, 15)
@@ -22,14 +25,25 @@ warnings()
 dev.off()
 
 
-
-star = star(5, R = c(3, 1), center = c(5, 5), fill = 2)
 plot.base()
+star = star(5, R = c(3, 1), center = c(5, 5), fill = 2)
 lines(star)
 
+# Virus
+N = 10
+R = 3
 
-
-virus = virus(5, R = 3, center = c(5, 5))
+virus = virus(N, R = R, center = c(5, 5))
 plot.base()
 lines(virus)
-virus
+tmp = ngon.circle(4, N = N, R = R+1+1/2, center = c(5,5))
+lines(tmp, fill = "blue")
+
+# Braces
+
+plot.base(ylim = c(-10,10))
+lines(braces.curly(c(0,0)), lwd=3)
+lines(braces.curly(c(4,0), left=FALSE), lwd=3)
+
+
+
