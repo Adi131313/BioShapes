@@ -29,6 +29,12 @@
 
 #' @export
 compute_slope = function(x, y) {
+  warning("Deprecated");
+  return(slope(x, y));
+}
+
+#' @export
+slope = function(x, y) {
   if(length(x) < 2 || length(y) < 2) {
     stop("The base-line requires 2 points!");
     # TODO: check if it works properly.

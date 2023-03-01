@@ -486,3 +486,35 @@ lineBanded = function(x, y, w=0.1, delta=0.25, lwd=1.5, lty=1, n=NULL, col="blac
   }
   invisible(cbind(xup, xdn, yup, ydn));
 }
+
+### Braces ###
+#' @export
+braces.curly = function(center = c(0,0), scale = c(6, 1), left.open = TRUE, th = 90,
+                        pow=2.5, mid = 0.625, y0.scale = 1.75, npx = 32) {
+  x0 = seq(-1, 0, length.out = npx);
+  dx = x0 + mid;
+  sg = sign(dx);
+  if( ! left.open) sg = - sg;
+  y = sg * abs(dx)^pow;
+  y[1] = y0.scale * y[1];
+  y = c(y, rev(y)) * scale[2];
+  len = scale[1] / 2;
+  x = seq(- len, len, length.out = 2*npx);
+  if(th != 0) {
+    th = th * pi / 180;
+    sn = sin(th); cs = cos(th);
+    r = cbind(x*cos(th) - y*sin(th), x*sin(th) + y*cos(th));
+  } else {
+    r = cbind(x, y);
+  }
+  r[,1] = r[,1] + center[1];
+  r[,2] = r[,2] + center[2];
+  return(r);
+}
+
+### Braces 2 ###
+#' @export
+braces.curly2 = function(center = c(0, 0), cex=4, left.open = TRUE, th=90, ...) {
+  txt = if(left.open) "{" else "}";
+  text(x = center[1], y = center[2], txt, cex=cex, srt = th - 90, ...);
+}

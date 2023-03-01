@@ -81,7 +81,7 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       if(is.null(lst$x)){
         lwd = lst$lwd;
         col = lst$col;
-        lst$lwd = NULL; lst$col = 
+        lst$lwd = NULL; lst$col = NULL;
         lapply(lst, function(lst){
           lines(lst$x, lst$y, lwd=lwd, col=col, ...);
         });
