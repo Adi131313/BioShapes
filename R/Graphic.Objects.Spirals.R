@@ -84,3 +84,18 @@ helix = function(p1, p2, n=3, A=1, phi=0, N=128, slope=NULL) {
   class(lst) = c("bioshape", class(lst));
   return(lst);
 }
+
+#' @export
+helix.rad = function(R=3, n=8, center=c(0,0), r=1, phi=0, N=257) {
+  id = seq(0, 1, length.out = N)
+  rr = r * cos(2*pi*n*id + phi);
+  RR = exp(2i*pi*id);
+  RR = R*RR + rr*RR;
+  x  = Re(RR) + center[1];
+  y  = Im(RR) + center[2];
+  xy = list(x=x, y=y);
+  class(xy) = c("polygon", "list");
+  xy = list(xy);
+  class(xy) = "bioshape";
+  return(xy);
+}

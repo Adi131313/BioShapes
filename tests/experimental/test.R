@@ -45,5 +45,47 @@ plot.base(ylim = c(-10,10))
 lines(braces.curly(c(0,0)), lwd=3)
 lines(braces.curly(c(4,0), left=FALSE), lwd=3)
 
+################
+
+par(mfrow = c(2,2))
+
+### Circular Helix
+R = 5; n = 20;
+lim = c(-R, R) + c(-1,1);
+plot.base(xlim = lim, ylim = lim)
+xy = helix.rad(R=R, n=n, N=512)
+lines(xy)
+xy = helix.rad(R=R, n=n, phi=pi/2, N=512)
+lines(xy, col="red")
+
+
+### Flower 1:
+R = 5; n = 11;
+lim = c(-R, R) + c(-2,2);
+plot.base(xlim = lim, ylim = lim)
+xy = helix.rad(R=R, n=n, phi=pi)
+lines(xy)
+xy = helix.rad(R = R - 1, n=n, phi=pi)
+lines(xy, col="red")
+
+
+### Flower 2:
+R = 5; n = 11;
+lim = c(-R, R)*2 + c(-1,1);
+plot.base(xlim = lim, ylim = lim)
+xy = helix.rad(R=R, r=R, n=n, N=256)
+lines(xy, col="red")
+
+
+### Other
+R = 5; n = 10;
+lim = c(-R, R) + c(-2,2);
+plot.base(xlim = lim, ylim = lim)
+abline(h=0, col="green", lty=2)
+for(r in c(3,4,6,9)) {
+  xy = helix.rad(R = R - 2/r, n=n, phi=pi, r = 2/r);
+  lines(xy, col="red");
+}
+
 
 

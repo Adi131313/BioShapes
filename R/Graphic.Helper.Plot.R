@@ -58,7 +58,9 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
   }
   # Actual components:
   basef = function(lst, ...) {
-    if(inherits(lst, "circle")) {
+    if(inherits(lst, "bioshape")) {
+      lapply(lst, basef, lwd = lwd, ...);
+    } else if(inherits(lst, "circle")) {
       if(is.null(fill)) fill = lst$fill;
       if(inherits(lst$center, "matrix")){
         lapply(seq(nrow(lst$center)), function(nr){
@@ -78,7 +80,7 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       polygon(lst$x, lst$y, col=fill, border=col, lwd = lwd, ...);
     } else {
       # warning("Only lines");
-      if(is.null(lst$x)){
+      if(inherits(lst, "lines.list")){
         lwd = lst$lwd;
         col = lst$col;
         lst$lwd = NULL; lst$col = NULL;
