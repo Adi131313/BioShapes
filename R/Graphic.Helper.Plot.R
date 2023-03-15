@@ -19,14 +19,15 @@
 ### Create new plot window:
 # Convenience function:
 #' @export
-plot.base = function(xlim=c(-2,10), ylim=c(-2,10), axt=c(1,2), set.par=TRUE) {
+plot.base = function(xlim=c(-2,10), ylim=c(-2,10), axt=c(1,2), asp=1, set.par=TRUE) {
+  hasAxis = ! is.null(axt);
   if(set.par) {
-	mar = 0.25 + c(2,2,0,0); # TODO:
-	par.old = par(mar = mar);
+    mar = 0.25 + if(hasAxis) c(2,2,0,0) else c(0,0,0,0);
+    par.old = par(mar = mar);
   } else par.old = NA;
   plot.new()
-  plot.window(xlim=xlim, ylim=ylim)
-  if( ! is.null(axt)) {
+  plot.window(xlim=xlim, ylim=ylim, asp=asp)
+  if(hasAxis) {
     lapply(axt, function(a) axis(a));
   }
   invisible(par.old);
@@ -159,4 +160,12 @@ lines.circles = function(x, R, fill="#B0B032", col=NULL, col.line="green", line=
     center = attr(xy, "center");
     shape::plotcircle(r=R, mid=center, lcol=col.line, col=NULL);
   }
+}
+
+#' @export
+plot.circle = function(r, center=c(0,0), col=1, fill=NULL, N=128, ...) {
+  x = r * cos(2*pi*seq(0, N-1) / N);
+  y = r * sin(2*pi*seq(0, N-1) / N);
+  polygon(x, y, border=col, col=fill, ...);
+  invisible();
 }

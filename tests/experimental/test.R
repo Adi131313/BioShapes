@@ -87,5 +87,11 @@ for(r in c(3,4,6,9)) {
   lines(xy, col="red");
 }
 
+### Lens
+N = 2; R = 3;
+lens = lens(N, R = R, x = 1, y = -1)
+plot.base()
+
+
 
 

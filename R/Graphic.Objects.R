@@ -69,7 +69,7 @@ liposomes = function(n, r, center=c(0, 0), phi=c(0, 0), d=0, ...){
   p2 = pointsCircle(n=n[2], r=R2, phi=phi[2], center=center)
   fn = function(id, p1, p2, d){
     p1 = c(p1$x[id], p1$y[id])
-    slope = compute_slope(x=c(p1[1], p2[1]), y=c(p1[2], p2[2]))
+    slope = slope(x=c(p1[1], p2[1]), y=c(p1[2], p2[2]))
     if(p1[1] > center[1]){
       d = -d;
     }
@@ -196,6 +196,39 @@ virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   class(virus) = c("bioshape", "list");
   return(invisible(virus));
 }
+
+# Generates convex lens
+#' @export
+lens = function(x, y, R = NULL, scale = c(1,1),
+                lwd=1, col=1) {
+  d = sqrt((x[2] - x[1])^2 + (y[2] - y[1])^2);
+  if(is.null(R)) {
+    R = d;
+    R = c(R, R);
+  } else if(length(R) == 1) R = c(R, R);
+  R = R * scale;
+
+  mid.x = (x[1] + x[2]) / 2;
+  mid.y = (y[1] + y[2]) / 2;
+
+  # Step 3
+  # TODO: Proper sign of d1 and d2
+  d1 = sqrt(R[1]^2 - (d^2)/4);
+  d2 = sqrt(R[2]^2 - (d^2)/4);
+
+  # Step 4
+  slope = slope(x, y);
+  c1 = shiftLine(mid.x, mid.y, slope = slope, d = d1);
+  c2 = shiftLine(mid.x, mid.y, slope = slope, d = d2);
+
+  # Step 5
+  # TODO: Generate and draw Circle segments
+
+  # shape::plotcircle(r=1, mid=c(0,0), from=-pi/3, to=pi/3, col=3)
+
+}
+
+
 
 
 

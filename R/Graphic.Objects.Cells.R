@@ -5,7 +5,7 @@
 #### Cells resembling a smooth muscle cell ####
 #' @export
 cellSmooth = function(x, y, r=1, slope=NULL, lwd=1, N=128, phi=pi) {
-  if(is.null(slope)) slope = compute_slope(x, y);
+  if(is.null(slope)) slope = slope(x, y);
   d = sqrt((x[1] - x[2])^2 + (y[1] - y[2])^2);
   dx = d / N;
   pL = seq(0, d, by=dx);

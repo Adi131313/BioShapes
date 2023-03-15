@@ -28,6 +28,13 @@
 # - plot;
 
 #' @export
+as.bioshape = function(x) {
+  if(inherits(x, "bioshape")) return(x);
+  class(x) = c("bioshape", class(x));
+  invisible(x);
+}
+
+#' @export
 compute_slope = function(x, y) {
   warning("Deprecated");
   return(slope(x, y));
@@ -60,7 +67,7 @@ reflect = function(x, y, p, slope=NULL) {
     if(length(x) < 2 || length(y) < 2)
       stop("The base-line requires 2 points!");
     # TODO: handle if more than 2 points!
-    slope = compute_slope(x,y) # (y[[2]] - y[[1]]) / (x[[2]] - x[[1]]);
+    slope = slope(x,y) # (y[[2]] - y[[1]]) / (x[[2]] - x[[1]]);
   }
 
   if(slope == 0) {
@@ -84,15 +91,17 @@ reflect = function(x, y, p, slope=NULL) {
   return(c(x.rfl, y.rfl));
 }
 
-### Shift Line
+### Shift Point or Line
+# Shifts a point octogonal to a given line;
 # d = distance to shift (translate);
 #' @export
-shiftLine = function(x, y, d=1, slope=NULL, scale=1) {
+shiftLine = function(x, y, d=1, slope=NULL,
+                     scale=1, id.offset = 0) {
   if(is.null(slope)) {
     if(length(x) < 2 || length(y) < 2)
       stop("The base-line requires 2 points!");
     # TODO: handle if more than 2 points!
-    slope = compute_slope(x,y);
+    slope = slope(x,y);
   } else {
     if(missing(y)) {
       # both coordinates encoded using parameter x;
@@ -105,7 +114,7 @@ shiftLine = function(x, y, d=1, slope=NULL, scale=1) {
       r = data.frame(x = x - d, y = y);
     } else {
       r = lapply(seq(along=d), function(id) {
-        data.frame(x = x - d[id], y = y, id=id);
+        data.frame(x = x - d[id], y = y, id = id + id.offset);
       })
       r = do.call(rbind, r);
     }
@@ -118,7 +127,7 @@ shiftLine = function(x, y, d=1, slope=NULL, scale=1) {
       r = data.frame(x = x, y = y + d);
     } else {
       r = lapply(seq(along=d), function(id) {
-        data.frame(x = x, y = y + d[id], id=id);
+        data.frame(x = x, y = y + d[id], id = id + id.offset);
       })
       r = do.call(rbind, r);
     }
@@ -133,7 +142,7 @@ shiftLine = function(x, y, d=1, slope=NULL, scale=1) {
     delta = d[id] / sl2;
     x.sh  = x - delta / scale;
     y.sh  = y - delta*sl.orto;
-    data.frame(x=x.sh, y=y.sh, id=id);
+    data.frame(x=x.sh, y=y.sh, id = id + id.offset);
   }
   rez = lapply(seq(length(d)), function(id) shift.f(x, y, id))
   rez = data.frame(do.call(rbind, rez));
@@ -149,7 +158,7 @@ shiftPoint = function(p, x, y, d=1, slope=NULL, scale=1) {
     if(length(x) < 2 || length(y) < 2)
       stop("The base-line requires 2 points!");
     # TODO: handle if more than 2 points!
-    slope = compute_slope(x,y);
+    slope = slope(x,y);
   }
   if(length(p) < 2) stop("Point needs both x & y coordinates!");
   # V line: if(x[1] == x[2])

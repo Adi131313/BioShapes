@@ -3,7 +3,7 @@ spirals = function(p1, p2, n=5.5, A=1, phi=0, N=128, slope=NULL) {
   if(is.null(slope)) {
     x = c(p1[1], p2[1]);
     y = c(p1[2], p2[2]);
-    slope = compute_slope(x, y);
+    slope = slope(x, y);
     l = sqrt((p1[1]- p2[1])^2 + (p1[2]- p2[2])^2);
   } else {
     if(length(p2) > 1) stop("Provide either: length and slope, or the 2 endpoints!")
@@ -52,7 +52,7 @@ helix = function(p1, p2, n=3, A=1, phi=0, N=128, slope=NULL) {
   if(is.null(slope)) {
     x = c(p1[1], p2[1]);
     y = c(p1[2], p2[2]);
-    slope = compute_slope(x, y);
+    slope = slope(x, y);
     l = sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2);
   } else {
     if(length(p2) > 1) stop("Provide either: length and slope, or the 2 endpoints!")

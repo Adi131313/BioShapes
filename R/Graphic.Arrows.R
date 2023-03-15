@@ -49,7 +49,7 @@ arrow = function(x, y, type = "Simple", d=1, lwd=1, ...) {
 ### Arrow Tail:
 #' @export
 arrowTail = function(x, y, d.lines, lwd=1, slope=NULL) {
-  if(is.null(slope)) slope = compute_slope(x, y);
+  if(is.null(slope)) slope = slope(x, y);
   if(any(d.lines != 0)) {
     arrTail = shiftLine(x, y, d = d.lines, slope=slope);
   } else {
@@ -70,7 +70,7 @@ arrowTail = function(x, y, d.lines, lwd=1, slope=NULL) {
 #' @export
 arrowSimple = function(x, y, d=-0.5, lwd=1, d.head=c(-d,d), d.lines=0,
                        h.lwd=lwd, col="red", scale=1, join=0) {
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   ahead = list(arrowHeadSimple(x[2], y[2], slope=slope, d=d, dV = d.head, scale=scale),
                lwd = h.lwd);
@@ -90,7 +90,7 @@ arrowSimple = function(x, y, d=-0.5, lwd=1, d.head=c(-d,d), d.lines=0,
 arrowDouble = function(x, y, d=-0.5, lwd=1, d.head=-1, dV=c(-d.head, d.head), d.lines=0,
                        h.lwd=lwd, col="red", scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadDouble(x[2], y[2], slope=slope, d=d, dH=d.head, dV=dV, scale=scale);
   arrHead$lwd = h.lwd;
@@ -114,7 +114,7 @@ arrowDouble = function(x, y, d=-0.5, lwd=1, d.head=-1, dV=c(-d.head, d.head), d.
 arrowDoubleInverted = function(x, y, d=-0.25, lwd=1, dH=0.5, d.head=c(-dH, dH), d.lines=0,
                                h.lwd=lwd, col="red", scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadDoubleInverted(x[2], y[2], slope=slope, d=d, dH=dH, dV=d.head, scale=scale);
   midpoint = attr(arrHead, "Mid")
@@ -140,7 +140,7 @@ arrowDoubleInverted = function(x, y, d=-0.25, lwd=1, dH=0.5, d.head=c(-dH, dH), 
 #' @export
 arrowInverted = function(x, y, d=-1, lwd=1, d.head=c(-d,d),
                          d.lines=0, h.lwd=lwd, col="red", scale=1, join=0) {
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadInverted(x[2], y[2], slope=slope, d=d, dV=d.head, scale=scale);
   arrHead = list(arrHead, lwd=h.lwd);
@@ -168,7 +168,7 @@ arrowInverted = function(x, y, d=-1, lwd=1, d.head=c(-d,d),
 arrowN = function(x, y, n=1, d=-0.5, lwd=1, h.lwd=lwd, d.head=c(-d, d), d.lines=0,
                   col="red", scale=1, join=0) {
   if(join > n) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadN(x[2], y[2], slope=slope, n=n, d=d, dV=d.head, scale=scale);
   arrHead$lwd = h.lwd;
@@ -192,7 +192,7 @@ arrowN = function(x, y, n=1, d=-0.5, lwd=1, h.lwd=lwd, d.head=c(-d, d), d.lines=
 #' @export
 arrowT = function(x, y, d=0.2, lwd=1, d.head=c(-d, d), d.lines=0, h.lwd=lwd,
                   col="red", scale=1, join=0, lty=1) {
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   if(is.list(d.head)) {
     ahead = lapply(seq(length(d.head)), function(id) {
@@ -217,7 +217,7 @@ arrowT = function(x, y, d=0.2, lwd=1, d.head=c(-d, d), d.lines=0, h.lwd=lwd,
 #' @export
 arrowMeasure = function(x, y, d=-0.5, lwd=1, d.head=c(-d,d), dT=d.head, d.lines=0,
                         h.lwd=lwd, col="red", scale=1, join=0) {
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadMeasure(x[2], y[2], slope=slope, d=d, dV = d.head, dT=dT, scale=scale);
   arrHead$lwd = h.lwd;
@@ -235,7 +235,7 @@ measure = function(x, y, type=c("in", "out"), lty=1, lwd=1, col=1,
                    d=c(-1,1), dH=0.5, d.head=c(-dH, dH), d.lines=0,
                    lwd.head=lwd, scale=1, plot = TRUE) {
   type  = match.arg(type);
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   # Head
   if(type == "in") {
     h1 = arrowHeadSimple(x[1], y[1], slope=slope, d = abs(dH), dV = - d.head, scale=scale);
@@ -264,7 +264,7 @@ measure = function(x, y, type=c("in", "out"), lty=1, lwd=1, col=1,
 #' @export
 arrowX = function(x, y, d=0.5, lwd=1, d.head=c(-d, d), d.lines=0,
                   h.lwd=lwd, col="red", scale=1, join=0) {
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadX(x[2], y[2], slope=slope, d = - d, dV = d.head, scale=scale);
   ahead   = list(arrHead, lwd = h.lwd);
@@ -287,7 +287,7 @@ arrowX = function(x, y, d=0.5, lwd=1, d.head=c(-d, d), d.lines=0,
 arrowCircle = function(x, y, r=0.5, lwd=1, d.lines=0,
                        h.lwd=lwd, col="red", fill=NULL, scale=1, join=0) {
   if(join > 3) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadCircle(x[2], y[2], slope=slope, r=r, scale=scale);
   mid = attr(arrHead, "start")
@@ -312,7 +312,7 @@ arrowCircle = function(x, y, r=0.5, lwd=1, d.lines=0,
 #' @export
 arrowDiamond = function(x, y, d=0.2, lwd=1, d.head=c(-1, 1), d.lines=0, h.lwd=lwd, col="red", scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   ahead  = list(arrowHeadDiamond(x[2], y[2], slope=slope, d=d, dV=d.head, scale=scale), lwd = h.lwd);
   ### ArrowTail
@@ -336,7 +336,7 @@ arrowDiamond = function(x, y, d=0.2, lwd=1, d.head=c(-1, 1), d.lines=0, h.lwd=lw
 arrowSquare = function(x, y, d=-0.5, lwd=1, d.head=c(d, -d)/2, d.lines=0,
                        h.lwd=lwd, col="red", fill=NULL, scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadSquare(x[2], y[2], slope=slope, d=d, dV=d.head, scale=scale);
   if( ! is.null(fill)) {
@@ -363,7 +363,7 @@ arrowSquare = function(x, y, d=-0.5, lwd=1, d.head=c(d, -d)/2, d.lines=0,
 arrowSolidSquare = function(x, y, d=-0.5, lwd=1, d.head=c(d, -d)/2, d.lines=0,
                             h.lwd=lwd, col="red", fill=col, scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadSquare(x[2], y[2], slope=slope, d=d, dV=d.head, scale=scale);
   arrHead$fill = fill;
@@ -389,7 +389,7 @@ arrowSolidSquare = function(x, y, d=-0.5, lwd=1, d.head=c(d, -d)/2, d.lines=0,
 arrowTriangle = function(x, y, d=-0.5, lwd=1, d.head=c(-d,d), d.lines=0,
                          h.lwd=lwd, col="red", scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   arrHead = arrowHeadTriangle(x[2], y[2], slope=slope, d=d, dV = d.head, scale=scale);
   mid     = attr(arrHead, "Mid");
@@ -412,7 +412,7 @@ arrowTriangle = function(x, y, d=-0.5, lwd=1, d.head=c(-d,d), d.lines=0,
 arrowSquareWave = function(x, y, n, d=-0.5, dV=c(-1,1), d.head=c(-d,d),
                            col=1, lwd=1, h.lwd=lwd, scale=1, join=0) {
   if(join > 2) stop("Unsupported value for join!");
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   ### Head
   ahead = list(arrowHeadSimple(x[2], y[2], slope=slope, d=d, dV=d.head, scale=scale),
                lwd = h.lwd);
@@ -465,7 +465,7 @@ arrowSquareWave = function(x, y, n, d=-0.5, dV=c(-1,1), d.head=c(-d,d),
 # TODO: correct function
 lineBanded = function(x, y, w=0.1, delta=0.25, lwd=1.5, lty=1, n=NULL, col="black", slope=NULL) {
   if(is.null(slope)) {
-    slope = compute_slope(x, y);
+    slope = slope(x, y);
   }
   lsh = shiftLine(x, y, d=w, slope=slope);
   distxy = sqrt((x[1] - x[2])^2 + (y[1] - y[2])^2);

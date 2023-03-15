@@ -27,22 +27,22 @@ drawBioshapes = function(col = list("#48B000", 1, 1, c("blue", "red"), c("purple
 	if(length(lwd) == 1) lwd = rep(lwd, 5);
 	# Plot
 	plot.base(xlim=c(-1,10), ylim=c(-1,10), axt=axt);
-	
+
 	### Row 1:
-	
+
 	### Ex 1: Liposome
 	lst = liposomes(c(30, 17), r=0.15, phi=c(0, pi/34), d=0.1, center=c(0.5, 8));
 	lines(lst, lwd=lwd, col=col[[1]]);
 	text(0.5, y.txt[1], "Liposome");
-	
-	
+
+
 	### Ex 2: Brush-Border Cell
 	p1 = c(3, 6.5)
 	cell = cellBrushBorder(p1, w=2, h=2.5, A=1/2);
 	lines(cell, lwd=lwd[2], col=col[[2]]);
 	text(4, y.txt[1], "Brush-Border Cell");
-	
-	
+
+
 	### Ex 3: Smooth Muscles / Connective Tissue
 	# Cell 1:
 	lst = cellSmooth(c(6, 9), c(8, 9), r=0.3);
@@ -51,10 +51,10 @@ drawBioshapes = function(col = list("#48B000", 1, 1, c("blue", "red"), c("purple
 	lst = cellSmooth(c(6, 9), c(6.5, 8), r=0.4);
 	lines.object.base(lst, lwd=lwd[3], col=col[[3]]);
 	text(7.5, y.txt[1], "Smooth Muscles");
-	
-	
+
+
 	### Row 2:
-	
+
 	### Ex 4: Vertical Helix
 	p1 = c(2.5, 0.5); p2 = c(p1[1], 5);
 	lst1 = helix(p1, p2);
@@ -62,7 +62,7 @@ drawBioshapes = function(col = list("#48B000", 1, 1, c("blue", "red"), c("purple
 	lines(lst1, col=col[[4]][1], lwd=lwd[4])
 	lines(lst2, col=col[[4]][2], lwd=lwd[4])
 	text(2.5, y.txt[2], "Helix/DNA");
-	
+
 	### Ex 5: Vertical Spirals
 	p1 = c(5.5, 1.5); p2 = c(p1[1], 4); dx = c(2.25, 0);
 	lst1 = spirals(p1, p2)
@@ -106,7 +106,7 @@ diagramLiposome = function(lbl = "", title = "Liposome",
 measureLiposome = function(lbl = c("D = 60 nm", "d=50"), center=c(0,0), add=FALSE,
 		lwd.arrow=2, lwd=1.5, title="Liposome", xy.title = c(0,-6.5), cex.title=1.5, ...) {
   if( ! add) plot.base(xlim=c(-10,10), ylim=c(-10,10));
-  
+
   # Liposome
   lst = liposomes(c(30, 17), r=0.5, phi=c(0, pi/34), d=0.2, center=center);
   lines(lst, lwd=lwd, ...);
@@ -153,4 +153,101 @@ enzymeReaction = function(x = c(2,5), y = c(1,1),
     arrowT(pI[1:2, 1], pI[1:2, 2], col=col[[4]], lwd=lwd[[2]]);
     text(pI[3,1], pI[3,2], lbl[[4]], col=col[[5]]);
   }
+}
+
+### Chemistry ###
+
+#' @export
+examples.SpiroGons = function(which = 0, R = 4, ngon = c(5,7,0,5)) {
+  if(is.na(match(which, 0:4))) stop("Wrong id!");
+  if(which == 0) {
+    cat(c("Note:\n",
+          "Use examples.SpiroGons(which) to run the individual plots.\n"));
+    par.old = par(mfrow = c(2,2));
+  }
+  lim = R + 1; lim = c(-lim, lim); ngon[ngon == 0] = 6;
+  plot0 = function() plot.base(xlim=lim, ylim=lim, axt=NULL, asp=1);
+  # Auto: In;
+  if(which == 0 || which == 1) {
+    ng = ngon[1]; n = 16;
+    plot0();
+    gg = circle.spiro(n=n, ngon=ng, R=R)
+    lines(gg)
+    gg = circle.spiro(n = n + 8, ngon=ng, R = 2.5, type="out")
+    lines(gg)
+  }
+  # Out
+  if(which == 0 || which == 2) {
+    ng = ngon[2]; n = 14; # "incidental" coupling of edge;
+    plot0();
+    gg = circle.spiro(n=n, ngon=ng, R=R)
+    lines(gg)
+    gg = circle.spiro(n = n + 8, ngon=ng, R = 2.5, type="out")
+    lines(gg)
+  }
+  # Clockwise: Even (ngon = 6)
+  if(which == 0 || which == 3) {
+    ng = ngon[3];
+    plot0();
+    n = 15
+    gg = circle.spiro(n=n, R=R, ngon=ng, r.adj = 0.015)
+    lines(gg)
+    n = 10
+    gg = circle.spiro(n=n, R = 2, ngon=ng, r.adj = 0.02)
+    lines(gg)
+  }
+  # Clockwise: Odd
+  if(which == 0 || which == 4) {
+    plot0();
+    n = 31; ng = ngon[4];
+    gg = circle.spiro(n=n, R=R, ngon=ng, type = "real-clock")
+    lines(gg)
+    # through Contact points:
+    plot.circle(R, col="green", lty=2)
+    gg = circle.spiro(n = n - 8, R = R - 1.2, ngon=ng, type = "clock", r.adj = -0.02)
+    gg = as.bioshape(lapply(c(seq(10), 21:23), function(id) gg[[id]]));
+    lines(gg)
+    gg = circle.spiro(n = n - 8, R = R - 1.2, ngon=ng, type = "in")
+    gg = as.bioshape(lapply(12:19, function(id) gg[[id]]));
+    lines(gg)
+    # Centers of polygons:
+    plot.circle(R - 1.2, col="red", lty=3)
+    gg = circle.spiro(n = n - 10, R = R - 2.5, ngon=ng, type = "in")
+    lines(gg)
+    plot.circle(R - 2.5, col="red", lty=3)
+  }
+  if(which == 0) par.old = par(par.old);
+}
+
+#' @export
+examples.GonsOnCircle = function(R = 3, ngons = c(3,4,5,6)) {
+  par.old = par(mfrow = c(2,2))
+  lim = R + 1; lim = c(-lim, lim);
+  # Plot 1:
+  n = ngons[1];
+  plot.base(xlim=lim, ylim=lim, axt=NULL)
+  ng = circle.ngon(R=R, n=n)
+  lines(ng, fill=3)
+  ng = circle.ngon(R = R - 1, n=n, clockwise = FALSE)
+  lines(ng, fill=4)
+  # Plot 2:
+  n = ngons[2];
+  plot.base(xlim=lim, ylim=lim, axt=NULL)
+  ng = circle.ngon(R=R, n=n)
+  lines(ng)
+  ng = circle.ngon(R = R - 1, n=n, phi = pi/20)
+  lines(ng)
+  # Plot 3:
+  n = ngons[3];
+  plot.base(xlim=lim, ylim=lim, axt=NULL)
+  ng = circle.ngon(R=R, n=n)
+  lines(ng, fill=5)
+  # Plot 4:
+  n = ngons[4];
+  plot.base(xlim=lim, ylim=lim, axt=NULL)
+  ng = circle.ngon(R=R, n=n)
+  lines(ng)
+
+  par(par.old);
+  invisible();
 }
