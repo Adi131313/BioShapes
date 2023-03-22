@@ -33,6 +33,21 @@ plot.base = function(xlim=c(-2,10), ylim=c(-2,10), axt=c(1,2), asp=1, set.par=TR
   invisible(par.old);
 }
 
+### Helper
+
+#' @export
+plot.circle = function(r, center=c(0,0), col=1, fill=NULL, N=128, ...) {
+  x = r * cos(2*pi*seq(0, N-1) / N);
+  y = r * sin(2*pi*seq(0, N-1) / N);
+  polygon(x, y, border=col, col=fill, ...);
+  invisible();
+}
+
+#' @export
+plot.circle.arc = function(r, center, phi, col=1, fill=NULL, ...) {
+  shape::plotcircle(r, mid=center, from=phi[1], to=phi[2], lcol=col, col=fill, ...);
+}
+
 ### Plot:
 #' @export
 lines.list = function(x, y, lwd=NULL, ...) {
@@ -162,10 +177,4 @@ lines.circles = function(x, R, fill="#B0B032", col=NULL, col.line="green", line=
   }
 }
 
-#' @export
-plot.circle = function(r, center=c(0,0), col=1, fill=NULL, N=128, ...) {
-  x = r * cos(2*pi*seq(0, N-1) / N);
-  y = r * sin(2*pi*seq(0, N-1) / N);
-  polygon(x, y, border=col, col=fill, ...);
-  invisible();
-}
+

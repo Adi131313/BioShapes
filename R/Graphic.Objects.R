@@ -229,12 +229,43 @@ lens = function(x, y, R = NULL, scale = c(1,1),
 }
 
 
+#' @export
+draw_blood_cell = function(radius = 1) {
+  plot.window(xlim = c(-radius, radius), ylim = c(-radius, radius))
+  circle <- seq(0, 2 * pi, length.out = 80)
+  x <- radius * sin(circle)
+  y <- radius * cos(circle)
+  polygon(x, y, col = "red", border = "#901000", lwd = 20)
+}
 
+#' @export
+draw_neuron <- function(radius = 1) {
+  plot.new()
+  plot.window(xlim = c(-radius, radius), ylim = c(-radius, radius))
 
+  # Draw soma (cell body)
+  shape::plotellipse(mid = c(0, 0), rx = radius, ry = radius, col = "gray80", lcol = "black", lwd = 2)
 
+  # Draw dendrites (input)
+  dendrite_length <- 0.8 * radius
+  dendrite_width <- 0.2 * radius
+  dendrite_x <- c(-dendrite_length, -0.4 * radius, -0.3 * radius, -0.2 * radius, -0.1 * radius, 0)
+  dendrite_y <- c(0, dendrite_width, 0.8 * dendrite_width, dendrite_width, 0.8 * dendrite_width, 0)
+  lines(x = dendrite_x, y = dendrite_y, col = "black", lwd = 2)
+  dendrite_x <- c(-dendrite_length, -0.4 * radius, -0.3 * radius, -0.2 * radius, -0.1 * radius, -0.2 * radius)
+  dendrite_y <- c(0, -dendrite_width, -0.8 * dendrite_width, -dendrite_width, -0.8 * dendrite_width, 0)
+  lines(x = dendrite_x, y = dendrite_y, col = "black", lwd = 2)
 
+  # Draw axon (output)
+  axon_length <- 0.6 * radius
+  axon_width <- 0.1 * radius
+  axon_x <- c(0, 0.1 * radius, 0.2 * radius, 0.3 * radius, 0.4 * radius, axon_length)
+  axon_y <- c(0, -axon_width, -0.8 * axon_width, axon_width, 0.8 * axon_width, 0)
+  lines(x = axon_x, y = axon_y, col = "black", lwd = 2)
 
-
-
-
-
+  # Add text labels
+  text(x = 0, y = 0, labels = "Soma", col = "black", font = 2, cex = 1.2)
+  text(x = -0.45 * radius, y = dendrite_width, labels = "Dendrite", col = "black", font = 2, cex = 1.2)
+  text(x = -0.45 * radius, y = -dendrite_width, labels = "Dendrite", col = "black", font = 2, cex = 1.2)
+  text(x = axon_length, y = axon_width, labels = "Axon", col = "black", font = 2, cex = 1.2)
+}

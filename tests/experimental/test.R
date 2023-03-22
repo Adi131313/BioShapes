@@ -88,9 +88,28 @@ for(r in c(3,4,6,9)) {
 }
 
 ### Lens
-N = 2; R = 3;
-lens = lens(N, R = R, x = 1, y = -1)
+R = 3;
+lens = lens(R = R, x = 1, y = -1)
 plot.base()
+
+### Arcs
+plot.base()
+plot.circle.arc(3, c(3,3), c(pi - pi/3, pi + pi/3), lty=2)
+
+plot.base()
+plot.circle.arc(3, c(3,3), c(pi/3, 2*pi/3), lty=2)
+
+plot.base()
+plot.circle.arc(3, c(3,3), c(2*pi- pi/3, pi/3), lwd=1, col="#6432B0")
+
+
+### Neuron
+draw_neuron(radius = 1)
+
+
+
+
+
 
 
 
