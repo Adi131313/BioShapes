@@ -88,9 +88,10 @@ for(r in c(3,4,6,9)) {
 }
 
 ### Lens
-R = 3;
-lens = lens(R = R, x = 1, y = -1)
+R = 5;
+lens = lens(R = R, x = c(1, 2), y = c(0, 4))
 plot.base()
+lines(lens)
 
 ### Arcs
 plot.base()

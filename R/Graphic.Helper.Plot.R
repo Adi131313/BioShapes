@@ -86,7 +86,20 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       } else {
            shape::plotellipse(rx = lst$r, ry = lst$r,
             mid = lst$center, lcol=col, col=fill, lwd=lwd, ...);
-        }
+      }
+    } else if(inherits(lst, "circle.arc")) {
+      if(is.null(fill)) fill = lst$fill;
+      if(inherits(lst$center, "matrix")){
+        lapply(seq(nrow(lst$center)), function(nr){
+          plot.circle.arc(
+            r = lst$r, center = lst$center[nr, ], phi = lst$phi[nr, ],
+            col=col, fill=fill, lwd=lwd, ...);
+        })
+      } else {
+        plot.circle.arc(
+          r = lst$r, center = lst$center, phi = lst$phi,
+          col=col, fill=fill, lwd=lwd, ...);
+      }
 
     } else if(inherits(lst, "polygon")) {
       # warning("Only lines");

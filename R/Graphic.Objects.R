@@ -214,18 +214,35 @@ lens = function(x, y, R = NULL, scale = c(1,1),
   # Step 3
   # TODO: Proper sign of d1 and d2
   d1 = sqrt(R[1]^2 - (d^2)/4);
-  d2 = sqrt(R[2]^2 - (d^2)/4);
+  d2 = - sqrt(R[2]^2 - (d^2)/4);
 
   # Step 4
   slope = slope(x, y);
   c1 = shiftLine(mid.x, mid.y, slope = slope, d = d1);
   c2 = shiftLine(mid.x, mid.y, slope = slope, d = d2);
 
+  c1 = unlist(c1[1, c(1, 2)]);
+  c2 = unlist(c2[1, c(1, 2)]);
+
   # Step 5
-  # TODO: Generate and draw Circle segments
+  # TODO: Generate Circle segments
+  # TODO: Properly compute angles
+  phi1 = asin((x - mid1[1])/R[1]);
+  phi2 = asin((x - mid2[1])/R[2]);
 
-  # shape::plotcircle(r=1, mid=c(0,0), from=-pi/3, to=pi/3, col=3)
+  phi1 = rev(phi1);
+  phi2 = rev(phi2);
 
+  lst1 = list(r = R[1], center = c1, phi = phi1);
+  lst2 = list(r = R[2], center = c2, phi = phi2);
+
+  class(lst1) = c("circle.arc", "list");
+  class(lst2) = c("circle.arc", "list");
+
+  lst = list(lst1, lst2);
+  class(lst) = c("bioshape", "list");
+
+  return(lst);
 }
 
 
