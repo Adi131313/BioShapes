@@ -148,7 +148,20 @@ tmp = neuron(n = n, center = center)
 lines(tmp)
 
 
+### helix for ADN
+tmp1 = helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
+tmp2 = helix(c(0, 0), c(5, 5), n = 2, phi = pi, A= 3/4)
+plot.base()
+lines(tmp1, col = "red")
+lines(tmp2, col = "orange")
 
+### for monocyte
+R = 20; n = 10;
+lim = c(-R, R) + c(-2,2);
+plot.base(xlim = lim, ylim = lim)
+abline(h=0, col="green", lty=2)
+xy = helix.rad(R = R, n=n, phi=pi, r = 2);
+lines(xy, col="red")
 
 
 
