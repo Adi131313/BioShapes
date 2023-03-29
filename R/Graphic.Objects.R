@@ -197,51 +197,57 @@ virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   return(invisible(virus));
 }
 
-# Generates convex lens
+### Convex lens
 #' @export
 lens = function(x, y, R = NULL, scale = c(1,1),
                 lwd=1, col=1) {
-  d = sqrt((x[2] - x[1])^2 + (y[2] - y[1])^2);
+  d2 = (x[2] - x[1])^2 + (y[2] - y[1])^2;
+  d  = sqrt(d2);
+  ### Lens Radius
   if(is.null(R)) {
     R = d;
     R = c(R, R);
   } else if(length(R) == 1) R = c(R, R);
   R = R * scale;
 
+  ### Center of Base
   mid.x = (x[1] + x[2]) / 2;
   mid.y = (y[1] + y[2]) / 2;
 
-  # Step 3
+  ### Step 3
+  dc = R^2 - d2/4;
+  if(any(dc < 0)) stop("Invalid Lens Radius: too small!");
+  dc = sqrt(dc) * sign(R);
   # TODO: Proper sign of d1 and d2
-  d1 = sqrt(R[1]^2 - (d^2)/4);
-  d2 = - sqrt(R[2]^2 - (d^2)/4);
+  d1 = dc[1];
+  d2 = - dc[2];
 
-  # Step 4
+  # Step 4: Circle Centers
   slope = slope(x, y);
   c1 = shiftLine(mid.x, mid.y, slope = slope, d = d1);
   c2 = shiftLine(mid.x, mid.y, slope = slope, d = d2);
 
-  c1 = unlist(c1[1, c(1, 2)]);
-  c2 = unlist(c2[1, c(1, 2)]);
-
-  # Step 5
-  # TODO: Generate Circle segments
-  # TODO: Properly compute angles
-  phi1 = asin((x - mid1[1])/R[1]);
-  phi2 = asin((x - mid2[1])/R[2]);
-
+  # Step 5: Circle Segments
+  R = abs(R);
+  alpha = asin(d/(2*R));
+  phi1 = atan2((mid.y - c1$y), (mid.x - c1$x));
+  phi2 = atan2((mid.y - c2$y), (mid.x - c2$x));
+  clock = - c(-1,1);
+  phi1 = phi1 + clock*alpha[1];
+  phi2 = phi2 + clock*alpha[2];
   phi1 = rev(phi1);
   phi2 = rev(phi2);
 
+  # TODO: handle data.frame?
+  c1 = unlist(c1[1, c(1, 2)]);
+  c2 = unlist(c2[1, c(1, 2)]);
   lst1 = list(r = R[1], center = c1, phi = phi1);
   lst2 = list(r = R[2], center = c2, phi = phi2);
-
   class(lst1) = c("circle.arc", "list");
   class(lst2) = c("circle.arc", "list");
 
   lst = list(lst1, lst2);
   class(lst) = c("bioshape", "list");
-
   return(lst);
 }
 
@@ -285,4 +291,26 @@ draw_neuron <- function(radius = 1) {
   text(x = -0.45 * radius, y = dendrite_width, labels = "Dendrite", col = "black", font = 2, cex = 1.2)
   text(x = -0.45 * radius, y = -dendrite_width, labels = "Dendrite", col = "black", font = 2, cex = 1.2)
   text(x = axon_length, y = axon_width, labels = "Axon", col = "black", font = 2, cex = 1.2)
+}
+
+
+### Neuron body
+#' @export
+neuron = function(center = c(0, 0), n = 5, r = 3, phi = 0){
+  phi = phi + pi/n;
+  cc = circlesOnFixedCircle(n = n, r = r, center = center, phi = phi);
+  R = r;
+  r = attr(cc, "r");
+  phin = 2*pi/n;
+  id = seq(n);
+  a1 = pi/2 + id * phin;
+  a2 = pi/2 + (id + (n - 2)/2) * phin;
+  lst = lapply(id, function(id){
+    lst = list(r = r, center = c(x = cc$x[id], y = cc$y[id]),
+               phi = c(a1[id], a2[id]));
+    class(lst) = c("circle.arc", "list");
+    return(lst);
+  })
+  class(lst) = c("bioshape", "list");
+  return(lst);
 }

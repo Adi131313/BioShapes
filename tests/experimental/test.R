@@ -26,7 +26,7 @@ dev.off()
 
 
 plot.base()
-star = star(5, R = c(3, 1), center = c(5, 5), fill = 2)
+star = star(3, R = c(3, 1), center = c(5, 5), fill = 2)
 lines(star)
 
 # Virus
@@ -88,10 +88,37 @@ for(r in c(3,4,6,9)) {
 }
 
 ### Lens
+
 R = 5;
 lens = lens(R = R, x = c(1, 2), y = c(0, 4))
 plot.base()
 lines(lens)
+
+### Example 1:
+R = 5;
+plot.base()
+lens = lens(R = R, x = c(1, 2), y = c(0, 4))
+lines(lens)
+#
+lens = lens(R = R, x = c(5, 3), y = c(0, 5))
+lines(lens, col="Red")
+# negative R: semi-concave Lens
+lens = lens(R = c(4,-7), x = c(5, 0), y = c(1, 0) + 6)
+lines(lens, col="#329624")
+
+### Example 2:
+scale.x = 1.5
+scale.R = c(1.5, 2)
+x = c(0, 1); y = c(0, 4);
+# does NOT work with concave lenses;
+fill = "#6480D0";
+plot.base()
+lens = lens(x = x, y = y + 2, scale=scale.R)
+lines(lens, fill=fill)
+lens = lens(x = x*scale.x + 2, y = y*scale.x + 0.5, scale=scale.R)
+lines(lens, fill=fill)
+lens = lens(x = x*scale.x^2 + 4, y = y*scale.x^2 - 1.75, scale=scale.R)
+lines(lens, fill=fill)
 
 ### Arcs
 plot.base()
@@ -108,6 +135,17 @@ plot.circle.arc(3, c(3,3), c(2*pi- pi/3, pi/3), lwd=1, col="#6432B0")
 draw_neuron(radius = 1)
 
 
+n = 5; phi = 2*pi/n;
+testFilledCircle(circlesOnCircle(n,2, phi=pi/n))
+tmp = sapply(seq(n), function(k) points(
+  2 * cos(pi/2 + k * phi) + 3.4 * cos(phi * (k-1) + phi/2),
+  2 * sin(pi/2 + k * phi) + 3.4 * sin(phi * (k-1) + phi/2), col = "red"))
+
+n = 5;
+center = c(2, 3)
+plot.base()
+tmp = neuron(n = n, center = center)
+lines(tmp)
 
 
 
