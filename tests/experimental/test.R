@@ -141,10 +141,11 @@ tmp = sapply(seq(n), function(k) points(
   2 * cos(pi/2 + k * phi) + 3.4 * cos(phi * (k-1) + phi/2),
   2 * sin(pi/2 + k * phi) + 3.4 * sin(phi * (k-1) + phi/2), col = "red"))
 
+phi = 0;
 n = 5;
 center = c(2, 3)
 plot.base()
-tmp = neuron_body(n = n, center = center)
+tmp = neuron_body(n = n, center = center, phi = phi)
 lines(tmp)
 
 

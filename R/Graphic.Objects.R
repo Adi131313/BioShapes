@@ -299,7 +299,15 @@ neuron_body = function(center = c(0, 0), n = 5, r = 3,
     y0 = y0 + center[2];
     xy = shiftPoint(c(x0, y0), d = axon.length, slope = phi);
     axon = list(x = c(x0, xy[1]), y = c(y0, xy[2]));
-    neuron = c(body, list(axon));
+    dend = lapply(seq(n-1), function(k){
+      x0 = r * cos(pi/2 + k * phin) + R * cos(phin * (k-1) + phi0);
+      y0 = r * sin(pi/2 + k * phin) + R * sin(phin * (k-1) + phi0);
+      x0 = x0 + center[1];
+      y0 = y0 + center[2];
+      xy = shiftPoint(c(x0, y0), d = r, slope = tan(k * phin + phi));
+      xy = list(x = c(x0, xy[1]), y = c(y0, xy[2]));
+      })
+     neuron = c(body, list(axon), dend);
     if(!inherits(neuron, "bioshape")){
       class(neuron) = c("bioshape", "list");
     }
