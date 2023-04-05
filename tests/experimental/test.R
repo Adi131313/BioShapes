@@ -144,7 +144,7 @@ tmp = sapply(seq(n), function(k) points(
 n = 5;
 center = c(2, 3)
 plot.base()
-tmp = neuron(n = n, center = center)
+tmp = neuron_body(n = n, center = center)
 lines(tmp)
 
 

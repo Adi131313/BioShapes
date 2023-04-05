@@ -261,38 +261,6 @@ draw_blood_cell = function(radius = 1) {
   polygon(x, y, col = "red", border = "#901000", lwd = 20)
 }
 
-#' @export
-draw_neuron <- function(radius = 1) {
-  plot.new()
-  plot.window(xlim = c(-radius, radius), ylim = c(-radius, radius))
-
-  # Draw soma (cell body)
-  shape::plotellipse(mid = c(0, 0), rx = radius, ry = radius, col = "gray80", lcol = "black", lwd = 2)
-
-  # Draw dendrites (input)
-  dendrite_length <- 0.8 * radius
-  dendrite_width <- 0.2 * radius
-  dendrite_x <- c(-dendrite_length, -0.4 * radius, -0.3 * radius, -0.2 * radius, -0.1 * radius, 0)
-  dendrite_y <- c(0, dendrite_width, 0.8 * dendrite_width, dendrite_width, 0.8 * dendrite_width, 0)
-  lines(x = dendrite_x, y = dendrite_y, col = "black", lwd = 2)
-  dendrite_x <- c(-dendrite_length, -0.4 * radius, -0.3 * radius, -0.2 * radius, -0.1 * radius, -0.2 * radius)
-  dendrite_y <- c(0, -dendrite_width, -0.8 * dendrite_width, -dendrite_width, -0.8 * dendrite_width, 0)
-  lines(x = dendrite_x, y = dendrite_y, col = "black", lwd = 2)
-
-  # Draw axon (output)
-  axon_length <- 0.6 * radius
-  axon_width <- 0.1 * radius
-  axon_x <- c(0, 0.1 * radius, 0.2 * radius, 0.3 * radius, 0.4 * radius, axon_length)
-  axon_y <- c(0, -axon_width, -0.8 * axon_width, axon_width, 0.8 * axon_width, 0)
-  lines(x = axon_x, y = axon_y, col = "black", lwd = 2)
-
-  # Add text labels
-  text(x = 0, y = 0, labels = "Soma", col = "black", font = 2, cex = 1.2)
-  text(x = -0.45 * radius, y = dendrite_width, labels = "Dendrite", col = "black", font = 2, cex = 1.2)
-  text(x = -0.45 * radius, y = -dendrite_width, labels = "Dendrite", col = "black", font = 2, cex = 1.2)
-  text(x = axon_length, y = axon_width, labels = "Axon", col = "black", font = 2, cex = 1.2)
-}
-
 
 ### Neuron body
 #' @export
@@ -311,6 +279,30 @@ neuron = function(center = c(0, 0), n = 5, r = 3, phi = 0){
     class(lst) = c("circle.arc", "list");
     return(lst);
   })
+  attr(lst, "r") = r;
   class(lst) = c("bioshape", "list");
   return(lst);
 }
+
+
+#' @export
+neuron_body = function(center = c(0, 0), n = 5, r = 3,
+              phi = 0, axon.length = 3 * r){
+    body = neuron(center = center, n = n, r = r, phi = phi)
+    R = r;
+    r = attr(body, "r");
+    phin = 2 * pi/n;
+    phi0 = phi + phin/2;
+    x0 = r * cos(pi/2 + n * phin) + R * cos(phin * (n-1) + phi0);
+    y0 = r * sin(pi/2 + n * phin) + R * sin(phin * (n-1) + phi0);
+    x0 = x0 + center[1];
+    y0 = y0 + center[2];
+    xy = shiftPoint(c(x0, y0), d = axon.length, slope = phi);
+    axon = list(x = c(x0, xy[1]), y = c(y0, xy[2]));
+    neuron = c(body, list(axon));
+    if(!inherits(neuron, "bioshape")){
+      class(neuron) = c("bioshape", "list");
+    }
+  return(neuron)
+}
+
