@@ -148,13 +148,75 @@ plot.base()
 tmp = neuron_body(n = n, center = center, phi = phi)
 lines(tmp)
 
+# For the new function
+###
+phi = 0;
+n = 5;
+center = c(2, 3)
+plot.base()
+tmp = neuron(n = n, center = center, phi = phi)
+lines(tmp)
+
+###
+phi = -pi/2;
+n = 5;
+center = c(2, 3)
+plot.base()
+tmp = neuron(n = n, center = center, phi = phi)
+lines(tmp)
+
+###
+phi = 2*pi - pi/2;
+n = 5;
+center = c(2, 3)
+plot.base()
+tmp = neuron(n = n, center = center, phi = phi)
+lines(tmp)
+
+###
+phi = pi/2;
+n = 5;
+center = c(2, 3)
+plot.base()
+tmp = neuron(n = n, center = center, phi = phi)
+lines(tmp)
+
+###
+phi = 2*pi - pi/6;
+n = 5;
+center = c(2, 3)
+plot.base()
+tmp = neuron(n = n, center = center, phi = phi)
+lines(tmp)
 
 ### helix for ADN
 tmp1 = helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
 tmp2 = helix(c(0, 0), c(5, 5), n = 2, phi = pi, A= 3/4)
 plot.base()
 lines(tmp1, col = "red")
-lines(tmp2, col = "orange")
+lines(tmp2, col = "green")
+
+### Trying to draw ADN
+tmp1 <- helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
+tmp2 <- helix(c(0, 0), c(5, 5), n = 2, phi = pi, A= 3/4)
+
+# Set up the plot with a white background
+plot.base()
+
+# Plot the two helices as DNA strands
+lines(tmp1, col = "red")
+lines(tmp2, col = "green")
+
+# Add horizontal lines connecting the two helices
+segments(x0 = -4, y0 = 0, x1 = -3, y1 = 0, col = "black", lwd = 2)
+segments(x0 = 8, y0 = 0, x1 = 9, y1 = 0, col = "black", lwd = 2)
+
+# Add base pairs to the plot
+for (i in seq(from = -3, to = 7, by = 2)) {
+  # Connect base pairs with lines
+  segments(x0 = i, y0 = 0, x1 = i + 1, y1 = 0, col = "black", lwd = 2)
+}
+
 
 ### for monocyte
 R = 20; n = 10;
@@ -165,5 +227,7 @@ xy = helix.rad(R = R, n=n, phi=pi, r = 2);
 lines(xy, col="red")
 
 
+###TODO 1: Dendrite
+###TODO 2: ADN
 
 

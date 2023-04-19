@@ -261,56 +261,114 @@ draw_blood_cell = function(radius = 1) {
   polygon(x, y, col = "red", border = "#901000", lwd = 20)
 }
 
+shiftPoint <- function(p, d, slope) {
+  if (slope == Inf) {
+    return(c(p[1], p[2] + d));
+  } else {
+    a = atan(slope);
+    dx = d * cos(a);
+    dy = d * sin(a);
+    return(c(p[1] + dx, p[2] + dy));
+  }
+}
 
 ### Neuron body
 #' @export
-neuron = function(center = c(0, 0), n = 5, r = 3, phi = 0){
-  phi = phi + pi/n;
-  cc = circlesOnFixedCircle(n = n, r = r, center = center, phi = phi);
+neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
+                  axon.length = 3 * r, dendrite.length = ~ r/2, r.nucl = ~ (R - r)/2,
+                  col.nucl = 1, fill.nucl = NULL) {
+  body = neuron.body(center = center, n = n, r = r, phi = phi);
+  ### Init
+  axon.length = axon.length; # force = scale * r;
+  R = r;
+  r = attr(body, "r");
+  phin = 2 * pi/n;
+  phi0 = - phin/2;
+  pi20 = pi/2; pi32 = 3*pi/2;
+  phiD = seq(n) * phin + phi;
+  phiR = phiD - (2*pi) * floor(phiD / (2*pi));
+  x0 = r * cos(phiD + pi20) + R * cos(phiD + phi0);
+  y0 = r * sin(phiD + pi20) + R * sin(phiD + phi0);
+  x0 = x0 + center[1];
+  y0 = y0 + center[2];
+  sg = ifelse(phiR > pi/2 & phiR <= pi32, - 1, 1);
+  ### Axon
+  if(axon.length != 0) {
+    xy = shiftPoint(c(x0[n], y0[n]), d = sg[n] * axon.length, slope = tan(phiD[n]));
+    axon = list(x = c(x0[n], xy[1]), y = c(y0[n], xy[2]));
+    axon = list(axon);
+    lenDendites = n - 1;
+  } else {
+    axon = NULL;
+    lenDendites = n;
+  }
+  ### Dendrites
+  eval.formula = function(x) {
+    xx = if(inherits(x, "formula")) {
+      eval(x[[2]]);
+    } else x;
+  }
+  dendrite.len = eval.formula(dendrite.length);
+  dendrite.len = sg * dendrite.len;
+  dend = lapply(seq(lenDendites), function(k) {
+    tree(c(x0[k], y0[k]), d = dendrite.len[k], slope = tan(phiD[k]),
+         n = 2, levels = 2); # TODO
+  })
+  ### Nucleus
+  r.nucl = eval.formula(r.nucl);
+  if(r.nucl > 0) {
+    nucleus = list(r = r.nucl, center = center, col = col.nucl, fill = fill.nucl);
+    class(nucleus) = c("circle", "list");
+    nucleus = list(nucleus);
+  } else nucleus = NULL;
+  ### Neuron
+  neuron = c(body, axon, dend, nucleus);
+  if( ! inherits(neuron, "bioshape")) {
+    class(neuron) = c("bioshape", "list");
+  }
+  return(neuron);
+}
+#' @export
+tree = function(p, d, slope, n=2, levels=2) {
+  xy = shiftPoint(p, d=d, slope = slope);
+  xy = list(x = c(p[1], xy[1]), y = c(p[2], xy[2]));
+  return(xy);
+#
+  xy = shiftPoint(p, d=d, slope = slope)
+  x = c(p[1], xy[1])
+  y = c(p[2], xy[2])
+  if (n > 2) {
+    control_points = matrix(nrow = n-2, ncol = 2)
+    for (i in 2:(n-1)) {
+      control_points[i-1,] = (p + xy)/2 + c(-1, 1)*abs((xy-p)[2]/10)*(-1)^i
+    }
+    bezier_points = bezier(x, y, control_points = control_points)
+    x = bezier_points$x
+    y = bezier_points$y
+  }
+  xy = list(x = x, y = y)
+  return(xy)
+}
+
+#' @export
+neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0){
+  phi0 = phi + pi/n;
+  cc = circlesOnFixedCircle(n = n, r = r, center = center, phi = phi0);
   R = r;
   r = attr(cc, "r");
   phin = 2*pi/n;
   id = seq(n);
-  a1 = pi/2 + id * phin;
-  a2 = pi/2 + (id + (n - 2)/2) * phin;
+  a1 = pi/2 + phi + id * phin;
+  a2 = pi/2 + phi + (id + (n - 2)/2) * phin;
   lst = lapply(id, function(id){
-    lst = list(r = r, center = c(x = cc$x[id], y = cc$y[id]),
-               phi = c(a1[id], a2[id]));
+    lst = list(
+      r = r, center = c(x = cc$x[id], y = cc$y[id]),
+      phi = c(a1[id], a2[id]) );
     class(lst) = c("circle.arc", "list");
     return(lst);
   })
   attr(lst, "r") = r;
   class(lst) = c("bioshape", "list");
   return(lst);
-}
-
-
-#' @export
-neuron_body = function(center = c(0, 0), n = 5, r = 3,
-              phi = 0, axon.length = 3 * r){
-    body = neuron(center = center, n = n, r = r, phi = phi)
-    R = r;
-    r = attr(body, "r");
-    phin = 2 * pi/n;
-    phi0 = phi + phin/2;
-    x0 = r * cos(pi/2 + n * phin) + R * cos(phin * (n-1) + phi0);
-    y0 = r * sin(pi/2 + n * phin) + R * sin(phin * (n-1) + phi0);
-    x0 = x0 + center[1];
-    y0 = y0 + center[2];
-    xy = shiftPoint(c(x0, y0), d = axon.length, slope = phi);
-    axon = list(x = c(x0, xy[1]), y = c(y0, xy[2]));
-    dend = lapply(seq(n-1), function(k){
-      x0 = r * cos(pi/2 + k * phin) + R * cos(phin * (k-1) + phi0);
-      y0 = r * sin(pi/2 + k * phin) + R * sin(phin * (k-1) + phi0);
-      x0 = x0 + center[1];
-      y0 = y0 + center[2];
-      xy = shiftPoint(c(x0, y0), d = r, slope = tan(k * phin + phi));
-      xy = list(x = c(x0, xy[1]), y = c(y0, xy[2]));
-      })
-     neuron = c(body, list(axon), dend);
-    if(!inherits(neuron, "bioshape")){
-      class(neuron) = c("bioshape", "list");
-    }
-  return(neuron)
 }
 
