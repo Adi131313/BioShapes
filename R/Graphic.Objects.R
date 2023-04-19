@@ -261,17 +261,6 @@ draw_blood_cell = function(radius = 1) {
   polygon(x, y, col = "red", border = "#901000", lwd = 20)
 }
 
-shiftPoint <- function(p, d, slope) {
-  if (slope == Inf) {
-    return(c(p[1], p[2] + d));
-  } else {
-    a = atan(slope);
-    dx = d * cos(a);
-    dy = d * sin(a);
-    return(c(p[1] + dx, p[2] + dy));
-  }
-}
-
 ### Neuron body
 #' @export
 neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,

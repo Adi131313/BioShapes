@@ -74,6 +74,7 @@ arrowSimple = function(x, y, d=-0.5, lwd=1, d.head=c(-d,d), d.lines=0,
   ### Head
   ahead = list(arrowHeadSimple(x[2], y[2], slope=slope, d=d, dV = d.head, scale=scale),
                lwd = h.lwd);
+
   ### ArrowTail
   arrow = arrowTail(x, y, d.lines=d.lines, lwd=lwd, slope=slope);
   ### Full Arrow
