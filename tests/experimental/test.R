@@ -196,6 +196,12 @@ plot.base()
 lines(tmp1, col = "red")
 lines(tmp2, col = "green")
 
+tmp = lapply(seq(10), function(id) {
+  id = 10*id;
+  lines(c(tmp1[[1]]$x[id], tmp2[[1]]$x[id]),
+      c(tmp1[[1]]$y[id], tmp2[[1]]$y[id]));
+  })
+
 ### Trying to draw ADN
 tmp1 <- helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
 tmp2 <- helix(c(0, 0), c(5, 5), n = 2, phi = pi, A= 3/4)
