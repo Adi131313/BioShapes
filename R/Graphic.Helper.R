@@ -226,6 +226,12 @@ split.line = function(x, y, n) {
   return(lst);
 }
 
-
+### Distance
+#' @export
+dist.xy = function(x, y, as.sqrt = TRUE) {
+  xy = (x[1] - x[2])^2 + (y[1] - y[2])^2;
+  if(as.sqrt) xy = sqrt(xy);
+  return(xy);
+}
 #######################
 
