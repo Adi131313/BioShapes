@@ -133,7 +133,7 @@ enzymeReaction = function(x = c(2,5), y = c(1,1),
                           dx=1, dy=c(0.1, 0.1, 0.5), dI= - c(2, 0.75, 2.4), dH=0.5,
                           lwd=c(1, 2), scale=1) {
   if(length(y) == 1) y = c(y, y);
-  slope = compute_slope(x, y);
+  slope = slope(x, y);
   l1 = shiftLine(x, y, d = dy[[1]], slope=slope, scale=scale);
   l2 = shiftLine(rev(x), rev(y), d = - dy[[2]], slope=slope, scale=scale);
   #
