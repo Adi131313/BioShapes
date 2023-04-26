@@ -251,3 +251,42 @@ examples.GonsOnCircle = function(R = 3, ngons = c(3,4,5,6)) {
   par(par.old);
   invisible();
 }
+
+#'@export
+examples.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
+  par(mfrow = c(2,2))
+
+  ### Circular Helix
+  lim = c(-R, R) + c(-1,1);
+  plot.base(xlim = lim, ylim = lim)
+  xy = helix.rad(R=R, n=n[1], N=512)
+  lines(xy)
+  xy = helix.rad(R=R, n=n[1], phi=pi/2, N=512)
+  lines(xy, col="red")
+
+
+  ### Flower 1:
+  lim = c(-R, R) + c(-2,2);
+  plot.base(xlim = lim, ylim = lim)
+  xy = helix.rad(R=R, n=n[2], phi=pi)
+  lines(xy)
+  xy = helix.rad(R = R - 1, n=n[2], phi=pi)
+  lines(xy, col="red")
+
+
+  ### Flower 2:
+  lim = c(-R, R)*2 + c(-1,1);
+  plot.base(xlim = lim, ylim = lim)
+  xy = helix.rad(R=R, r=R, n=n[3], N=256)
+  lines(xy, col="red")
+
+
+  ### Other
+  lim = c(-R, R) + c(-2,2);
+  plot.base(xlim = lim, ylim = lim)
+  abline(h=0, col="green", lty=2)
+  for(r in c(3,4,6,9)) {
+    xy = helix.rad(R = R - 2/r, n=n[4], phi=pi, r = 2/r);
+    lines(xy, col="red");
+  }
+}
