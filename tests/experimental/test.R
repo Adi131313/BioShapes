@@ -91,23 +91,17 @@ plot.circle.arc(3, c(3,3), c(2*pi- pi/3, pi/3), lwd=1, col="#6432B0")
 
 
 ### Neuron
-draw_neuron(radius = 1)
-
-
+# old functionality
 n = 5; phi = 2*pi/n;
 testFilledCircle(circlesOnCircle(n,2, phi=pi/n))
 tmp = sapply(seq(n), function(k) points(
   2 * cos(pi/2 + k * phi) + 3.4 * cos(phi * (k-1) + phi/2),
   2 * sin(pi/2 + k * phi) + 3.4 * sin(phi * (k-1) + phi/2), col = "red"))
 
-phi = 0;
-n = 5;
-center = c(2, 3)
-plot.base()
-tmp = neuron_body(n = n, center = center, phi = phi)
-lines(tmp)
 
 # For the new function
+# TODO: examples with many neurons
+
 ###
 phi = 0;
 n = 5;
