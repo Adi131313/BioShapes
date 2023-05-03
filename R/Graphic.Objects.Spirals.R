@@ -51,39 +51,47 @@ spirals = function(p1, p2, n=5.5, A=1, phi=0, N=128, slope=NULL) {
 # A = amplitude;
 # phi = phase shift of sinusoid;
 #' @export
-helix = function(p1, p2, n=3, A=1, phi=0, N=128, slope=NULL) {
+helix = function(p1, p2, n=3, A=1, phi=0, parts=0, N=128, slope=NULL) {
   if(is.null(slope)) {
     x = c(p1[1], p2[1]);
     y = c(p1[2], p2[2]);
     slope = slope(x, y);
     l = sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2);
   } else {
-    if(length(p2) > 1) stop("Provide either: length and slope, or the 2 endpoints!")
+    if(length(p2) > 1) stop("Provide either: length and slope, or
+the 2 endpoints!")
     l = p2;
   }
   #
   n = 2*n*pi;
   ninv = 1 / n;
-  t  = seq(0, n, length.out=N);
-  x  = l*t*ninv;
-  y  = A*sin(t + phi);
-  #
-  if(abs(slope) == Inf) {
-    sgn = sign(slope);
-    dx = y; dy = x * sgn;
+  t = seq(0, n, length.out=N);
+  sinusoid = function(tx, ty) {
+    x  = l*tx;
+    y  = A*sin(ty + phi);
+    #
+    if(abs(slope) == Inf) {
+      sgn = sign(slope);
+      dx = y; dy = x * sgn;
+      lst = list(x = p1[1] + dx, y = p1[2] + dy);
+      return(lst);
+    }
+    sdiv = 1 / sqrt(slope^2 + 1);
+    if(p1[2] > p2[2] && slope > 0) { x = -x; }
+    # Rotation matrix: by column
+    # rotm = matrix(sdiv * c(1, s, -s, 1), ncol=2, nrow=2);
+    dx = (x - slope*y) * sdiv; # + p1[1];
+    dy = (slope*x + y) * sdiv; # + p1[2];
     lst = list(x = p1[1] + dx, y = p1[2] + dy);
-    lst = list(lst);
-    class(lst) = c("bioshape", class(lst));
-    return(lst);
   }
-  sdiv = 1 / sqrt(slope^2 + 1);
-  if(p1[2] > p2[2] && slope > 0) { x = -x; }
-  # Rotation matrix: by column
-  # rotm = matrix(sdiv * c(1, s, -s, 1), ncol=2, nrow=2);
-  dx = (x - slope*y) * sdiv; # + p1[1];
-  dy = (slope*x + y) * sdiv; # + p1[2];
-  lst = list(x = p1[1] + dx, y = p1[2] + dy);
+  lst = sinusoid(t*ninv, t)
   lst = list(lst);
+  if(parts > 0) {
+    tt = helix.link(parts);
+    tt = (2*pi)*tt;
+    seg = sinusoid(tt, tt*max(tt));
+    # TODO
+  }
   class(lst) = c("bioshape", class(lst));
   return(lst);
 }
@@ -101,4 +109,26 @@ helix.rad = function(R=3, n=8, center=c(0,0), r=1, phi=0, N=257) {
   xy = list(xy);
   class(xy) = "bioshape";
   return(xy);
+}
+
+#' @export
+helix.link = function(k=3) {
+  if(n < 0) stop("Only positive n!");
+  iN = floor(n);
+  nTail = n - iN;
+  len = (2*k + 2)*iN + 1;
+  if(nTail >= 0.5) {
+    len = len + k + 1;
+    iN  = iN + 0.5;
+    nTail = nTail - 0.5;
+  }
+  id = seq(0, iN, length.out = len);
+  # works only with integer k!
+  id = id[ - seq(0, len, by = k+1)];
+  if(nTail > 0) {
+    # TODO
+  }
+  #
+  tt = id / tail(id, 1);
+  return(tt);
 }
