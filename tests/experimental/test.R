@@ -20,9 +20,10 @@ lines(duct(n[1], c(9,13), phi=c(0, pi/n[2]), nc.r = NULL,
 lines(duct(n[1], c(5,8)))
 abline(h=0, col="green")
 
-
+# TODO: move simple examples to Examples.man
+# TODO: create complex examples in R/Examples.R
 plot.base()
-star = star(3, R = c(3, 1), center = c(5, 5), fill = 2)
+star = star(5, R = c(3, 1), center = c(5, 5), fill = 2)
 lines(star)
 
 # Virus
