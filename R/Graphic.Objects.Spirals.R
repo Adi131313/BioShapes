@@ -1,3 +1,6 @@
+# p1, p2 = endpoints of spiral;
+#  OR if slope specified = starting point + length;
+
 #' @export
 spirals = function(p1, p2, n=5.5, A=1, phi=0, N=128, slope=NULL) {
   if(is.null(slope)) {

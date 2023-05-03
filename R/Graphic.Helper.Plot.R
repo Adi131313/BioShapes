@@ -78,6 +78,8 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       lapply(lst, basef, lwd = lwd, ...);
     } else if(inherits(lst, "circle")) {
       if(is.null(fill)) fill = lst$fill;
+      if(! is.null(lst$col)) col = lst$col;
+      if(! is.null(lst$lwd)) lwd = lst$lwd;
       if(inherits(lst$center, "matrix")){
         lapply(seq(nrow(lst$center)), function(nr){
           shape::plotellipse(rx = lst$r, ry = lst$r, mid = lst$center[nr, ],

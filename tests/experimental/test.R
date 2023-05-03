@@ -196,3 +196,15 @@ lines(xy, col="red")
 ###TODO 2: ADN
 
 
+### Function calls
+adn()
+
+### Draw two or more cells
+radius = 2;
+lim = c(-radius, radius) * 4;
+plot.base(xlim = lim, ylim = lim)
+tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
+lines(tmp)
+tmp = draw_blood_cell(radius = radius, center = c(3, 1))
+lines(tmp)
+

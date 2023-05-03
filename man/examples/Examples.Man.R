@@ -124,26 +124,5 @@ lineBanded(c(1,7), c(0, 5), lwd=2.5)
 lineBanded(c(0,6), c(6, 0), lwd=2.5, col="green")
 
 
-### helix for ADN
-n = 2.2;
-tmp1 = helix(c(0, 0), c(5, 5), n = n, phi = 0, A = 3/4)
-tmp2 = helix(c(0, 0), c(5, 5), n = n, phi = pi, A= 3/4)
-plot.base()
-col = c("#FF9696", "#F2FF82")
-lines(tmp1, col = col[1], lwd = 5)
-lines(tmp2, col = col[2], lwd = 5)
 
-N = length(tmp1[[1]]$x);
-nL = round(N/3.5);
-scale = N/nL;
-nc = ceiling(2*n);
-# TODO: Proper colors
-colL = rep(col[1], nL);
-tmp = lapply(seq(nL), function(id) {
-  idL = scale*id;
-  x = c(tmp1[[1]]$x[idL], tmp2[[1]]$x[idL]);
-  y = c(tmp1[[1]]$y[idL], tmp2[[1]]$y[idL]);
-  d = dist.xy(x, y);
-  if(d < 0.2) return(); # TODO: Parameter
-  lines(x, y, col = colL[id]);
-})
+
