@@ -132,3 +132,30 @@ helix.link = function(n, k=3, phi=pi/2) {
   #
   return(list(id=id, div = tail(id, 1)));
 }
+
+#' @export
+### DNA
+dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, segments = 3,
+               col = c("red", "blue")) {
+  p1 = c(x[1], y[1]); p2 = c(x[2], y[2]);
+  h1 = helix(p1, p2, n=n, phi=phi[1], parts=segments);
+  h2 = helix(p1, p2, n=n, phi=phi[2], parts=segments);
+  if( ! is.null(col)) {
+    h1[[1]]$col = col[1]; h2[[1]]$col = col[2];
+  }
+  lst = c(h1, h2);
+  #
+  s1 = attr(h1, "segments")
+  s2 = attr(h2, "segments")
+  len = length(s1$x)
+  tmp = lapply(seq(len), function(id) {
+    x = c(s1$x[[id]], s2$x[[id]]);
+    y = c(s1$y[[id]], s2$y[[id]]);
+    list(x=x, y=y);
+  })
+  # TODO: different colours;
+  tmp$col = col;
+  class(tmp) = c("lines.list", "list");
+  lst = c(lst, list(tmp));
+  return(as.bioshape(lst));
+}
