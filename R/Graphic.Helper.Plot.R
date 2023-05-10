@@ -111,10 +111,10 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       polygon(lst$x, lst$y, col=fill, border=col, lwd = lwd, ...);
     } else {
       # warning("Only lines");
+      lwd0 = lst$lwd; if( ! is.null(lwd0)) lwd = lwd0;
+      col0 = lst$col; if( ! is.null(col0)) col = col0;
+      lst$lwd = NULL; lst$col = NULL;
       if(inherits(lst, "lines.list")){
-        lwd = lst$lwd;
-        col = lst$col;
-        lst$lwd = NULL; lst$col = NULL;
         lapply(lst, function(lst){
           lines(lst$x, lst$y, lwd=lwd, col=col, ...);
         });

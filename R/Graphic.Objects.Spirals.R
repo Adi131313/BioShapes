@@ -58,14 +58,14 @@ helix = function(p1, p2, n=3, A=1, phi=0, parts=0, N=128, slope=NULL) {
     slope = slope(x, y);
     l = sqrt((p1[1] - p2[1])^2 + (p1[2] - p2[2])^2);
   } else {
-    if(length(p2) > 1) stop("Provide either: length and slope, or
-the 2 endpoints!")
+    if(length(p2) > 1)
+      stop("Provide either: length and slope, or the 2 endpoints!");
     l = p2;
   }
   #
-  n = 2*n*pi;
-  ninv = 1 / n;
-  t = seq(0, n, length.out=N);
+  npi = 2 * pi * n;
+  ninv = 1 / npi;
+  t = seq(0, npi, length.out=N);
   sinusoid = function(tx, ty) {
     x  = l*tx;
     y  = A*sin(ty + phi);
@@ -87,10 +87,10 @@ the 2 endpoints!")
   lst = sinusoid(t*ninv, t)
   lst = list(lst);
   if(parts > 0) {
-    tt = helix.link(parts);
-    tt = (2*pi)*tt;
-    seg = sinusoid(tt, tt*max(tt));
-    # TODO
+    tl = helix.link(n, parts);
+    tt = tl$id / tl$div;
+    seg = sinusoid(tt, (2*pi)*tl$id);
+    attr(lst, "segments") = seg;
   }
   class(lst) = c("bioshape", class(lst));
   return(lst);
@@ -112,7 +112,7 @@ helix.rad = function(R=3, n=8, center=c(0,0), r=1, phi=0, N=257) {
 }
 
 #' @export
-helix.link = function(k=3) {
+helix.link = function(n, k=3, phi=pi/2) {
   if(n < 0) stop("Only positive n!");
   iN = floor(n);
   nTail = n - iN;
@@ -123,12 +123,12 @@ helix.link = function(k=3) {
     nTail = nTail - 0.5;
   }
   id = seq(0, iN, length.out = len);
-  # works only with integer k!
-  id = id[ - seq(0, len, by = k+1)];
+  # TODO: sin(x + phi) = sin(x);
+  # [incorrect] works only with integer k!
+  # id = id[ - seq(0, len, by = k+1)];
   if(nTail > 0) {
     # TODO
   }
   #
-  tt = id / tail(id, 1);
-  return(tt);
+  return(list(id=id, div = tail(id, 1)));
 }
