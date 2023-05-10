@@ -202,4 +202,43 @@ tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
 lines(tmp)
 tmp = draw_blood_cell(radius = radius, center = c(3, 1))
 lines(tmp)
+tmp = draw_blood_cell(radius = radius, center = c(5, -5))
+lines(tmp)re
 
+### Group of blood cells
+draw_blood_cells = function(radius = 2){
+  radius = 2;
+  lim = c(-radius, radius) * 4;
+  plot.base(xlim = lim, ylim = lim)
+  tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
+  lines(tmp)
+  tmp = draw_blood_cell(radius = radius, center = c(3, 1))
+  lines(tmp)
+  tmp = draw_blood_cell(radius = radius, center = c(5, -5))
+  lines(tmp)
+}
+
+draw_blood_cells()
+
+### muscle tissue ###
+scale.x = 1.5
+scale.R = c(1.5, 2)
+x = c(1, 5); y = c(1, 1);
+mx = (x[1] + x[2])/2 + 2.7;
+my = (y[1] + y[2])/2 + 2.3;
+fill = "red";
+plot.base()
+lens = lens(x = x, y = y + 2, scale=scale.R)
+lines(lens, fill=fill)
+lens = lens(x = x*scale.x + 1.5, y = y*scale.x + 1.1, scale=scale.R)
+lines(lens, fill=fill)
+lens = lens(x = x + 2.7, y = y + 2.3, scale=scale.R)
+lines(lens, fill=fill)
+lens = lens(x = x*scale.x - 4.5, y = y*scale.x + 1.1, scale=scale.R)
+lines(lens, fill=fill)
+
+# Centers for lens
+lst = list(center = c(mx, my), r = 0.2, fill = "yellow")
+class(lst) = c("circle", "list");
+lst = as.bioshape(list(lst));
+lines(lst)

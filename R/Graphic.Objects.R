@@ -370,3 +370,21 @@ neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0){
   return(lst);
 }
 
+draw_blood_cells = function(radius = 2){
+  radius = 2;
+  lim = c(-radius, radius) * 4;
+  plot.base(xlim = lim, ylim = lim)
+  tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
+  lines(tmp)
+  tmp = draw_blood_cell(radius = radius, center = c(3, 1))
+  lines(tmp)
+  tmp = draw_blood_cell(radius = radius, center = c(3, -5))
+  lines(tmp)
+}
+
+draw_neuron = function(phi = 0, n = 5){
+  center = c(2, 3)
+  plot.base()
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+}
