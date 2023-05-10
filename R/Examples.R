@@ -76,8 +76,9 @@ drawBioshapes = function(col = list("#48B000", 1, 1, c("blue", "red"), c("purple
 #### Diagram of a Liposome ####
 # d = Dimensions of ArrowHead;
 #' @export
-diagramLiposome = function(lbl = "", title = "Liposome",
-		lwd=2, d=-0.4, n = c(30, 17), col="#48B000", cex.title = 1.5, xy.title = c(0, -6.5)) {
+diagramLiposome = function(lbl = c("Outer lipid layer", "Inner lipid layer", "Lipid bilayer"),
+    title = "Liposome", lwd=2, d=-0.4, n = c(30, 17), col="#48B000",
+    cex.title = 1.5, xy.title = c(0, -6.5)) {
   if(length(lbl) == 1) lbl = rep(lbl, 3);
   # Liposome
   lst = liposomes(n, r=0.5, phi=c(0, pi/(2*n[[2]])), d=0.2)

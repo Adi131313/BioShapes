@@ -254,3 +254,23 @@ lst = list(center = c(mx, my), r = 0.2, fill = "yellow")
 class(lst) = c("circle", "list");
 lst = as.bioshape(list(lst));
 lines(lst)
+
+# dna.new
+
+h2 = dna.new(c(1,5), c(1,6), phi = c(0, pi))
+plot.base()
+lines(h2)
+
+description.neuron = function(lbl = "", title = "Neuron",
+    lwd=2, col="#48B000", cex.title = 1.5, xy.title = c(0, -6.5)){
+  neuron = neuron(...)
+  plot.base()
+  lines(neuron)
+
+  # Title
+  if( ! is.null(title)) text(xy.title[1], xy.title[2], title, cex=cex.title);
+
+  return(invisible());
+}
+
+

@@ -39,9 +39,7 @@ drawBioshapes()
 #### Description of a Liposome ####
 
 plot.base(xlim=c(-10,10), ylim=c(-10,10))
-diagramLiposome(
-  c("Outer lipid layer", "Inner lipid layer", "Lipid bilayer"))
-
+diagramLiposome()
 
 #### Liposome Measurements ####
 
