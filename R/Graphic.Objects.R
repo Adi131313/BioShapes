@@ -251,6 +251,43 @@ lens = function(x, y, R = NULL, scale = c(1,1),
   return(lst);
 }
 
+# x, y = endpoints of Axis (group of lens);
+#' @export
+lens.group = function(x, y, h, pos=NULL, R=NULL, l.scale=1,
+                      lwd=1, col=1, fill=NULL, lty=1) {
+  len = length(h);
+  if(is.null(pos)) {
+    if(len > 2) stop("Specify the position of all the lenses!");
+    pos = c(0, 1);
+  }
+  slope = slope(x, y);
+  ### Lens Positions
+  xL = (1 - pos)*x[1] + pos*x[2];
+  yL = (1 - pos)*y[1] + pos*y[2];
+  #
+  isR = ! is.null(R);
+  lst = lapply(seq(len), function(id) {
+    d  = h[id]; d = c(-d, d);
+    xy = shiftLine(xL[id], yL[id], slope=slope, d=d);
+    R  = if(isR) R[id] else NULL;
+    scR = if(length(l.scale) == 1) l.scale else l.scale[id];
+    lwd = if(length(lwd) == 1) lwd else lwd[id];
+    col = if(length(col) == 1) col else col[id];
+    lst = lens(xy$x, xy$y, R=R, scale=scR, lwd=lwd, col=col);
+    lty = if(length(lty) == 1) lty else lty[id];
+    lst[[1]]$lty = lty;
+    lst[[2]]$lty = lty;
+    if( ! is.null(fill)) {
+      fill = if(length(fill) == 1) fill else fill[id];
+      lst[[1]]$fill = fill;
+      lst[[2]]$fill = fill;
+    }
+    return(lst);
+  });
+  lst = do.call(c, lst);
+  return(as.bioshape(lst));
+}
+
 
 #' @export
 draw_blood_cell = function(center = c(0, 0),

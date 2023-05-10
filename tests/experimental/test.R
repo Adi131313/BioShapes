@@ -66,19 +66,31 @@ lines(lens, col="Red")
 lens = lens(R = c(4,-7), x = c(5, 0), y = c(1, 0) + 6)
 lines(lens, col="#329624")
 
-### Example 2:
-scale.x = 1.5
-scale.R = c(1.5, 2)
-x = c(0, 1); y = c(0, 4);
-# does NOT work with concave lenses;
+### Example 2: Group of Lenses
+pos = c(0, 1/2, 1)
+h = c(2, 3, 4)
+scale.R = c(1, 1.5, 2)
+x = c(0, 6); y = c(3, 2);
+# fill: does NOT work with concave lenses;
 fill = "#6480D0";
+
+lst = lens.group(x=x, y=y, h=h, pos=pos, l.scale = scale.R, fill=fill)
 plot.base()
-lens = lens(x = x, y = y + 2, scale=scale.R)
-lines(lens, fill=fill)
-lens = lens(x = x*scale.x + 2, y = y*scale.x + 0.5, scale=scale.R)
-lines(lens, fill=fill)
-lens = lens(x = x*scale.x^2 + 4, y = y*scale.x^2 - 1.75, scale=scale.R)
-lines(lens, fill=fill)
+lines(lst)
+
+### Example: Lens Group
+pos = c(0, 1/3, 1)
+h = c(2, 1.2, 1.5)
+scale.R = c(1, 1.5, 2)
+x = c(0, 6); y = c(0, 4);
+# fill: does NOT work with concave lenses;
+fill = "#6480D0";
+#
+lst = lens.group(x=x, y=y, h=h, pos=pos, l.scale = scale.R, fill=fill)
+plot.base()
+lines(lst)
+lines(x, y, lty=2, lwd=2, col="green")
+
 
 ### Arcs
 plot.base()
