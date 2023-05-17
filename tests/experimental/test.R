@@ -12,7 +12,7 @@ tmp = ngon.circle(4, N = n, R = R[2], center = c(1,3))
 lines(tmp, col = "blue")
 
 # TODO: Function examples.duct
-n = c(20, 15)
+n = c(10, 15)
 plot.base(xlim=c(-20,20), ylim=c(-20,20))
 lines(duct(n[1], c(15,18), phi=pi/2/n[1], fill = "#0048C0"))
 lines(duct(n[1], c(9,13), phi=c(0, pi/n[2]), nc.r = NULL,
@@ -261,16 +261,66 @@ h2 = dna.new(c(1,5), c(1,6), phi = c(0, pi))
 plot.base()
 lines(h2)
 
-description.neuron = function(lbl = "", title = "Neuron",
-    lwd=2, col="#48B000", cex.title = 1.5, xy.title = c(0, -6.5)){
-  neuron = neuron(...)
-  plot.base()
-  lines(neuron)
+description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "Neuron",
+    lwd=2, col="#48B000", d=-0.4, cex.title = 1.5, xy.title = c(0, -6.5)){
+  # TODO: parameters
+  neuron = draw_neuron()
+  #plot.base()
+  #lines(neuron)
 
   # Title
   if( ! is.null(title)) text(xy.title[1], xy.title[2], title, cex=cex.title);
 
+  # Labels
+  a1 = arrowSimple(x=c(1,2), y=c(7,8), d=-d, lwd=lwd);
+  text(3, 9, lbl[[1]])
+
+  a2 = arrowSimple(x=c(1.4, 5), y=c(-2.4,-7), d=d, lwd=lwd);
+  text(5, -8, lbl[[2]])
+
   return(invisible());
 }
 
+description.neuron()
+
+
+### Complex Duct ###
+
+# warning: just if n is even
+n = 8
+center = c(2, -3)
+radius = c(7, 5, 2);
+pos = c(0, 1)
+h.scale = 1
+h = radius[2]*sin(pi/n)*h.scale
+h = c(h, h);
+scale.R = c(1, 1)
+dr = 0.25
+
+# Cell
+plot.base(xlim=c(-10,10), ylim=c(-10,10))
+tmp = draw_blood_cell(radius = radius[1], center = center, col = "#bf9d9b", fill = "#f0e19e", lwd = 7)
+lines(tmp)
+
+plot.circle(r = radius[1], center = center, col = "white", lwd = 5)
+
+# Duct
+tmp = duct(n[1], radius[c(2,3)], center = center, phi=pi/2/n[1], fill = "#f0b25b", nc.fill = "#6f618f")
+lines(tmp)
+
+# Lens
+n2 = n/2;
+x = (radius[2] + dr)*cos((seq(n)/n2 - 1/(2*n))*pi) + center[1]
+y = (radius[2] + dr)*sin((seq(n)/n2 - 1/(2*n))*pi) + center[2]
+
+for(o in seq(n)){
+  if(o <= n2){
+    lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = scale.R, fill=fill)
+    lines(lst)
+  }
+  lst = list(center = c(x[o],y[o]), r = 0.2, fill = "#8a4965")
+  class(lst) = c("circle", "list");
+  lst = as.bioshape(list(lst));
+  lines(lst)
+}
 

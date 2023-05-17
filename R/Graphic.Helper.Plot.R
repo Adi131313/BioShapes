@@ -37,8 +37,8 @@ plot.base = function(xlim=c(-2,10), ylim=c(-2,10), axt=c(1,2), asp=1, set.par=TR
 
 #' @export
 plot.circle = function(r, center=c(0,0), col=1, fill=NULL, N=128, ...) {
-  x = r * cos(2*pi*seq(0, N-1) / N);
-  y = r * sin(2*pi*seq(0, N-1) / N);
+  x = r * cos(2*pi*seq(0, N-1) / N) + center[1];
+  y = r * sin(2*pi*seq(0, N-1) / N) + center[2];
   polygon(x, y, border=col, col=fill, ...);
   invisible();
 }

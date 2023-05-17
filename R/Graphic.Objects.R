@@ -425,3 +425,20 @@ draw_neuron = function(phi = 0, n = 5){
   tmp = neuron(n = n, center = center, phi = phi)
   lines(tmp)
 }
+
+description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "Neuron",
+                              lwd=2, col="#48B000", cex.title = 1.5, xy.title = c(5, 9)){
+  # TODO: parameters
+  neuron = draw_neuron()
+  #plot.base()
+  #lines(neuron)
+
+  # Title
+  if( ! is.null(title)) text(xy.title[1], xy.title[2], title, cex=cex.title);
+
+  # Labels
+  a1 = arrowSimple(x=c(-2.7,-5), y=c(-4.6,-8), d=0.4, lwd=lwd);
+  text(5, 5, lbl[[1]])
+
+  return(invisible());
+}
