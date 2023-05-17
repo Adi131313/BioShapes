@@ -294,7 +294,7 @@ pos = c(0, 1)
 h.scale = 1
 h = radius[2]*sin(pi/n)*h.scale
 h = c(h, h);
-scale.R = c(1, 1)
+R.scale = c(1, 1)
 dr = 0.25
 
 # Cell
@@ -315,7 +315,7 @@ y = (radius[2] + dr)*sin((seq(n)/n2 - 1/(2*n))*pi) + center[2]
 
 for(o in seq(n)){
   if(o <= n2){
-    lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = scale.R, fill=fill)
+    lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = R.scale, fill=fill)
     lines(lst)
   }
   lst = list(center = c(x[o],y[o]), r = 0.2, fill = "#8a4965")
