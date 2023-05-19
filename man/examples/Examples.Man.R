@@ -92,7 +92,7 @@ examples.curves()
 draw_arcs()
 
 ### Lens Examples ###
-# TODO: show all 4 on the same plot
+
 draw_examples_lens()
 
 ### Duct Examples ###

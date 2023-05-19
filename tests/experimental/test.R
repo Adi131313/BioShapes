@@ -5,8 +5,6 @@ R = c(3, 5)
 tmp = duct(n = n, R = R, center = c(1,3))
 plot.base(xlim = c (-10, 10), ylim = c(-10, 10))
 lines(tmp)
-#tmp = duct(n = n, R = R)
-#lines(tmp)
 
 tmp = ngon.circle(4, N = n, R = R[2], center = c(1,3))
 lines(tmp, col = "blue")

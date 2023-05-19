@@ -324,6 +324,8 @@ adn = function(n = 2.2){
 ### Ducts
 #' @export
 draw_ducts = function(){
+
+  par.old = par(mfrow = c(1,2));
   n = c(15, 15)
   plot.base(xlim=c(-20,20), ylim=c(-20,20))
   lines(duct(n[1], c(15,18), phi=pi/2/n[1], fill = "#0048C0"))
@@ -331,6 +333,18 @@ draw_ducts = function(){
              fill = "#8080F0"), lwd = 5)
   lines(duct(n[1], c(5,8)))
   abline(h=0, col="green")
+
+  n = 10
+  R = c(3, 5)
+  tmp = duct(n = n, R = R, center = c(1,3))
+  plot.base(xlim = c (-10, 10), ylim = c(-10, 10))
+  lines(tmp)
+
+  tmp = ngon.circle(4, N = n, R = R[2], center = c(1,3))
+  lines(tmp, col = "blue")
+
+  par(par.old);
+  invisible();
 }
 
 draw_complex_duct = function(){
@@ -377,7 +391,7 @@ draw_complex_duct = function(){
 #' @export
 draw_neuron_design = function(){
 
-  par(mfrow = c(1,2))
+  par.old = par(mfrow = c(1,2));
 
   n = 5; phi = 2*pi/n;
   testFilledCircle(circlesOnCircle(n,2, phi=pi/n), lim = c(-6, 6), pin = FALSE)
@@ -391,6 +405,9 @@ draw_neuron_design = function(){
   plot.base()
   tmp = neuron(n = n, center = center, phi = phi)
   lines(tmp)
+
+  par(par.old);
+  invisible();
 }
 
 ### Neuron
@@ -490,6 +507,8 @@ draw_arcs = function(){
 ### Examples of convex lenses
 #' @export
 draw_examples_lens = function(){
+
+  par.old = par(mfrow = c(2,2));
   R = 5;
   lens = lens(R = R, x = c(1, 2), y = c(0, 4))
   plot.base()
@@ -531,6 +550,9 @@ draw_examples_lens = function(){
   plot.base()
   lines(lst)
   lines(x, y, lty=2, lwd=2, col="green")
+
+  par(par.old);
+  invisible();
 }
 
 
