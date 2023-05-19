@@ -3,8 +3,8 @@
 # Thesis
 #
 # Title: BioShapes
-# 
-# BSC Candidate: Adrian Cotoc (2022-2023) 
+#
+# BSC Candidate: Adrian Cotoc (2022-2023)
 # Faculty of Mathematics and Informatics, UVT
 #
 # Coordinator:
@@ -26,7 +26,7 @@
 # - convenience function;
 #' @export
 testFilledCircle = function(xy, r=NULL, R=NULL, lim=NULL, line=TRUE,
-                            col="#B0B032", col.line="green", add=FALSE, ...) {
+                            col="#B0B032", col.line="green", add=FALSE, pin = FALSE, ...) {
   if(is.null(r)) {
     r = attr(xy, "r");
     if(is.null(r)) stop("Missing r!");
@@ -47,12 +47,17 @@ testFilledCircle = function(xy, r=NULL, R=NULL, lim=NULL, line=TRUE,
     } else {
       mid = c(0, 0); # remove center offset;
     }
-    plot(x, y, xlim = lim + mid[1], ylim = lim + mid[2]);
+    plot(x, y, xlim = lim + mid[1], ylim = lim + mid[2], asp = 1);
   }
-  pin = mean(par("pin")) + 0.25;
-  par.old = par(pin = c(pin, pin));
-  lines.circles(xy, R=R, line=line, fill=col, col.line=col.line, ...)
-  par(par.old);
+  if(pin){
+    pin = mean(par("pin")) + 0.25;
+    par.old = par(pin = c(pin, pin));
+    lines.circles(xy, R=R, line=line, fill=col, col.line=col.line, ...)
+    par(par.old);
+  }
+  else {
+    lines.circles(xy, R=R, line=line, fill=col, col.line=col.line, ...)
+  }
 }
 
 

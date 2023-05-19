@@ -197,6 +197,28 @@ virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   return(invisible(virus));
 }
 
+virus2 = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
+                  r.spike=0.25, ngon.spike=c(4, 8), phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
+                  col.spike = "#D06432", col = "#D06432"){
+
+  v1 = virus(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
+             r.spike=0.25, ngon.spike = ngon.spike[1], phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
+             col.spike = "#D06432", col = "#D06432")
+
+  ### Spikes
+  c1 = pointsCircle(n.spike, r = R + off.spike[1], center = center, phi = phi.spike + pi/n.spike);
+  c2 = pointsCircle(n.spike, r = R + off.spike[2]/2, center = center, phi = phi.spike + pi/n.spike);
+  spike = lapply(seq(n.spike), function(id){
+    list(x = c(c1$x[id], c2$x[id]), y = c(c1$y[id], c2$y[id]));
+  });
+  spike$lwd = lwd.spike;
+  spike$col = col.spike;
+  class(spike) = c("lines.list", "list");
+  virus = c(v1, list(spike));
+  virus = as.bioshape(virus)
+  return(virus)
+}
+
 ### Convex lens
 #' @export
 lens = function(x, y, R = NULL, scale = c(1,1),
@@ -407,25 +429,6 @@ neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0){
   return(lst);
 }
 
-draw_blood_cells = function(radius = 2){
-  radius = 2;
-  lim = c(-radius, radius) * 4;
-  plot.base(xlim = lim, ylim = lim)
-  tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
-  lines(tmp)
-  tmp = draw_blood_cell(radius = radius, center = c(3, 1))
-  lines(tmp)
-  tmp = draw_blood_cell(radius = radius, center = c(3, -5))
-  lines(tmp)
-}
-
-draw_neuron = function(phi = 0, n = 5){
-  center = c(2, 3)
-  plot.base()
-  tmp = neuron(n = n, center = center, phi = phi)
-  lines(tmp)
-}
-
 description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "Neuron",
                               lwd=2, col="#48B000", cex.title = 1.5, xy.title = c(5, 9)){
   # TODO: parameters
@@ -442,3 +445,4 @@ description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "
 
   return(invisible());
 }
+

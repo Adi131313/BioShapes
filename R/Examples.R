@@ -255,7 +255,7 @@ examples.GonsOnCircle = function(R = 3, ngons = c(3,4,5,6)) {
 
 #'@export
 examples.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
-  par(mfrow = c(2,2))
+  par.old = par(mfrow = c(2,2));
 
   ### Circular Helix
   lim = c(-R, R) + c(-1,1);
@@ -290,6 +290,8 @@ examples.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
     xy = helix.rad(R = R - 2/r, n=n[4], phi=pi, r = 2/r);
     lines(xy, col="red");
   }
+  par(par.old);
+  invisible();
 }
 
 ### helix for ADN
@@ -317,6 +319,218 @@ adn = function(n = 2.2){
     if(d < 0.2) return(); # TODO: Parameter
     lines(x, y, col = colL[id]);
   })
+}
+
+### Ducts
+#' @export
+draw_ducts = function(){
+  n = c(15, 15)
+  plot.base(xlim=c(-20,20), ylim=c(-20,20))
+  lines(duct(n[1], c(15,18), phi=pi/2/n[1], fill = "#0048C0"))
+  lines(duct(n[1], c(10,13), phi=c(0, pi/n[2]), nc.r = NULL,
+             fill = "#8080F0"), lwd = 5)
+  lines(duct(n[1], c(5,8)))
+  abline(h=0, col="green")
+}
+
+draw_complex_duct = function(){
+  # warning: just if n is even
+  n = 8
+  center = c(2, -3)
+  radius = c(7, 5, 2);
+  pos = c(0, 1)
+  h.scale = 1
+  h = radius[2]*sin(pi/n)*h.scale
+  h = c(h, h);
+  R.scale = c(1, 1)
+  dr = 0.25
+
+  # Cell
+  plot.base(xlim=c(-10,10), ylim=c(-10,10))
+  tmp = draw_blood_cell(radius = radius[1], center = center, col = "#bf9d9b", fill = "#f0e19e", lwd = 7)
+  lines(tmp)
+
+  plot.circle(r = radius[1], center = center, col = "white", lwd = 5)
+
+  # Duct
+  tmp = duct(n[1], radius[c(2,3)], center = center, phi=pi/2/n[1], fill = "#f0b25b", nc.fill = "#6f618f")
+  lines(tmp)
+
+  # Lens
+  n2 = n/2;
+  x = (radius[2] + dr)*cos((seq(n)/n2 - 1/(2*n))*pi) + center[1]
+  y = (radius[2] + dr)*sin((seq(n)/n2 - 1/(2*n))*pi) + center[2]
+
+  for(o in seq(n)){
+    if(o <= n2){
+      lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = R.scale, fill=fill)
+      lines(lst)
+    }
+    lst = list(center = c(x[o],y[o]), r = 0.2, fill = "#8a4965")
+    class(lst) = c("circle", "list");
+    lst = as.bioshape(list(lst));
+    lines(lst)
+  }
+}
+
+### The creation of the neuron
+#' @export
+draw_neuron_design = function(){
+
+  par(mfrow = c(1,2))
+
+  n = 5; phi = 2*pi/n;
+  testFilledCircle(circlesOnCircle(n,2, phi=pi/n), lim = c(-6, 6), pin = FALSE)
+  tmp = sapply(seq(n), function(k) points(
+    2 * cos(pi/2 + k * phi) + 3.4 * cos(phi * (k-1) + phi/2),
+    2 * sin(pi/2 + k * phi) + 3.4 * sin(phi * (k-1) + phi/2), col = "red"))
+
+  phi = 0;
+  n = 5;
+  center = c(2, 3)
+  plot.base()
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+}
+
+### Neuron
+#' @export
+draw_neuron = function(phi = 0, n = 5){
+  center = c(2, 3)
+  plot.base()
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+}
+
+### Multiple neurons
+#' @export
+draw_neurons = function(){
+
+  ###
+  phi = 0;
+  n = 5;
+  center = c(2, 3)
+  lim = c(-10, 10);
+  plot.base(xlim = lim, ylim = lim, axt = NULL)
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+
+  ###
+  phi = -pi/2;
+  n = 5;
+  center2 = center + c(2, 0)
+  tmp = neuron(n = n, center = center2, phi = phi)
+  lines(tmp)
+
+  ###
+  phi = 2*pi - pi/2;
+  n = 5;
+  center2 = center + c(2, 3)
+  tmp = neuron(n = n, center = center2, phi = phi)
+  lines(tmp)
+
+  ###
+  phi = 2*pi - pi/6;
+  n = 5;
+  center2 = center + c(-1, 3)
+  tmp = neuron(n = n, center = center2, phi = phi)
+  lines(tmp)
+}
+
+### 3 Blood cells
+#' @export
+draw_blood_cells = function(radius = 2){
+  radius = 2;
+  lim = c(-radius, radius) * 4;
+  plot.base(xlim = lim, ylim = lim)
+  tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
+  lines(tmp)
+  tmp = draw_blood_cell(radius = radius, center = c(3, 1))
+  lines(tmp)
+  tmp = draw_blood_cell(radius = radius, center = c(3, -5))
+  lines(tmp)
+}
+
+### Star shape polygon
+#' @export
+draw_star = function(n = 5){
+  plot.base()
+  star = star(n, R = c(3, 1), center = c(5, 5), fill = 2)
+  lines(star)
+}
+
+### Braces
+#' @export
+draw_braces = function(){
+  plot.base(ylim = c(-10,10))
+  lines(braces.curly(c(0,0)), lwd=3)
+  lines(braces.curly(c(4,0), left=FALSE), lwd=3)
+}
+
+### Example of arcs, how the lens is made
+#' @export
+draw_arcs = function(){
+  par.old = par(mfrow = c(2,2));
+
+  #half
+  plot.base()
+  plot.circle.arc(3, c(3,3), c(pi-pi/3, pi), lty=2)
+
+  ### Arcs
+  plot.base()
+  plot.circle.arc(3, c(3,3), c(pi - pi/3, pi + pi/3), lty=2)
+
+  plot.base()
+  plot.circle.arc(3, c(3,3), c(2*pi- pi/3, pi/3), lwd=1, col="#6432B0")
+
+  par(par.old);
+  invisible();
+}
+
+### Examples of convex lenses
+#' @export
+draw_examples_lens = function(){
+  R = 5;
+  lens = lens(R = R, x = c(1, 2), y = c(0, 4))
+  plot.base()
+  lines(lens)
+
+  ### Example 1:
+  R = 5;
+  plot.base()
+  lens = lens(R = R, x = c(1, 2), y = c(0, 4))
+  lines(lens)
+  #
+  lens = lens(R = R, x = c(5, 3), y = c(0, 5))
+  lines(lens, col="Red")
+  # negative R: semi-concave Lens
+  lens = lens(R = c(4,-7), x = c(5, 0), y = c(1, 0) + 6)
+  lines(lens, col="#329624")
+
+  ### Example 2: Group of Lenses
+  pos = c(0, 1/2, 1)
+  h = c(2, 3, 4)
+  scale.R = c(1, 1.5, 2)
+  x = c(0, 6); y = c(3, 2);
+  # fill: does NOT work with concave lenses;
+  fill = "#6480D0";
+
+  lst = lens.group(x=x, y=y, h=h, pos=pos, l.scale = scale.R, fill=fill)
+  plot.base()
+  lines(lst)
+
+  ### Example: Lens Group
+  pos = c(0, 1/3, 1)
+  h = c(2, 1.2, 1.5)
+  scale.R = c(1, 1.5, 2)
+  x = c(0, 6); y = c(0, 4);
+  # fill: does NOT work with concave lenses;
+  fill = "#6480D0";
+  #
+  lst = lens.group(x=x, y=y, h=h, pos=pos, l.scale = scale.R, fill=fill)
+  plot.base()
+  lines(lst)
+  lines(x, y, lty=2, lwd=2, col="green")
 }
 
 

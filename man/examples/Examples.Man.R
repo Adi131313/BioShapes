@@ -51,25 +51,56 @@ plot.base()
 enzymeReaction(lbl = c("A2", "B2", "Enz2", "Inhibitor 2"))
 enzymeReaction(y = 6, lbl = c("A1", "B1", "Enz1", "Inhibitor 1"))
 
-
 ### DNA Structure ###
 
 adn()
-
 
 ### Blood Cells ###
 
 draw_blood_cells()
 
+### Creation of the neuron ###
+
+draw_neuron_design()
 
 ### Neuron ###
 
 draw_neuron()
 
+### Multiple neurons ###
+# TODO: move neurons around
+draw_neurons()
 
 ### Muscle Tissue ###
 
 
 
+### Star Shape ###
+
+draw_star(n=8)
+
+### Simple Braces ###
+
+draw_braces()
+
+### Various Curves ###
+
+examples.curves()
+
+### Arcs Examples ###
+# TODO: create the 4th lens
+draw_arcs()
+
+### Lens Examples ###
+# TODO: show all 4 on the same plot
+draw_examples_lens()
+
+### Duct Examples ###
+
+draw_ducts()
+
+### Complex Duct ###
+
+draw_complex_duct()
 
 ###
