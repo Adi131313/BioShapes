@@ -38,7 +38,6 @@ drawBioshapes()
 
 #### Description of a Liposome ####
 
-plot.base(xlim=c(-10,10), ylim=c(-10,10))
 diagramLiposome()
 
 #### Liposome Measurements ####
