@@ -97,7 +97,7 @@ draw_examples_lens()
 
 ### Duct Examples ###
 
-draw_ducts()
+examples.ducts()
 
 ### Complex Duct ###
 

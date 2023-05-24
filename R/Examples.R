@@ -323,7 +323,7 @@ adn = function(n = 2.2){
 
 ### Ducts
 #' @export
-draw_ducts = function(n = c(15, 10)) {
+examples.ducts = function(n = c(15, 10)) {
   par.old = par(mfrow = c(1,2));
 
   ### Duct 1: Composite Plot
