@@ -347,44 +347,17 @@ draw_ducts = function(){
   invisible();
 }
 
-draw_complex_duct = function(){
+draw_complex_duct = function(n = 8, lim = c(-10, 10)){
   # warning: just if n is even
-  n = 8
   center = c(2, -3)
   radius = c(7, 5, 2);
-  pos = c(0, 1)
   h.scale = 1
-  h = radius[2]*sin(pi/n)*h.scale
-  h = c(h, h);
   R.scale = c(1, 1)
   dr = 0.25
 
-  # Cell
-  plot.base(xlim=c(-10,10), ylim=c(-10,10))
-  tmp = draw_blood_cell(radius = radius[1], center = center, col = "#bf9d9b", fill = "#f0e19e", lwd = 7)
-  lines(tmp)
-
-  plot.circle(r = radius[1], center = center, col = "white", lwd = 5)
-
-  # Duct
-  tmp = duct(n[1], radius[c(2,3)], center = center, phi=pi/2/n[1], fill = "#f0b25b", nc.fill = "#6f618f")
-  lines(tmp)
-
-  # Lens
-  n2 = n/2;
-  x = (radius[2] + dr)*cos((seq(n)/n2 - 1/(2*n))*pi) + center[1]
-  y = (radius[2] + dr)*sin((seq(n)/n2 - 1/(2*n))*pi) + center[2]
-
-  for(o in seq(n)){
-    if(o <= n2){
-      lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = R.scale, fill = "#FF3220")
-      lines(lst)
-    }
-    lst = list(center = c(x[o],y[o]), r = 0.2, fill = "#8a4965")
-    class(lst) = c("circle", "list");
-    lst = as.bioshape(list(lst));
-    lines(lst)
-  }
+  plot.base(xlim=lim, ylim=lim, axt=NULL);
+  tmp = duct.complex(n=n);
+  lines(tmp);
 }
 
 ### The creation of the neuron
