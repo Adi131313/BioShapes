@@ -377,7 +377,7 @@ draw_complex_duct = function(){
 
   for(o in seq(n)){
     if(o <= n2){
-      lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = R.scale, fill=fill)
+      lst = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]), h=h, pos=pos, l.scale = R.scale, fill = "#FF3220")
       lines(lst)
     }
     lst = list(center = c(x[o],y[o]), r = 0.2, fill = "#8a4965")
