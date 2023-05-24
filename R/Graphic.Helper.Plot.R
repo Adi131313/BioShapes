@@ -73,7 +73,7 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
     x = split(x[[1]][, c("x", "y")], x[[1]]$id);
   }
   # Actual components:
-  basef = function(lst, ...) {
+  basef = function(lst, lwd, ...) {
     if(inherits(lst, "bioshape")) {
       lapply(lst, basef, lwd = lwd, ...);
     } else if(inherits(lst, "circle")) {
@@ -123,7 +123,7 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       }
     }
   }
-  lapply(x, basef, ...);
+  lapply(x, basef, lwd = lwd, ...);
   invisible();
 }
 
