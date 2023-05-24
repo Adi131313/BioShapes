@@ -101,6 +101,6 @@ draw_ducts()
 
 ### Complex Duct ###
 
-draw_complex_duct()
+draw_complex_duct(n = 12)
 
 ###

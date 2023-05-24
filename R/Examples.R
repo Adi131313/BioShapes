@@ -323,24 +323,25 @@ adn = function(n = 2.2){
 
 ### Ducts
 #' @export
-draw_ducts = function(){
-
+draw_ducts = function(n = c(15, 10)) {
   par.old = par(mfrow = c(1,2));
-  n = c(15, 15)
-  plot.base(xlim=c(-20,20), ylim=c(-20,20))
+
+  ### Duct 1: Composite Plot
+  lim = c(-20, 20);
+  plot.base(xlim=lim, ylim=lim);
   lines(duct(n[1], c(15,18), phi=pi/2/n[1], fill = "#0048C0"))
-  lines(duct(n[1], c(10,13), phi=c(0, pi/n[2]), nc.r = NULL,
-             fill = "#8080F0"), lwd = 5)
+  lines(duct(n[1], c(10,13), phi=c(0, pi/n[1]), nc.r = NULL,
+             fill = "#8080F0"), lwd = 5);
   lines(duct(n[1], c(5,8)))
   abline(h=0, col="green")
 
-  n = 10
+  ### Duct 2:
   R = c(3, 5)
-  tmp = duct(n = n, R = R, center = c(1,3))
+  tmp = duct(n = n[2], R = R, center = c(1,3))
   plot.base(xlim = c (-10, 10), ylim = c(-10, 10))
   lines(tmp)
 
-  tmp = ngon.circle(4, N = n, R = R[2], center = c(1,3))
+  tmp = ngon.circle(4, N = n[2], R = R[2], center = c(1,3))
   lines(tmp, col = "blue")
 
   par(par.old);
