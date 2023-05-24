@@ -161,6 +161,45 @@ duct = function(n, R = c(5, 7), nc.r=1/2, center=c(0,0),
   return(cells);
 }
 
+# r[1] = outer radius;
+# r[c(2, 3)] = outer & inner radius of cell component;
+#' @export
+duct.complex = function(center = c(0, 0), r = c(7, 5, 2), n = 8,
+                        h.scale = 1, R.scale = c(1, 1), dr = 0.25) {
+  radius = r;
+  # Basement Membrane
+  lst = draw_blood_cell(radius = radius[1], center = center,
+                        col = "#bf9d9b", fill = "#f0e19e", lwd = 7);
+  tmp = list(r = radius[1], center = center, col = "white", lwd = 5);
+  class(tmp) = c("circle", "list");
+  lst = c(lst, list(tmp));
+
+  # Duct
+  tmp = duct(n, radius[c(2,3)], center = center, phi=pi/2/n,
+             fill = "#f0b25b", nc.fill = "#6f618f");
+  lst = c(lst, list(tmp));
+
+  # Lens
+  h = radius[2] * sin(pi/n) * h.scale;
+  h = c(h, h);
+  pos = c(0, 1);
+  n2 = n/2; ninv = 1/(2*n);
+  x = (radius[2] + dr) * cos((seq(n)/n2 - ninv) * pi) + center[1];
+  y = (radius[2] + dr) * sin((seq(n)/n2 - ninv) * pi) + center[2];
+  for(o in seq(n)) {
+    if(o <= n2) {
+      tmp = lens.group(x=c(x[o], x[o+n2]), y=c(y[o], y[o+n2]),
+                       h=h, pos=pos, l.scale = R.scale, fill = "#FF3220");
+      lst = c(lst, tmp); # list(tmp)
+    }
+    tmp = list(center = c(x[o],y[o]), r = 0.2, fill = "#8a4965")
+    class(tmp) = c("circle", "list");
+    lst = c(lst, list(tmp));
+  }
+  lst = as.bioshape(lst);
+  invisible(lst);
+}
+
 # Generates a virus
 #' @export
 virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
