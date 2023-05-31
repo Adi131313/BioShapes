@@ -22,7 +22,7 @@
 
 ### Various BioShapes
 #' @export
-drawBioshapes = function(col = list("#48B000", 1, 1, c("blue", "red"), c("purple", "orange")),
+examples.bioshapes = function(col = list("#48B000", 1, 1, c("blue", "red"), c("purple", "orange")),
 		lwd=2, y.txt = c(6, 0), axt=c(1,2)) {
 	if(length(lwd) == 1) lwd = rep(lwd, 5);
 	# Plot
@@ -300,7 +300,7 @@ examples.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
 
 ### helix for ADN
 #' @export
-adn = function(n = 2.2){
+example.dna = function(n = 2.2){
   # n = 2.2;
   tmp1 = helix(c(0, 0), c(5, 5), n = n, phi = 0, A = 3/4)
   tmp2 = helix(c(0, 0), c(5, 5), n = n, phi = pi, A = 3/4)
@@ -352,7 +352,7 @@ examples.ducts = function(n = c(15, 10)) {
   invisible();
 }
 
-draw_complex_duct = function(n = 8, lim = c(-10, 10)){
+example.complexDuct = function(n = 8, lim = c(-10, 10)){
   # warning: just if n is even
   center = c(2, -3)
   radius = c(7, 5, 2);
@@ -367,7 +367,7 @@ draw_complex_duct = function(n = 8, lim = c(-10, 10)){
 
 ### The creation of the neuron
 #' @export
-draw_neuron_design = function(){
+example.neuronDesign = function(){
 
   par.old = par(mfrow = c(1,2));
 
@@ -390,16 +390,38 @@ draw_neuron_design = function(){
 
 ### Neuron
 #' @export
-draw_neuron = function(phi = 0, n = 5){
+example.neuron = function(phi = 0, n = 5){
   center = c(2, 3)
   plot.base()
   tmp = neuron(n = n, center = center, phi = phi)
   lines(tmp)
 }
 
+#' @export
+description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "Neuron",
+                              lwd=2, col="#48B000", d=-0.4, cex.title = 1.5, xy.title = c(3, 8)){
+  # TODO: parameters
+  print("ok");
+  neuron = example.neuron()
+  #plot.base()
+  #lines(neuron)
+
+  # Title
+  if( ! is.null(title)) text(xy.title[1], xy.title[2], title, cex=cex.title);
+
+  # Labels
+  a1 = arrowSimple(x=c(5,6), y=c(5.5,3.5), d=d, lwd=lwd);
+  text(5, 6, lbl[[1]])
+
+  a2 = arrowSimple(x=c(1, 2), y=c(0.75,1.5), d=d, lwd=lwd);
+  text(1, 0, lbl[[2]])
+
+  return(invisible());
+}
+
 ### Multiple neurons
 #' @export
-draw_neurons = function(){
+examples.neurons = function(){
 
   ###
   phi = 0;
@@ -434,7 +456,7 @@ draw_neurons = function(){
 
 ### 3 Blood cells
 #' @export
-draw_blood_cells = function(radius = 2){
+examples.bloodCells = function(radius = 2){
   radius = 2;
   lim = c(-radius, radius) * 4;
   plot.base(xlim = lim, ylim = lim)
@@ -448,7 +470,7 @@ draw_blood_cells = function(radius = 2){
 
 ### Star shape polygon
 #' @export
-draw_star = function(n = 5){
+example.star = function(n = 5){
   plot.base()
   star = star(n, R = c(3, 1), center = c(5, 5), fill = 2)
   lines(star)
@@ -456,7 +478,7 @@ draw_star = function(n = 5){
 
 ### Braces
 #' @export
-draw_braces = function(){
+example.braces = function(){
   plot.base(ylim = c(-10,10))
   lines(braces.curly(c(0,0)), lwd=3)
   lines(braces.curly(c(4,0), left=FALSE), lwd=3)
@@ -464,7 +486,7 @@ draw_braces = function(){
 
 ### Example of arcs, how the lens is made
 #' @export
-draw_arcs = function(){
+example.arcs = function(){
   par.old = par(mfrow = c(2,2));
 
   #half
@@ -484,7 +506,7 @@ draw_arcs = function(){
 
 ### Examples of convex lenses
 #' @export
-draw_examples_lens = function(){
+examples.lens = function(){
 
   par.old = par(mfrow = c(2,2));
   R = 5;

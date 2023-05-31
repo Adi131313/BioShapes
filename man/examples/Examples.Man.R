@@ -27,13 +27,13 @@
 
 
 
-examples.arrows()
+example.arrows()
 
 
 ####################
 #### Bio-Shapes ####
 
-drawBioshapes()
+example.bioshapes()
 
 
 #### Description of a Liposome ####
@@ -52,23 +52,23 @@ enzymeReaction(y = 6, lbl = c("A1", "B1", "Enz1", "Inhibitor 1"))
 
 ### DNA Structure ###
 
-adn()
+example.dna()
 
 ### Blood Cells ###
 
-draw_blood_cells()
+examples.bloodCells()
 
 ### Creation of the neuron ###
 
-draw_neuron_design()
+example.neuronDesign()
 
 ### Neuron ###
 
-draw_neuron()
+example.neuron()
 
 ### Multiple neurons ###
 # TODO: move neurons around
-draw_neurons()
+examples.neurons()
 
 ### Muscle Tissue ###
 
@@ -76,11 +76,11 @@ draw_neurons()
 
 ### Star Shape ###
 
-draw_star(n=8)
+example.star(n=8)
 
 ### Simple Braces ###
 
-draw_braces()
+example.braces()
 
 ### Various Curves ###
 
@@ -88,11 +88,11 @@ examples.curves()
 
 ### Arcs Examples ###
 # TODO: create the 4th lens
-draw_arcs()
+example.arcs()
 
 ### Lens Examples ###
 
-draw_examples_lens()
+examples.lens()
 
 ### Duct Examples ###
 
@@ -100,6 +100,6 @@ examples.ducts()
 
 ### Complex Duct ###
 
-draw_complex_duct(n = 12)
+example.complexDuct(n = 8)
 
 ###
