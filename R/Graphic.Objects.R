@@ -205,11 +205,11 @@ duct.complex = function(center = c(0, 0), r = c(7, 5, 2), n = 8,
 #' @export
 virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
                  r.spike=0.25, ngon.spike=4, phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
-                 col.spike = "#D06432", col = "#D06432") {
+                 col = "#D06432", col.spike = "#D06432", fill.spike = col.spike) {
   ### Spikes
   virus = spikes(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
                   r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
-                  col.spike = col.spike)
+                  col = col.spike, fill = fill.spike);
 
   ### Envelope
   vc = list(r = R, center = center, lwd = lwd, col = col);
@@ -220,27 +220,37 @@ virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   return(invisible(virus));
 }
 
+# off.spike = starting & ending of the spike;
 #' @export
 spikes = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
-                 r.spike=0.25, ngon.spike=4, phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
-                 col.spike = "#D06432") {
+                  r.spike=0.25, ngon.spike=4, phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
+                  col = "#D06432", fill = NULL) {
+  # TODO: rename to r.ngon;
+  r.ngon = r.spike;
   ### Spikes
   c1 = pointsCircle(n.spike, r = R + off.spike[1], center = center, phi = phi.spike);
   c2 = pointsCircle(n.spike, r = R + off.spike[2], center = center, phi = phi.spike);
-  spike = lapply(seq(n.spike), function(id){
+  spike = lapply(seq(n.spike), function(id) {
     list(x = c(c1$x[id], c2$x[id]), y = c(c1$y[id], c2$y[id]));
   });
   spike$lwd = lwd.spike;
-  spike$col = col.spike;
+  spike$col = col;
   class(spike) = c("lines.list", "list");
   virus = list(spike);
-
   ### Head of Spikes
-  if(!is.null(r.spike) && r.spike > 0 ){
-    if(ngon.spike > 0){
-      h = ngon.circle(ngon.spike, N = n.spike, r = r.spike,
-                      R = R + off.spike[2] + r.spike, center = center,
-                      phi = phi.spike);
+  if( ! is.null(r.ngon) && r.ngon > 0 ) {
+    R3 = R + off.spike[2] + r.ngon;
+    if(ngon.spike > 0) {
+      h = ngon.circle(ngon.spike, N = n.spike, r = r.ngon, R = R3,
+                      center = center, phi = phi.spike, fill = fill);
+      virus$head = h;
+    } else {
+      cc = pointsCircle(n.spike, r = R3,
+                        center = center, phi = phi.spike);
+      cc = cbind(x = cc$x, y = cc$y);
+      h  = list(r = r.ngon, center = cc,
+                lwd = lwd, col = col, fill = fill);
+      class(h) = c("circle", "list");
       virus$head = h;
     }
   }
@@ -250,18 +260,18 @@ spikes = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
 
 virus2 = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
                   r.spike=0.25, ngon.spike=c(4, 8), phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
-                  col.spike = "#D06432", col = "#D06432"){
+                  col = "#D06432", col.spike = "#D06432", fill.spike = col.spike){
 
   v1 = virus(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
              r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = phi.spike, lwd = 1, lwd.spike = 2*lwd,
-             col.spike = col.spike, col = col)
+             col = col, col.spike = col.spike, fill.spike = fill.spike)
 
   ### Spikes
   off.spike2 = c(off.spike[1], off.spike[2]/2)
   spikes2 = spikes(R = R, center = center, n.spike = n.spike,
                    off.spike = off.spike2, r.spike=r.spike,
                    ngon.spike = ngon.spike[2], phi.spike = phi.spike + pi/n.spike,
-                   lwd = 1, lwd.spike = 2*lwd, col.spike = col.spike);
+                   lwd = 1, lwd.spike = 2*lwd, col = col.spike, fill = fill.spike);
 
   virus = c(v1, spikes2);
   virus = as.bioshape(virus);
