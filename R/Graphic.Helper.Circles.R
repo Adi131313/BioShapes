@@ -122,4 +122,16 @@ circlesInFixedCircle = function(n, r, center = c(0,0), phi=0) {
   return(xy);
 }
 
+# Generates the points on an arc of circle.
+#' @export
+circle.arc = function(r=1, phi, center = c(0,0), N = 65) {
+  id = seq(0, N-1) / N;
+  dp = phi[2] - phi[1];
+  dw = id * dp + phi[1];
+  x  = r * cos(dw) + center[1];
+  y  = r * sin(dw) + center[2];
+  xy = list(x=x, y=y);
+  return(xy);
+}
+
 

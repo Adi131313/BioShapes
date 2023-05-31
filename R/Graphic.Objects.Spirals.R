@@ -66,6 +66,7 @@ helix = function(p1, p2, n=3, A=1, phi=0, parts=0, N=128, slope=NULL) {
   npi = 2 * pi * n;
   ninv = 1 / npi;
   t = seq(0, npi, length.out=N);
+  if(x[1] > x[2]) l = -l;
   sinusoid = function(tx, ty) {
     x  = l*tx;
     y  = A*sin(ty + phi);
@@ -77,7 +78,6 @@ helix = function(p1, p2, n=3, A=1, phi=0, parts=0, N=128, slope=NULL) {
       return(lst);
     }
     sdiv = 1 / sqrt(slope^2 + 1);
-    if(p1[2] > p2[2] && slope > 0) { x = -x; }
     # Rotation matrix: by column
     # rotm = matrix(sdiv * c(1, s, -s, 1), ncol=2, nrow=2);
     dx = (x - slope*y) * sdiv; # + p1[1];

@@ -233,5 +233,18 @@ dist.xy = function(x, y, as.sqrt = TRUE) {
   if(as.sqrt) xy = sqrt(xy);
   return(xy);
 }
+
+### Drop column
+#' @export
+drop.col = function(x, name) {
+  id = match(name, names(x));
+  isNA = is.na(id);
+  if(any(isNA))
+    warning("Names not found: ", paste0(name[isNA], collapse=", "));
+  id = id[ ! isNA];
+  if(length(id) == 0) return(x);
+  return(x[, -id]);
+}
+
 #######################
 

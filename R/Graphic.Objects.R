@@ -38,18 +38,19 @@ star = function(n, R = c(2,1), center = c(0,0), lwd=1, phi = pi/2,
 }
 
 #' @export
-ngon = function(n, r = 1, center = c(0, 0), phi = 0){
+ngon = function(n, r = 1, center = c(0, 0), phi = 0, fill = NULL) {
   p = pointsCircle(n=n, r=r, center=center, phi=phi);
+  if( ! is.null(fill)) p$fill = fill;
   class(p) = c("polygon", "list");
   return (p);
 }
 
 #' @export
-ngon.circle = function(n, N, R = 2, r = 1/2, center = c(0, 0), phi = 0){
+ngon.circle = function(n, N, R = 2, r = 1/2, center = c(0, 0), phi = 0, fill = NULL){
   cp = pointsCircle(n=N, r=R, center=center, phi=phi);
   pphi = seq(0, N-1) *2*pi/N + phi;
   pg = lapply(seq(N), function(id){
-    ngon(n, r = r, center = c(cp$x[id], cp$y[id]), phi = pphi[id]);
+    ngon(n, r = r, center = c(cp$x[id], cp$y[id]), phi = pphi[id], fill = fill);
   })
   class(pg) = c("bioshape", "list");
   invisible(pg);
@@ -477,20 +478,66 @@ neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0){
   return(lst);
 }
 
-description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "Neuron",
-                              lwd=2, col="#48B000", cex.title = 1.5, xy.title = c(5, 9)){
-  # TODO: parameters
-  neuron = draw_neuron()
-  #plot.base()
-  #lines(neuron)
-
-  # Title
-  if( ! is.null(title)) text(xy.title[1], xy.title[2], title, cex=cex.title);
-
-  # Labels
-  a1 = arrowSimple(x=c(-2.7,-5), y=c(-4.6,-8), d=0.4, lwd=lwd);
-  text(5, 5, lbl[[1]])
-
-  return(invisible());
+# phi = angle of axon (in radians);
+# slope = slope of axon, as alternative to angle phi;
+# alpha = angle of tree-cone (in degrees);
+#' @export
+synapse = function(p, phi, type = c("Solid", "Tree", "Detail", "Radial"),
+                   slope=NULL, col=1, fill="#808080", l=1/2, n=4, alpha = 120,
+                   helix.scale = 1/12, ...) {
+  type = match.arg(type);
+  if( ! is.null(slope)) {
+    th  = atan(slope);
+    phi = alpha * pi / 360;
+  } else {
+    th  = phi;
+    phi = alpha * pi / 360;
+  }
+  if(type == "Detail") {
+    if(is.null(slope)) slope = tan(th);
+    d  = if(phi >= 0) l else - l;
+    cc = shiftPoint(p, d=d, slope=slope);
+    th = th + pi + c(- phi, phi); # already 1/2;
+    xy = circle.arc(r = l, th, center = cc);
+    len = length(xy$x);
+    p2 = c(xy$x[1], xy$y[1]);
+    p1 = c(xy$x[len], xy$y[len]);
+    lst = helix(p1, p2, n = n + 0.5, A = l * helix.scale, phi=0, N=129);
+    lst = lst[[1]];
+    lst$x = c(xy$x, lst$x);
+    lst$y = c(xy$y, lst$y);
+    lst$col = col; lst$fill = fill;
+    class(lst) = c("polygon", "list")
+    lst = list(lst);
+    return(as.bioshape(lst));
+  }
+  # Tree Types
+  if(phi >= 0) {
+    th = th + c(- phi, phi);
+  } else {
+    th = th + pi + c(- phi, phi);
+  }
+  if(type == "Tree") {
+    px = l * cos(th) + p[1];
+    py = l * sin(th) + p[2];
+    id = seq(0, 1, length.out = n);
+    px = id * px[1] + (1 - id) *  px[2];
+    py = id * py[1] + (1 - id) *  py[2];
+    xy = data.frame(x = p[1], y = p[2], id = seq(n));
+    xy = rbind(xy, data.frame(x = px, y = py, id = seq(n)));
+  } else if(type == "Radial") {
+    id = seq(th[1], th[2], length.out = n);
+    px = l * cos(id) + p[1];
+    py = l * sin(id) + p[2];
+    xy = data.frame(x = p[1], y = p[2], id = seq(n));
+    xy = rbind(xy, data.frame(x = px, y = py, id = seq(n)));
+  } else if(type == "Solid") {
+    px = l * cos(th) + p[1];
+    py = l * sin(th) + p[2];
+    xy = list(x = c(p[1], px), y = c(p[2], py), col=col, fill=fill);
+    class(xy) = c("polygon", "list");
+  } else stop("Not yet implemented!");
+  xy = as.bioshape(list(xy));
+  return(xy);
 }
 
