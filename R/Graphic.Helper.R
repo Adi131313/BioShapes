@@ -246,5 +246,23 @@ drop.col = function(x, name) {
   return(x[, -id]);
 }
 
+# Intersection of 2 shifted-Sine Functions
+#' @export
+which.intersect.sin = function(phi, n, from=0, to = n-1) {
+  phi.eq = pi*(c(1,3) - sum(phi))/2;
+  id.neg = which(phi.eq < 0);
+  if(length(id.neg) > 0) {
+    shift = abs(floor(phi.eq[id.neg] / (2*pi)));
+    phi.eq[id.neg] = phi.eq[id.neg] + (2*pi)*shift;
+  }
+  x0 = sapply(seq(from, to), function(n) {
+    phi.eq + 2*n*pi;
+  })
+  x0 = sort(x0);
+  x1 = x0 + phi[1]*pi;
+  # x1 = non-shifted; x2 = shifted;
+  return(list(x0 = x0, x1=x1));
+}
+
 #######################
 

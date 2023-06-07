@@ -26,7 +26,7 @@ lines(tmp)
 
 ### helix for ADN
 tmp1 = helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
-tmp2 = helix(c(0, 0), c(5, 5), n = 2, phi = pi, A= 3/4)
+tmp2 = helix(c(0, 0), c(5, 5), n = 2, phi = pi, A = 3/4)
 plot.base()
 lines(tmp1, col = "red", lwd = 5)
 lines(tmp2, col = "green", lwd = 5)
@@ -35,7 +35,11 @@ tmp = lapply(seq(40), function(id) {
   id = 3.5*id;
   lines(c(tmp1[[1]]$x[id], tmp2[[1]]$x[id]),
       c(tmp1[[1]]$y[id], tmp2[[1]]$y[id]), col = "blue");
-  })
+})
+
+pp = which.intersect.sin(c(0, pi), 2)
+p0 = pp$x0 / (2*2*pi) * 5
+abline(v = p0, col="purple")
 
 ### for monocyte
 R = 20; n = 10;
@@ -190,3 +194,12 @@ plot.base()
 tmp = neuron(c(0,2), phi=pi/6)
 lines(tmp)
 lines(synapse(c(tmp[[6]]$x[2], tmp[[6]]$y[2]), slope=tan(pi/6), type="Tree", l=1.8, alpha=120))
+
+
+# Intersection of sine functions
+phi = c(0.7, 1.5)
+curve(sin(x + phi[1]*pi), -2*pi, 6*pi)
+curve(sin(x + phi[2]*pi), add = T, col="red")
+pp = which.intersect.sin(phi, 3)
+abline(v = pp$x0, col="blue")
+points(pp$x0, sin(pp$x1), col="green")
