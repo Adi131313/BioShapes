@@ -352,15 +352,16 @@ examples.ducts = function(n = c(15, 10)) {
   invisible();
 }
 
+#' @export
 example.complexDuct = function(n = 8, lim = c(-10, 10)){
   # warning: just if n is even
-  center = c(2, -3)
+  center = c(0, 0)
   radius = c(7, 5, 2);
   h.scale = 1
   R.scale = c(1, 1)
   dr = 0.25
 
-  plot.base(xlim=lim, ylim=lim, axt=NULL);
+  plot.base(xlim=lim, ylim=lim);
   tmp = duct.complex(n=n);
   lines(tmp);
 }
