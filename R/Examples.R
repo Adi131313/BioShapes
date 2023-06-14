@@ -258,7 +258,7 @@ examples.GonsOnCircle = function(R = 3, ngons = c(3,4,5,6)) {
 }
 
 #'@export
-examples.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
+example.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
   par.old = par(mfrow = c(2,2));
 
   ### Circular Helix
@@ -327,7 +327,7 @@ example.dna = function(n = 2.2){
 
 ### Ducts
 #' @export
-examples.ducts = function(n = c(15, 10)) {
+example.ducts = function(n = c(15, 10)) {
   par.old = par(mfrow = c(1,2));
 
   ### Duct 1: Composite Plot
@@ -422,7 +422,7 @@ description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "
 
 ### Multiple neurons
 #' @export
-examples.neurons = function(){
+example.neurons = function(){
 
   ###
   phi = 0;
@@ -457,7 +457,7 @@ examples.neurons = function(){
 
 ### 3 Blood cells
 #' @export
-examples.bloodCells = function(radius = 2){
+example.bloodCells = function(radius = 2){
   radius = 2;
   lim = c(-radius, radius) * 4;
   plot.base(xlim = lim, ylim = lim)
@@ -471,9 +471,9 @@ examples.bloodCells = function(radius = 2){
 
 ### Star shape polygon
 #' @export
-example.star = function(n = 5){
+example.star = function(n = 5, fill = "red"){
   plot.base()
-  star = star(n, R = c(3, 1), center = c(5, 5), fill = 2)
+  star = star(n, R = c(3, 1), center = c(5, 5), fill = fill)
   lines(star)
 }
 
@@ -507,7 +507,7 @@ example.arcs = function(){
 
 ### Examples of convex lenses
 #' @export
-examples.lens = function(){
+example.lens = function(){
 
   par.old = par(mfrow = c(2,2));
   R = 5;
@@ -555,5 +555,13 @@ examples.lens = function(){
   par(par.old);
   invisible();
 }
+
+### Example of muscle tissue
+#' @export
+example.muscle = function(n = 6){
+  tmp = muscle(n = n)
+  lines(tmp)
+}
+
 
 

@@ -56,7 +56,7 @@ example.dna()
 
 ### Blood Cells ###
 
-examples.bloodCells()
+example.bloodCells()
 
 ### Creation of the neuron ###
 
@@ -66,17 +66,21 @@ example.neuronDesign()
 
 example.neuron()
 
+### Description of the Neuron ###
+
+description.neuron()
+
 ### Multiple neurons ###
-# TODO: move neurons around
-examples.neurons()
+# TODO: move neurons around and make connections between
+example.neurons()
 
 ### Muscle Tissue ###
 
-
+example.muscle()
 
 ### Star Shape ###
 
-example.star(n=8)
+example.star(n=5, fill = "yellow")
 
 ### Simple Braces ###
 
@@ -84,7 +88,7 @@ example.braces()
 
 ### Various Curves ###
 
-examples.curves()
+example.curves()
 
 ### Arcs Examples ###
 # TODO: create the 4th lens
@@ -92,14 +96,14 @@ example.arcs()
 
 ### Lens Examples ###
 
-examples.lens()
+example.lens()
 
 ### Duct Examples ###
 
-examples.ducts()
+example.ducts()
 
 ### Complex Duct ###
 
 example.complexDuct(n = 8)
 
-###
+#####################
