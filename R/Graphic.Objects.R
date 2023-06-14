@@ -392,6 +392,7 @@ draw_blood_cell = function(center = c(0, 0),
 #' @export
 neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
                   axon.length = 3 * r, dendrite.length = ~ r/2, r.nucl = ~ (R - r)/2,
+                  type.syn = c("Solid", "Tree", "Detail", "Radial"),
                   col.nucl = 1, fill.nucl = NULL) {
   body = neuron.body(center = center, n = n, r = r, phi = phi);
   ### Init
@@ -410,10 +411,15 @@ neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
   sg = ifelse(phiR > pi/2 & phiR <= pi32, - 1, 1);
   ### Axon
   if(axon.length != 0) {
-    xy = shiftPoint(c(x0[n], y0[n]), d = sg[n] * axon.length, slope = tan(phiD[n]));
+    slope = tan(phiD[n]);
+    xy = shiftPoint(c(x0[n], y0[n]), d = sg[n] * axon.length, slope = slope);
     axon = list(x = c(x0[n], xy[1]), y = c(y0[n], xy[2]));
     axon = list(axon);
     lenDendites = n - 1;
+    if(!is.null(type.syn)) {
+      syn = synapse(xy, slope = slope, type = type.syn)
+      axon = c(axon, syn)
+    }
   } else {
     axon = NULL;
     lenDendites = n;
@@ -437,6 +443,7 @@ neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
     class(nucleus) = c("circle", "list");
     nucleus = list(nucleus);
   } else nucleus = NULL;
+
   ### Neuron
   neuron = c(body, axon, dend, nucleus);
   if( ! inherits(neuron, "bioshape")) {
@@ -444,6 +451,7 @@ neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
   }
   return(neuron);
 }
+
 #' @export
 tree = function(p, d, slope, n=2, levels=2) {
   xy = shiftPoint(p, d=d, slope = slope);
@@ -549,5 +557,28 @@ synapse = function(p, phi, type = c("Solid", "Tree", "Detail", "Radial"),
   } else stop("Not yet implemented!");
   xy = as.bioshape(list(xy));
   return(xy);
+}
+
+### muscle tissue ###
+#' @export
+muscle = function(scale.x = 1.5, scale.R = c(1.5, 1.5),
+         x = c(-2, 2), y = c(1, 1), dy = 0.4, dx = 2, n = 6, fill = "red"){
+
+lst = list()
+for(iy in seq(0,n)){
+  if(iy%%2 == 0){
+    for(idx in seq(-2,2,2)){
+      lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R)
+      lst = c(lst, lens)
+    }}
+  else{
+    for(idx in seq(-3,3,2)){
+      lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R)
+      lst = c(lst, lens)
+    }
+  }}
+lst = as.bioshape(lst)
+plot.base()
+lines(lst, fill=fill)
 }
 
