@@ -204,11 +204,11 @@ duct.complex = function(center = c(0, 0), r = c(7, 5, 2), n = 8,
 # Generates a virus
 #' @export
 virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
-                 r.spike=0.25, ngon.spike=4, phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
-                 col = "#D06432", col.spike = "#D06432", fill.spike = col.spike) {
+                 r.spike=0.4, ngon.spike=4, phi.spike = 0, lwd = 6, lwd.spike = lwd/2,
+                 col = "#23b5cc", col.spike = "#a60845", fill.spike = "#f26d07") {
   ### Spikes
   virus = spikes(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
-                  r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
+                  r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = 0, lwd = 1, lwd.spike = lwd/2,
                   col = col.spike, fill = fill.spike);
 
   ### Envelope
@@ -258,12 +258,12 @@ spikes = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   return(invisible(virus));
 }
 
-virus2 = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
-                  r.spike=0.25, ngon.spike=c(4, 8), phi.spike = 0, lwd = 1, lwd.spike = 2*lwd,
-                  col = "#D06432", col.spike = "#D06432", fill.spike = col.spike){
+virus2 = function(R = 2, center = c(0,0), n.spike = 10, off.spike = c(0, 2),
+                  r.spike=0.25, ngon.spike=c(4, 8), phi.spike = 0, lwd = 8, lwd.spike = lwd/2,
+                  col = "#D06432", col.spike = "#c90e40", fill.spike = "#5128c9"){
 
   v1 = virus(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
-             r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = phi.spike, lwd = 1, lwd.spike = 2*lwd,
+             r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = phi.spike, lwd = lwd, lwd.spike = lwd/2,
              col = col, col.spike = col.spike, fill.spike = fill.spike)
 
   ### Spikes
@@ -271,7 +271,7 @@ virus2 = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   spikes2 = spikes(R = R, center = center, n.spike = n.spike,
                    off.spike = off.spike2, r.spike=r.spike,
                    ngon.spike = ngon.spike[2], phi.spike = phi.spike + pi/n.spike,
-                   lwd = 1, lwd.spike = 2*lwd, col = col.spike, fill = fill.spike);
+                   lwd = 1, lwd.spike = lwd/2, col = col.spike, fill = fill.spike);
 
   virus = c(v1, spikes2);
   virus = as.bioshape(virus);

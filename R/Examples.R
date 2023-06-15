@@ -433,25 +433,58 @@ example.neurons = function(){
   tmp = neuron(n = n, center = center, phi = phi)
   lines(tmp)
 
+  ### First group
   ###
   phi = -pi/2;
   n = 5;
-  center2 = center + c(2, 0)
+  center2 = center + c(0, -5)
   tmp = neuron(n = n, center = center2, phi = phi)
+  plot.base(xlim = lim, ylim = lim, axt = NULL)
   lines(tmp)
 
   ###
-  phi = 2*pi - pi/2;
+  phi = -pi/1.5;
   n = 5;
-  center2 = center + c(2, 3)
+  center2 = center + c(5, 3)
   tmp = neuron(n = n, center = center2, phi = phi)
   lines(tmp)
 
   ###
   phi = 2*pi - pi/6;
   n = 5;
-  center2 = center + c(-1, 3)
+  center2 = center + c(-8, 1)
   tmp = neuron(n = n, center = center2, phi = phi)
+  lines(tmp)
+
+  # Second group
+  ###
+  phi = 0;
+  n = 5;
+  center = c(-9, 8)
+  lim = c(-10, 10);
+  plot.base(xlim = lim, ylim = lim, axt = NULL)
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+  ###
+  phi = pi/2;
+  n = 5;
+  center = c(-10, -2)
+  lim = c(-10, 10);
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+  ###
+  phi = -pi;
+  n = 5;
+  center = c(0, -2)
+  lim = c(-10, 10);
+  tmp = neuron(n = n, center = center, phi = phi)
+  lines(tmp)
+  ###
+  phi = -pi/2;
+  n = 5;
+  center = c(1, 8)
+  lim = c(-10, 10);
+  tmp = neuron(n = n, center = center, phi = phi)
   lines(tmp)
 }
 
@@ -563,5 +596,27 @@ example.muscle = function(n = 6){
   lines(tmp)
 }
 
+example.virus = function(N = 12, R = 3, lwd = 10){
+
+  par.old = par(mfrow = c(1,3));
+
+  # Virus with polygons spikes
+  virus = virus(N, R = R, center = c(5, 5), lwd = lwd)
+  plot.base()
+  lines(virus)
+
+  # Virus with circle spikes
+  virus = virus(N, R = R, center = c(5, 5), ngon.spike = 0, lwd = lwd)
+  plot.base()
+  lines(virus)
+
+  # Virus with both polygons and circles
+  plot.base(xlim = c(-6, 6), ylim = c(-6, 6))
+  tmp = virus2()
+  lines(tmp)
+
+  par(par.old);
+  invisible();
+}
 
 

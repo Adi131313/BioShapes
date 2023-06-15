@@ -106,4 +106,8 @@ example.ducts()
 
 example.complexDuct(n = 8)
 
+### Viruses ###
+
+example.virus()
+
 #####################

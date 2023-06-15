@@ -1,22 +1,29 @@
 # TODO: create complex examples in R/Examples.R
 
+# Example function for virus
+example.virus()
 # TODO: colors for spikes
-# Virus
-N = 10
-R = 3
 
+# Modified: colors, lwd for virus and spikes
+
+# Virus
+N = 12
+R = 3
+lwd = 10
 # Virus with ngons
-virus = virus(N, R = R, center = c(5, 5))
+virus = virus(N, R = R, center = c(5, 5), lwd = lwd)
 plot.base()
 lines(virus)
 
 # Virus with circles
-virus = virus(N, R = R, center = c(5, 5), ngon.spike = 0)
+virus = virus(N, R = R, center = c(5, 5), ngon.spike = 0, lwd = lwd)
 plot.base()
 lines(virus)
 
 ### Virus 2 spikes
 
+# Modified colors, lwd for virus and spikes
+# length of spikes c(0, 2), R = 2
 plot.base(xlim = c(-6, 6), ylim = c(-6, 6))
 tmp = virus2()
 lines(tmp)
@@ -87,20 +94,19 @@ points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
 
 ### Synapse
 plot.base()
-tmp = neuron(c(0,2), phi=pi/6)
+tmp = neuron(c(0,2), phi=pi/6, type.syn = "D")
 lines(tmp)
-lines(synapse(c(tmp[[6]]$x[2], tmp[[6]]$y[2]), slope=tan(pi/6), type="D", l=0.8, alpha=160))
 
 ###
 plot.base()
 tmp = neuron(c(0,2), phi=pi/6)
 lines(tmp)
-lines(synapse(c(tmp[[6]]$x[2], tmp[[6]]$y[2]), slope=tan(pi/6)))
 
 ###
 plot.base()
-tmp = neuron(c(0,2), phi=pi/6)
+tmp = neuron(c(0,2), phi=pi/6, type.syn = "Tree")
 lines(tmp)
+# TODO: BUG for tree
 lines(synapse(c(tmp[[6]]$x[2], tmp[[6]]$y[2]), slope=tan(pi/6), type="Tree", l=1.8, alpha=120))
 
 # TODO: example of design for DNA
