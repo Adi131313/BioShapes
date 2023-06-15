@@ -246,6 +246,23 @@ drop.col = function(x, name) {
   return(x[, -id]);
 }
 
+# p1 = Translate to p1;
+#' @export
+rotate = function(x, y, slope, p1=c(0,0)) {
+  if(abs(slope) == Inf) {
+    sgn = sign(slope);
+    dx = y; dy = x * sgn;
+    lst = list(x = p1[1] + dx, y = p1[2] + dy);
+    return(lst);
+  }
+  sdiv = 1 / sqrt(slope^2 + 1);
+  # Rotation matrix: by column
+  # rotm = matrix(sdiv * c(1, s, -s, 1), ncol=2, nrow=2);
+  dx = (x - slope*y) * sdiv; # + p1[1];
+  dy = (slope*x + y) * sdiv; # + p1[2];
+  lst = list(x = p1[1] + dx, y = p1[2] + dy);
+}
+
 # Intersection of 2 shifted-Sine Functions
 #' @export
 which.intersect.sin = function(phi, n, from=0, to = n-1) {
@@ -266,6 +283,8 @@ which.intersect.sin = function(phi, n, from=0, to = n-1) {
   # x1 = non-shifted; x2 = shifted;
   return(list(x0 = x0, x1=x1));
 }
+
+
 
 #######################
 
