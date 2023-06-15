@@ -109,11 +109,11 @@ lines(tmp)
 # TODO: BUG for tree
 lines(synapse(c(tmp[[6]]$x[2], tmp[[6]]$y[2]), slope=tan(pi/6), type="Tree", l=1.8, alpha=120))
 
-# TODO: example of design for DNA
+# TODO: Example showing design of DNA
 # Intersection of sine functions
-phi = c(0.7, 1.5)
-curve(sin(x + phi[1]*pi), -2*pi, 6*pi)
-curve(sin(x + phi[2]*pi), add = T, col="red")
+phi = c(0.7, 1.5) * pi;
+curve(sin(x + phi[1]), -2*pi, 6*pi)
+curve(sin(x + phi[2]), add = T, col="red")
 pp = which.intersect.sin(phi, 3)
 abline(v = pp$x0, col="blue")
 points(pp$x0, sin(pp$x1), col="green")
