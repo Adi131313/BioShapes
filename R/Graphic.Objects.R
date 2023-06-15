@@ -260,7 +260,8 @@ spikes = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
 
 virus2 = function(R = 2, center = c(0,0), n.spike = 10, off.spike = c(0, 2),
                   r.spike=0.25, ngon.spike=c(4, 8), phi.spike = 0, lwd = 8, lwd.spike = lwd/2,
-                  col = "#D06432", col.spike = "#c90e40", fill.spike = "#5128c9"){
+                  col = "#D06432", col.spike = "#c90e40", fill.spike = "#5128c9",
+                  col.2spike = "red", fill.2spike = "yellow"){
 
   v1 = virus(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
              r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = phi.spike, lwd = lwd, lwd.spike = lwd/2,
@@ -271,9 +272,9 @@ virus2 = function(R = 2, center = c(0,0), n.spike = 10, off.spike = c(0, 2),
   spikes2 = spikes(R = R, center = center, n.spike = n.spike,
                    off.spike = off.spike2, r.spike=r.spike,
                    ngon.spike = ngon.spike[2], phi.spike = phi.spike + pi/n.spike,
-                   lwd = 1, lwd.spike = lwd/2, col = col.spike, fill = fill.spike);
+                   lwd = 1, lwd.spike = lwd/2, col = col.2spike, fill = fill.2spike);
 
-  virus = c(v1, spikes2);
+  virus = c(spikes2, v1);
   virus = as.bioshape(virus);
   return(virus)
 }

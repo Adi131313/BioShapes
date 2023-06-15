@@ -72,7 +72,6 @@ h2 = dna.new(c(1,8), c(1,6), phi = c(pi/2, pi), n.lin=5)
 plot.base()
 lines(h2, lwd=2)
 
-
 ### Neuron
 
 # Test function
