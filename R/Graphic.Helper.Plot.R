@@ -115,7 +115,12 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       col0 = lst$col; if( ! is.null(col0)) col = col0;
       lst$lwd = NULL; lst$col = NULL;
       if(inherits(lst, "lines.list")){
-        lapply(lst, function(lst){
+        lapply(lst, function(lst) {
+          lines(lst$x, lst$y, lwd=lwd, col=col, ...);
+        });
+      } else if(inherits(lst, "data.frame")) {
+        lst = split(lst[, c("x", "y")], lst$id);
+        lapply(lst, function(lst) {
           lines(lst$x, lst$y, lwd=lwd, col=col, ...);
         });
       } else {
