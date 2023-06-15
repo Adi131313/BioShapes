@@ -411,14 +411,16 @@ neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
   sg = ifelse(phiR > pi/2 & phiR <= pi32, - 1, 1);
   ### Axon
   if(axon.length != 0) {
-    slope = tan(phiD[n]);
+    phiA  = phiR[n];
+    slope = if(abs(phiA - pi20) < 1E-2 || abs(phiA - pi32) < 1E-2) Inf
+    else tan(phiA);
     xy = shiftPoint(c(x0[n], y0[n]), d = sg[n] * axon.length, slope = slope);
     axon = list(x = c(x0[n], xy[1]), y = c(y0[n], xy[2]));
     axon = list(axon);
     lenDendites = n - 1;
-    if(!is.null(type.syn)) {
-      syn = synapse(xy, slope = slope, type = type.syn)
-      axon = c(axon, syn)
+    if( ! is.null(type.syn)) {
+      syn  = synapse(xy, phi = phiA, type = type.syn);
+      axon = c(axon, syn);
     }
   } else {
     axon = NULL;
@@ -514,8 +516,9 @@ synapse = function(p, phi, type = c("Solid", "Tree", "Detail", "Radial"),
   }
   if(type == "Detail") {
     if(is.null(slope)) slope = tan(th);
-    d  = if(phi >= 0) l else - l;
-    cc = shiftPoint(p, d=d, slope=slope);
+    sg = th > pi/2 & th <= 3*pi/2;
+    d  = if(sg) -l else l;
+    cc = shiftPoint(p, d = d, slope=slope);
     th = th + pi + c(- phi, phi); # already 1/2;
     xy = circle.arc(r = l, th, center = cc);
     len = length(xy$x);

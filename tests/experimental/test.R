@@ -117,3 +117,19 @@ curve(sin(x + phi[2]), add = T, col="red")
 pp = which.intersect.sin(phi, 3)
 abline(v = pp$x0, col="blue")
 points(pp$x0, sin(pp$x1), col="green")
+
+
+### Test Neuron Synapses
+plot.neuron = function(p, phi, type, dphi = c(0, -pi/9, pi/9)) {
+  for(dp in dphi) {
+    tmp = neuron(p, phi= phi + dp, type=type);
+    lines(tmp);
+  }
+}
+
+type = "Tree"
+plot.base(ylim = c(-10, 10))
+plot.neuron(c(4,8), phi = -pi/2, type=type)
+plot.neuron(c(8,4), phi = pi, type=type)
+plot.neuron(c(4,-8), phi = pi/2, type=type)
+plot.neuron(c(0,-4), phi = 0, type=type)
