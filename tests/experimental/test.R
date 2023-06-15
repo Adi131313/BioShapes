@@ -62,13 +62,20 @@ lines(xy, col="red")
 
 # TODO: Centers for muscles
 
-# DNA
+### DNA
 
-h2 = dna.new(c(1,5), c(1,6), phi = c(0, pi))
+h2 = dna.new(c(1,8), c(1,6), phi = c(0, pi), n.lin=6)
 plot.base()
-lines(h2)
+lines(h2, lwd=2)
 
-#test function
+h2 = dna.new(c(1,8), c(1,6), phi = c(pi/2, pi), n.lin=5)
+plot.base()
+lines(h2, lwd=2)
+
+
+### Neuron
+
+# Test function
 # TODO: Also one for Virus
 description.neuron()
 

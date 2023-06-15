@@ -135,27 +135,45 @@ helix.link = function(n, k=3, phi=pi/2) {
 
 #' @export
 ### DNA
-dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, segments = 3,
-               col = c("red", "blue")) {
+dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
+                   col = c("red", "green"), col.lines = col) {
   p1 = c(x[1], y[1]); p2 = c(x[2], y[2]);
-  h1 = helix(p1, p2, n=n, phi=phi[1], parts=segments);
-  h2 = helix(p1, p2, n=n, phi=phi[2], parts=segments);
+  h1 = helix(p1, p2, n=n, A=A, phi=phi[1], parts=0);
+  h2 = helix(p1, p2, n=n, A=A, phi=phi[2], parts=0);
   if( ! is.null(col)) {
     h1[[1]]$col = col[1]; h2[[1]]$col = col[2];
   }
-  lst = c(h1, h2);
+  lst = c(Helix1 = h1, Helix2 = h2);
+  if(n.lines == 0) return(as.bioshape(lst));
   #
-  s1 = attr(h1, "segments")
-  s2 = attr(h2, "segments")
-  len = length(s1$x)
-  tmp = lapply(seq(len), function(id) {
-    x = c(s1$x[[id]], s2$x[[id]]);
-    y = c(s1$y[[id]], s2$y[[id]]);
-    list(x=x, y=y);
-  })
-  # TODO: different colours;
-  tmp$col = col;
-  class(tmp) = c("lines.list", "list");
-  lst = c(lst, list(tmp));
+  pp  = which.intersect.sin(phi, n, to = n - 0.5);
+  len = length(pp$x0);
+  pi2 = 2*pi*n;
+  p0  = c(0, pp$x0 / pi2);
+  Ln  = dist.xy(x, y);
+  slope = slope(x, y);
+  lstLL = list();
+  # TODO: proper-processing of half-ends;
+  for(i in seq(len)) {
+    pS = p0[i];
+    pE = p0[i + 1];
+    pp = seq(pS, pE, length.out = n.lines + 2);
+    # pp = pp[- c(1, 6)];
+    py = A * sin(pi2*pp + phi[1]);
+    h1 = rotate(pp * Ln, py, slope=slope, p1);
+    py = A * sin(pi2*pp + phi[2]);
+    h2 = rotate(pp * Ln, py, slope=slope, p1);
+    colL = if(i %% 2 == 1) col.lines[2] else col.lines[1];
+    lenL = length(h1$x);
+    tmp = lapply(seq(2, lenL - 1), function(iL) {
+      data.frame(
+        x = c(h1$x[iL], h2$x[iL]),
+        y = c(h1$y[iL], h2$y[iL]), id = iL);
+    });
+    tmp = do.call(rbind, tmp);
+    tmp$col = colL;
+    lstLL = c(lstLL, list(tmp));
+  }
+  lst = c(lstLL, lst);
   return(as.bioshape(lst));
 }
