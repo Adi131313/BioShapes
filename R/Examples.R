@@ -458,6 +458,7 @@ example.neurons = function(){
 
   # Second group
   ###
+  # TODO: All synapse types
   phi = 0;
   n = 5;
   center = c(-9, 8)

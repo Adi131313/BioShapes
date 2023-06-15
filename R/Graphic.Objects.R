@@ -394,8 +394,8 @@ draw_blood_cell = function(center = c(0, 0),
 neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
                   axon.length = 3 * r, dendrite.length = ~ r/2, r.nucl = ~ (R - r)/2,
                   type.syn = c("Solid", "Tree", "Detail", "Radial"),
-                  col.nucl = 1, fill.nucl = NULL) {
-  body = neuron.body(center = center, n = n, r = r, phi = phi);
+                  col = "red", col.nucl = 1, fill.nucl = NULL) {
+  body = neuron.body(center = center, n = n, r = r, phi = phi, col = col);
   ### Init
   axon.length = axon.length; # force = scale * r;
   R = r;
@@ -479,7 +479,7 @@ tree = function(p, d, slope, n=2, levels=2) {
 }
 
 #' @export
-neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0){
+neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0, col = 1){
   phi0 = phi + pi/n;
   cc = circlesOnFixedCircle(n = n, r = r, center = center, phi = phi0);
   R = r;
@@ -492,6 +492,7 @@ neuron.body = function(center = c(0, 0), n = 5, r = 3, phi = 0){
     lst = list(
       r = r, center = c(x = cc$x[id], y = cc$y[id]),
       phi = c(a1[id], a2[id]) );
+    lst$col = col;
     class(lst) = c("circle.arc", "list");
     return(lst);
   })
