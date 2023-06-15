@@ -445,7 +445,8 @@ neuron = function(center = c(0, 0), n = 5, r = 2, phi = 0,
   } else nucleus = NULL;
 
   ### Neuron
-  neuron = c(body, axon, dend, nucleus);
+  neuron = c(Body = body, Axon = axon,
+             Dendrites = dend, Nucleus = nucleus);
   if( ! inherits(neuron, "bioshape")) {
     class(neuron) = c("bioshape", "list");
   }
