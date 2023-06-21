@@ -91,8 +91,8 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       }
     } else if(inherits(lst, "circle.arc")) {
       if(is.null(fill)) fill = lst$fill;
-      col0 = lst$col;
-      col  = if(is.null(col0)) col else col0;
+      col = if(is.null(lst$col)) col else lst$col;
+      lwd = if(is.null(lst$lwd)) lwd else lst$lwd;
       if(inherits(lst$center, "matrix")){
         lapply(seq(nrow(lst$center)), function(nr){
           plot.circle.arc(
