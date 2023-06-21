@@ -51,16 +51,15 @@ muscle = function(scale.x = 1.5, scale.R = c(1.5, 1.5),
   for(iy in seq(0,n)){
     if(iy%%2 == 0){
       for(idx in seq(-2,2,2)){
-        lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R)
+        lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R, fill = fill)
         lst = c(lst, lens)
       }}
     else{
       for(idx in seq(-3,3,2)){
-        lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R)
+        lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R, fill = fill)
         lst = c(lst, lens)
       }
     }}
   lst = as.bioshape(lst)
-  plot.base()
-  lines(lst, fill=fill)
+  return (invisible(lst))
 }

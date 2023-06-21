@@ -595,9 +595,11 @@ example.lens = function(){
 
 ### Example of muscle tissue
 #' @export
-example.muscle = function(n = 6){
-  tmp = muscle(n = n)
-  lines(tmp)
+example.muscle = function(n = 6, fill = "red"){
+  tmp = muscle(n = n, fill = fill)
+  plot.base()
+  # TODO: implement fill in muscle/lens
+  lines(tmp, fill=fill)
 }
 
 example.virus = function(N = 12, R = 3, lwd = 10){

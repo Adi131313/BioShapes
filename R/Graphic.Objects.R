@@ -283,7 +283,7 @@ virus2 = function(R = 2, center = c(0,0), n.spike = 10, off.spike = c(0, 2),
 ### Convex lens
 #' @export
 lens = function(x, y, R = NULL, scale = c(1,1),
-                lwd=1, col=1) {
+                lwd=1, col=1, fill = NULL) {
   d2 = (x[2] - x[1])^2 + (y[2] - y[1])^2;
   d  = sqrt(d2);
   ### Lens Radius
@@ -328,6 +328,7 @@ lens = function(x, y, R = NULL, scale = c(1,1),
   lst2 = list(r = R[2], center = c2, phi = phi2);
   class(lst1) = c("circle.arc", "list");
   class(lst2) = c("circle.arc", "list");
+  # TODO: col and fill
 
   lst = list(lst1, lst2);
   class(lst) = c("bioshape", "list");
