@@ -54,7 +54,7 @@ lines(lst)
 
 ################
 
-### helix for ADN
+### Helix for DNA
 tmp1 = helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
 tmp2 = helix(c(0, 0), c(5, 5), n = 2, phi = pi, A = 3/4)
 plot.base()
@@ -70,8 +70,6 @@ tmp = lapply(seq(40), function(id) {
 pp = which.intersect.sin(c(0, pi), 2)
 p0 = pp$x0 / (2*2*pi) * 5
 abline(v = p0, col="purple")
-
-### TODO 2: ADN
 
 ### DNA
 
