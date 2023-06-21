@@ -63,3 +63,22 @@ muscle = function(scale.x = 1.5, scale.R = c(1.5, 1.5),
   lst = as.bioshape(lst)
   return (invisible(lst))
 }
+
+### Red blood cells
+#' @export
+draw_blood_cell = function(center = c(0, 0),
+                           radius = 1, lwd = 10, col = "#901000", fill = "red"){
+  #lim = c(-radius, radius) * 2;
+  #plot.base(xlim = lim, ylim = lim)
+  #circle <- seq(0, 2 * pi, length.out = 80)
+  #x <- radius * sin(circle)
+  #y <- radius * cos(circle)
+  #polygon(x, y, col = "red", border = "#901000", lwd = lwd)
+  lst = list(center = center, r = radius,
+             fill = fill, col = col, lwd = lwd);
+  class(lst) = c("circle", "list");
+  lst = list(lst);
+  class(lst) = c("bioshape", "list");
+  return(lst)
+
+}
