@@ -31,6 +31,27 @@ plot.base(xlim = c(-6, 6), ylim = c(-6, 6))
 tmp = virus2()
 lines(tmp)
 
+### DNA: ds Helix
+cc = c(4,5); r = 3;
+plot.base()
+lines(virus(r, cc))
+lst = genome(r * 0.75, cc)
+lines(lst)
+
+### Circle Arc
+cc = c(4,5); r = 3;
+plot.base()
+lines(virus(r, cc))
+lst = genome(r * 0.75, cc, type = "arc")
+lines(lst)
+
+### Circle
+cc = c(4,5); r = 3;
+plot.base()
+lines(virus(r, cc))
+lst = genome(r * 0.5, cc, type = "circle")
+lines(lst)
+
 ################
 
 ### helix for ADN

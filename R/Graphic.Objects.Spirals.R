@@ -177,3 +177,52 @@ dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
   lst = c(lstLL, lst);
   return(as.bioshape(lst));
 }
+
+### Genome types
+#' @export
+genome = function(r, center = c(0,0), phi.dna = pi/4,
+                  type = c("DNA", "helix", "arc", "circle", "cDNA", "css", "line", "none"),
+                  lwd=2, col = "#64D000", ...) {
+  type = match.arg(type);
+  if(type == "none") return(NULL);
+  as.xy = function() {
+    p1x = r * cos(phi.dna) + center[1];
+    p1y = r * sin(phi.dna) + center[2];
+    # p1  = c(p1x, p1y);
+    p2x = r * cos(phi.dna + pi) + center[1];
+    p2y = r * sin(phi.dna + pi) + center[2];
+    # p2  = c(p2x, p2y);
+    return(list(x = c(p2x, p1x), y = c(p2y, p1y)));
+  }
+  if(type == "DNA") {
+    p = as.xy();
+    # TODO: add lwd
+    lst = dna.new(p$x, p$y, ...);
+    return(invisible(lst));
+  }
+  if(type == "helix") {
+    p = as.xy();
+    lst = helix(p$x, p$y, ...);
+    return(invisible(lst));
+  }
+  if(type == "arc") {
+    # TODO: parameter;
+    phi.arc = c(pi/6, 2*pi - pi/6);
+    lst = list(r = r, center = center, phi = phi.arc, lwd=lwd, col=col);
+    class(lst) = c("circle.arc", "list");
+    return(as.bioshape(list(lst)));
+  }
+  if(type == "circle") {
+    lst = list(r = r, center = center, lwd=lwd, col=col);
+    class(lst) = c("circle", "list");
+    return(as.bioshape(list(lst)));
+  }
+  if(type == "line") {
+    p = as.xy();
+    p$lwd = lwd; p$col = col;
+    return(as.bioshape(list(p)));
+  }
+  if(type == "helix") {
+    # TODO
+  }
+}
