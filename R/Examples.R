@@ -301,7 +301,7 @@ example.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
 ### helix for ADN
 #' @export
 example.dna = function(n.lin = 6){
-  h2 = dna.new(c(1,8), c(1,6), phi = c(0, pi), n.lin = n.lin)
+  h2 = dna.new(c(-5,15), c(0,9), phi = c(0, pi), n.lin = n.lin)
   plot.base()
   lines(h2, lwd=1)
   # # n = 2.2;
