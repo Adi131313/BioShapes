@@ -1,5 +1,8 @@
 # TODO: create complex examples in R/Examples.R
 
+# citare pachete
+citation("shiny")
+
 # Example function for virus
 example.virus()
 # TODO: colors for spikes
@@ -14,6 +17,9 @@ lwd = 10
 virus = virus(N, R = R, center = c(5, 5), lwd = lwd)
 plot.base()
 lines(virus)
+text(x = 5, y = 11, "Virus");
+arrowDiamond(x=c(-2,1), y=c(4,4), lwd=2, d=-1)
+arrowSimple(x=c(-1,2), y=c(-2,1), lwd=2, d=-1)
 
 # Virus with circles
 virus = virus(N, R = R, center = c(5, 5), ngon.spike = 0, lwd = lwd)
@@ -66,7 +72,7 @@ lines(xy, col="red")
 
 h2 = dna.new(c(1,8), c(1,6), phi = c(0, pi), n.lin=6)
 plot.base()
-lines(h2, lwd=2)
+lines(h2, lwd=1)
 
 h2 = dna.new(c(1,8), c(1,6), phi = c(pi/2, pi), n.lin=5)
 plot.base()

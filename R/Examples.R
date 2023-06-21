@@ -300,29 +300,32 @@ example.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
 
 ### helix for ADN
 #' @export
-example.dna = function(n = 2.2){
-  # n = 2.2;
-  tmp1 = helix(c(0, 0), c(5, 5), n = n, phi = 0, A = 3/4)
-  tmp2 = helix(c(0, 0), c(5, 5), n = n, phi = pi, A = 3/4)
+example.dna = function(n.lin = 6){
+  h2 = dna.new(c(1,8), c(1,6), phi = c(0, pi), n.lin = n.lin)
   plot.base()
-  col = c("#FF9696", "#F2FF82")
-  lines(tmp1, col = col[1], lwd = 5)
-  lines(tmp2, col = col[2], lwd = 5)
-
-  N = length(tmp1[[1]]$x);
-  nL = round(N/3.5);
-  scale = N/nL;
-  nc = ceiling(2*n);
-  # TODO: Proper colors
-  colL = rep(col[1], nL);
-  tmp = lapply(seq(nL), function(id) {
-    idL = scale*id;
-    x = c(tmp1[[1]]$x[idL], tmp2[[1]]$x[idL]);
-    y = c(tmp1[[1]]$y[idL], tmp2[[1]]$y[idL]);
-    d = dist.xy(x, y);
-    if(d < 0.2) return(); # TODO: Parameter
-    lines(x, y, col = colL[id]);
-  })
+  lines(h2, lwd=1)
+  # # n = 2.2;
+  # tmp1 = helix(c(0, 0), c(5, 5), n = n, phi = 0, A = 3/4)
+  # tmp2 = helix(c(0, 0), c(5, 5), n = n, phi = pi, A = 3/4)
+  # plot.base()
+  # col = c("#FF9696", "#F2FF82")
+  # lines(tmp1, col = col[1], lwd = 5)
+  # lines(tmp2, col = col[2], lwd = 5)
+  #
+  # N = length(tmp1[[1]]$x);
+  # nL = round(N/3.5);
+  # scale = N/nL;
+  # nc = ceiling(2*n);
+  # # TODO: Proper colors
+  # colL = rep(col[1], nL);
+  # tmp = lapply(seq(nL), function(id) {
+  #   idL = scale*id;
+  #   x = c(tmp1[[1]]$x[idL], tmp2[[1]]$x[idL]);
+  #   y = c(tmp1[[1]]$y[idL], tmp2[[1]]$y[idL]);
+  #   d = dist.xy(x, y);
+  #   if(d < 0.2) return(); # TODO: Parameter
+  #   lines(x, y, col = colL[id]);
+  # })
 }
 
 ### Ducts
@@ -430,7 +433,7 @@ example.neurons = function(){
   center = c(2, 3)
   lim = c(-10, 10);
   plot.base(xlim = lim, ylim = lim, axt = NULL)
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = n, center = center, phi = phi, type = "Tree")
   lines(tmp)
 
   ### First group
@@ -438,7 +441,7 @@ example.neurons = function(){
   phi = -pi/2;
   n = 5;
   center2 = center + c(0, -5)
-  tmp = neuron(n = n, center = center2, phi = phi)
+  tmp = neuron(n = n, center = center2, phi = phi, type = "Tree")
   plot.base(xlim = lim, ylim = lim, axt = NULL)
   lines(tmp)
 
@@ -446,14 +449,14 @@ example.neurons = function(){
   phi = -pi/1.5;
   n = 5;
   center2 = center + c(5, 3)
-  tmp = neuron(n = n, center = center2, phi = phi)
+  tmp = neuron(n = n, center = center2, phi = phi, type = "Tree")
   lines(tmp)
 
   ###
   phi = 2*pi - pi/6;
   n = 5;
   center2 = center + c(-8, 1)
-  tmp = neuron(n = n, center = center2, phi = phi)
+  tmp = neuron(n = n, center = center2, phi = phi, type = "Tree")
   lines(tmp)
 
   # Second group
@@ -464,28 +467,28 @@ example.neurons = function(){
   center = c(-9, 8)
   lim = c(-10, 10);
   plot.base(xlim = lim, ylim = lim, axt = NULL)
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = n, center = center, phi = phi, type = "Tree")
   lines(tmp)
   ###
   phi = pi/2;
   n = 5;
   center = c(-10, -2)
   lim = c(-10, 10);
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = n, center = center, phi = phi, type = "Solid")
   lines(tmp)
   ###
   phi = -pi;
   n = 5;
   center = c(0, -2)
   lim = c(-10, 10);
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = n, center = center, phi = phi, type = "Detail")
   lines(tmp)
   ###
   phi = -pi/2;
   n = 5;
   center = c(1, 8)
   lim = c(-10, 10);
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = n, center = center, phi = phi, type = "Radial")
   lines(tmp)
 }
 
