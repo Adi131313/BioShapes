@@ -208,7 +208,8 @@ virus = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
                  col = "#23b5cc", col.spike = "#a60845", fill.spike = "#f26d07") {
   ### Spikes
   virus = spikes(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
-                  r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = 0, lwd = 1, lwd.spike = lwd/2,
+                  r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = 0,
+                  lwd = lwd.spike, lwd.spike = lwd.spike,
                   col = col.spike, fill = fill.spike);
 
   ### Envelope
