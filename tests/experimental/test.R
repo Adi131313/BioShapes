@@ -1,15 +1,12 @@
 # TODO: create complex examples in R/Examples.R
+# TODO: Centers for muscles
 
 # citare pachete
 citation("shiny")
 
-# Example function for virus
-example.virus()
-# TODO: colors for spikes
+######################
 
-# Modified: colors, lwd for virus and spikes
-
-# Virus
+### Virus
 N = 12
 R = 3
 lwd = 10
@@ -36,7 +33,6 @@ lines(tmp)
 
 ################
 
-
 ### helix for ADN
 tmp1 = helix(c(0, 0), c(5, 5), n = 2, phi = 0, A = 3/4)
 tmp2 = helix(c(0, 0), c(5, 5), n = 2, phi = pi, A = 3/4)
@@ -54,19 +50,7 @@ pp = which.intersect.sin(c(0, pi), 2)
 p0 = pp$x0 / (2*2*pi) * 5
 abline(v = p0, col="purple")
 
-### for monocyte
-R = 20; n = 10;
-lim = c(-R, R) + c(-2,2);
-plot.base(xlim = lim, ylim = lim)
-abline(h=0, col="green", lty=2)
-xy = helix.rad(R = R, n=n, phi=pi, r = 2);
-lines(xy, col="red")
-
-
-### TODO 1: Dendrite as tree
 ### TODO 2: ADN
-
-# TODO: Centers for muscles
 
 ### DNA
 
@@ -78,31 +62,32 @@ h2 = dna.new(c(1,8), c(1,6), phi = c(pi/2, pi), n.lin=5)
 plot.base()
 lines(h2, lwd=2)
 
+# TODO: Example showing design of DNA
+# Intersection of 2 shifted-Sine Functions
+# sin(x) = sin(x + phi)
+phi = c(0.7, 1.5) * pi;
+curve(sin(x + phi[1]), -2*pi, 6*pi, lwd=1.5)
+curve(sin(x + phi[2]), add = T, col="red", lwd=1.5)
+pp = which.intersect.sin(phi, 3)
+abline(v = pp$x0, col="blue")
+points(pp$x0, sin(pp$x1), col="green", lwd=2)
+
+
+### for monocyte
+R = 20; n = 10;
+lim = c(-R, R) + c(-2,2);
+plot.base(xlim = lim, ylim = lim)
+abline(h=0, col="green", lty=2)
+xy = helix.rad(R = R, n=n, phi=pi, r = 2);
+lines(xy, col="red")
+
+#########################
+
 ### Neuron
 
 # Test function
 # TODO: Also one for Virus
 description.neuron()
-
-
-### Test: Bug in Function helix
-plot.base();
-p1 = c(3,1); p2 = c(1,5)
-xy = helix(p1, p2); lines(xy);
-points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
-#
-p1 = c(4,6); p2 = c(1, 5)
-xy = helix(p1, p2); lines(xy);
-points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
-#
-p1 = c(4,6); p2 = c(6,1)
-xy = helix(p1, p2); lines(xy);
-points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
-#
-p2 = c(4,6); p1 = c(1, 5)
-xy = helix(p1, p2); lines(xy);
-points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
-
 
 ### Synapse
 plot.base()
@@ -121,16 +106,6 @@ lines(tmp)
 # TODO: BUG for tree
 lines(synapse(c(tmp[[6]]$x[2], tmp[[6]]$y[2]), slope=tan(pi/6), type="Tree", l=1.8, alpha=120))
 
-# TODO: Example showing design of DNA
-# Intersection of sine functions
-phi = c(0.7, 1.5) * pi;
-curve(sin(x + phi[1]), -2*pi, 6*pi)
-curve(sin(x + phi[2]), add = T, col="red")
-pp = which.intersect.sin(phi, 3)
-abline(v = pp$x0, col="blue")
-points(pp$x0, sin(pp$x1), col="green")
-
-
 ### Test Neuron Synapses
 plot.neuron = function(p, phi, type, dphi = c(0, -pi/9, pi/9)) {
   for(dp in dphi) {
@@ -145,3 +120,25 @@ plot.neuron(c(4,8), phi = -pi/2, type=type)
 plot.neuron(c(8,4), phi = pi, type=type)
 plot.neuron(c(4,-8), phi = pi/2, type=type)
 plot.neuron(c(0,-4), phi = 0, type=type)
+
+### TODO 1: Dendrite as tree
+
+######################
+
+### Test: Bug in Function helix
+plot.base();
+p1 = c(3,1); p2 = c(1,5)
+xy = helix(p1, p2); lines(xy);
+points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
+#
+p1 = c(4,6); p2 = c(1, 5)
+xy = helix(p1, p2); lines(xy);
+points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
+#
+p1 = c(4,6); p2 = c(6,1)
+xy = helix(p1, p2); lines(xy);
+points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
+#
+p2 = c(4,6); p1 = c(1, 5)
+xy = helix(p1, p2); lines(xy);
+points(c(p1[1], p2[1]), c(p1[2], p2[2]), col="red")
