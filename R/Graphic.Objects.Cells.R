@@ -41,3 +41,26 @@ cellBrushBorder = function(p1, w, h, n=6.5, A=1, slope=0, lwd=1, N=128, phi=0) {
   brush$lwd = lwd;
   return(brush);
 }
+
+### Muscle tissue ###
+#' @export
+muscle = function(scale.x = 1.5, scale.R = c(1.5, 1.5),
+                  x = c(-2, 2), y = c(1, 1), dy = 0.4, dx = 2, n = 6, fill = "red"){
+
+  lst = list()
+  for(iy in seq(0,n)){
+    if(iy%%2 == 0){
+      for(idx in seq(-2,2,2)){
+        lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R)
+        lst = c(lst, lens)
+      }}
+    else{
+      for(idx in seq(-3,3,2)){
+        lens = lens(x = x + idx*dx, y = y + iy*dy, scale=scale.R)
+        lst = c(lst, lens)
+      }
+    }}
+  lst = as.bioshape(lst)
+  plot.base()
+  lines(lst, fill=fill)
+}
