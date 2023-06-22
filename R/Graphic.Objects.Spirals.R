@@ -189,7 +189,8 @@ dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
 ### Genome types
 #' @export
 genome = function(r, center = c(0,0), phi.dna = pi/4,
-                  type = c("DNA", "helix", "arc", "circle", "cDNA", "css", "line", "none"),
+                  type = c("DNA", "helix", "arc", "circle", "cds", "css", "line", "none"),
+                  phi.arc = pi/6,
                   lwd=2, col = "#64D000", ...) {
   type = match.arg(type);
   if(type == "none") return(NULL);
@@ -202,20 +203,21 @@ genome = function(r, center = c(0,0), phi.dna = pi/4,
     # p2  = c(p2x, p2y);
     return(list(x = c(p2x, p1x), y = c(p2y, p1y)));
   }
+  as.pp = function(xy) list(p1 = c(xy$x[1], xy$y[1]), p2 = c(xy$x[2], xy$y[2]));
+  #
   if(type == "DNA") {
-    p = as.xy();
-    # TODO: add lwd
-    lst = dna.new(p$x, p$y, ...);
+    p = as.xy(); # TODO: col = col with 2 cols;
+    lst = dna.new(p$x, p$y, lwd=lwd, ...);
     return(invisible(lst));
   }
   if(type == "helix") {
     p = as.xy();
-    lst = helix(p$x, p$y, ...);
+    p = as.pp(p); # TODO: standardize;
+    lst = helix(p$p1, p$p2, lwd=lwd, col=col, ...);
     return(invisible(lst));
   }
   if(type == "arc") {
-    # TODO: parameter;
-    phi.arc = c(pi/6, 2*pi - pi/6);
+    if(length(phi.arc) == 1) phi.arc = c(phi.arc, 2*pi - phi.arc);
     lst = list(r = r, center = center, phi = phi.arc, lwd=lwd, col=col);
     class(lst) = c("circle.arc", "list");
     return(as.bioshape(list(lst)));
@@ -230,7 +232,19 @@ genome = function(r, center = c(0,0), phi.dna = pi/4,
     p$lwd = lwd; p$col = col;
     return(as.bioshape(list(p)));
   }
-  if(type == "helix") {
-    # TODO
+  if(type == "css") {
+    lst = helix.rad(R = r, center = center, n=10, phi=0, r = R/8,
+                    lwd=lwd, col=col);
+    return(as.bioshape(list(lst)));
+  }
+  if(type == "cds") {
+    l1 = helix.rad(R = r, center = center, n=10, phi=0, r = R/8,
+                   lwd=lwd[1], col=col[1]);
+    if(length(lwd) == 1) lwd = rep(lwd, 2);
+    if(length(col) == 1) col = rep(col, 2);
+    l2 = helix.rad(R = r, center = center, n=10, phi=pi/2, r = R/8,
+                   lwd=lwd[2], col=col[2]);
+    lst = list(H1 = l1[[1]], H2 = l2[[1]]);
+    return(as.bioshape(lst));
   }
 }
