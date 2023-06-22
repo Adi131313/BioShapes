@@ -106,10 +106,10 @@ lines.object.base = function(x, lwd, col=1, fill=NULL, ...) {
       }
 
     } else if(inherits(lst, "polygon")) {
-      # warning("Only lines");
-      if(is.null(fill)) fill = lst$fill;
-      col0 = lst$col;
-      col  = if(is.null(col0)) col else col0;
+      # if(is.null(fill)) fill = lst$fill;
+      lwd = if(is.null(lst$lwd)) lwd else lst$lwd;
+      col = if(is.null(lst$col)) col else lst$col;
+      fill = lst$fill;
       polygon(lst$x, lst$y, col=fill, border=col, lwd = lwd, ...);
     } else {
       # warning("Only lines");
