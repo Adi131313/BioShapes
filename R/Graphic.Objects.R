@@ -259,21 +259,26 @@ spikes = function(R = 1, center = c(0,0), n.spike = 10, off.spike = c(0, 1),
   return(invisible(virus));
 }
 
-virus2 = function(R = 2, center = c(0,0), n.spike = 10, off.spike = c(0, 2),
-                  r.spike=0.25, ngon.spike=c(4, 8), phi.spike = 0, lwd = 8, lwd.spike = lwd/2,
-                  col = "#D06432", col.spike = "#c90e40", fill.spike = "#5128c9",
-                  col.2spike = "red", fill.2spike = "yellow"){
+virus2 = function(R = 2, center = c(0,0), n.spike = 10, off.spike = c(0, 1, 1.5),
+                  r.spike=0.25, ngon.spike=c(4, 0), phi.spike = 0,
+                  lwd = 8, lwd.spike = lwd/2, col = "#D06432",
+                  col.spike = c("#c90e40", "red"),
+                  fill.spike = c("#5128c9", "yellow")) {
 
   v1 = virus(R = R, center = center, n.spike = n.spike, off.spike = off.spike,
-             r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = phi.spike, lwd = lwd, lwd.spike = lwd/2,
-             col = col, col.spike = col.spike, fill.spike = fill.spike)
+             r.spike=r.spike, ngon.spike = ngon.spike[1], phi.spike = phi.spike,
+             lwd = lwd, lwd.spike = lwd.spike[1],
+             col = col, col.spike = col.spike[1], fill.spike = fill.spike[1])
 
   ### Spikes
-  off.spike2 = c(off.spike[1], off.spike[2]/2)
+  if(length(lwd.spike) <= 1) lwd.spike = rep(lwd.spike[1], 2);
+  off.spike0 = off.spike[1];
+  off.spike_i = c(off.spike0, off.spike[3]);
   spikes2 = spikes(R = R, center = center, n.spike = n.spike,
-                   off.spike = off.spike2, r.spike=r.spike,
+                   off.spike = off.spike_i, r.spike=r.spike,
                    ngon.spike = ngon.spike[2], phi.spike = phi.spike + pi/n.spike,
-                   lwd = 1, lwd.spike = lwd/2, col = col.2spike, fill = fill.2spike);
+                   lwd = lwd.spike[2], lwd.spike = lwd.spike[2],
+                   col = col.spike[2], fill = fill.spike[2]);
 
   virus = c(spikes2, v1);
   virus = as.bioshape(virus);
