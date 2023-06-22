@@ -51,7 +51,8 @@ spirals = function(p1, p2, n=5.5, A=1, phi=0, N=128, slope=NULL) {
 # A = amplitude;
 # phi = phase shift of sinusoid;
 #' @export
-helix = function(p1, p2, n=3, A=1, phi=0, parts=0, N=128, slope=NULL) {
+helix = function(p1, p2, n = 3, A = 1, phi = 0, parts = 0, N = 128,
+                 lwd = NULL, col = NULL, slope = NULL) {
   if(is.null(slope)) {
     x = c(p1[1], p2[1]);
     y = c(p1[2], p2[2]);
@@ -84,7 +85,9 @@ helix = function(p1, p2, n=3, A=1, phi=0, parts=0, N=128, slope=NULL) {
     dy = (slope*x + y) * sdiv; # + p1[2];
     lst = list(x = p1[1] + dx, y = p1[2] + dy);
   }
-  lst = sinusoid(t*ninv, t)
+  lst = sinusoid(t*ninv, t);
+  if( ! is.null(lwd)) lst$lwd = lwd;
+  if( ! is.null(col)) lst$col = col;
   lst = list(lst);
   if(parts > 0) {
     tl = helix.link(n, parts);
@@ -136,10 +139,11 @@ helix.link = function(n, k=3, phi=pi/2) {
 #' @export
 ### DNA
 dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
-                   col = c("red", "green"), col.lines = col) {
+                   lwd=1, col = c("red", "green"), col.lines = col) {
   p1 = c(x[1], y[1]); p2 = c(x[2], y[2]);
-  h1 = helix(p1, p2, n=n, A=A, phi=phi[1], parts=0);
-  h2 = helix(p1, p2, n=n, A=A, phi=phi[2], parts=0);
+  h1 = helix(p1, p2, n=n, A=A, phi=phi[1], lwd=lwd, parts=0);
+  h2 = helix(p1, p2, n=n, A=A, phi=phi[2], lwd=lwd, parts=0);
+  # TODO: use helix();
   if( ! is.null(col)) {
     h1[[1]]$col = col[1]; h2[[1]]$col = col[2];
   }
