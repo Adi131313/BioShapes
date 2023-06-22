@@ -233,16 +233,16 @@ genome = function(r, center = c(0,0), phi.dna = pi/4,
     return(as.bioshape(list(p)));
   }
   if(type == "css") {
-    lst = helix.rad(R = r, center = center, n=10, phi=0, r = R/8,
+    lst = helix.rad(R = r, center = center, n=10, phi=0, r = r/8,
                     lwd=lwd, col=col);
     return(as.bioshape(list(lst)));
   }
   if(type == "cds") {
-    l1 = helix.rad(R = r, center = center, n=10, phi=0, r = R/8,
+    l1 = helix.rad(R = r, center = center, n=10, phi=0, r = r/8,
                    lwd=lwd[1], col=col[1]);
     if(length(lwd) == 1) lwd = rep(lwd, 2);
     if(length(col) == 1) col = rep(col, 2);
-    l2 = helix.rad(R = r, center = center, n=10, phi=pi/2, r = R/8,
+    l2 = helix.rad(R = r, center = center, n=10, phi=pi/2, r = r/8,
                    lwd=lwd[2], col=col[2]);
     lst = list(H1 = l1[[1]], H2 = l2[[1]]);
     return(as.bioshape(lst));

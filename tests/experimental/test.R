@@ -1,5 +1,6 @@
 # TODO: create complex examples in R/Examples.R
 # TODO: Centers for muscles
+# TODO: Genome for examples.virus
 
 # citare pachete
 citation("shiny")
@@ -31,6 +32,8 @@ plot.base(xlim = c(-6, 6), ylim = c(-6, 6))
 tmp = virus2()
 lines(tmp)
 
+### Virus & Genome
+
 ### DNA: ds Helix
 cc = c(4,5); r = 3;
 plot.base()
@@ -50,6 +53,27 @@ cc = c(4,5); r = 3;
 plot.base()
 lines(virus(r, cc))
 lst = genome(r * 0.5, cc, type = "circle")
+lines(lst)
+
+### Simple Helix
+cc = c(4,5); r = 3;
+plot.base()
+lines(virus2(r, cc))
+lst = genome(r * 0.75, cc, type="helix", lwd=2)
+lines(lst)
+
+### css Helix
+cc = c(4,5); r = 3;
+plot.base()
+lines(virus(r, cc))
+lst = genome(r * 0.5, cc, type="css", lwd=2)
+lines(lst)
+
+### cds Helix / cyclic DNA
+cc = c(4,5); r = 3;
+plot.base()
+lines(virus(r, cc))
+lst = genome(r * 0.5, cc, type="cds", lwd=2)
 lines(lst)
 
 ################
