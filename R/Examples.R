@@ -258,31 +258,31 @@ examples.GonsOnCircle = function(R = 3, ngons = c(3,4,5,6)) {
 }
 
 #'@export
-example.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
+example.curves = function(R = 5, nr = 20, axt = c(1, 2)) {
   par.old = par(mfrow = c(2,2));
 
   ### Circular Helix
   lim = c(-R, R) + c(-1,1);
   plot.base(xlim = lim, ylim = lim)
-  xy = helix.rad(R=R, n=n[1], N=512)
+  xy = helix.rad(R=R, n=nr, N=512)
   lines(xy)
-  xy = helix.rad(R=R, n=n[1], phi=pi/2, N=512)
+  xy = helix.rad(R=R, n=nr, phi=pi/2, N=512)
   lines(xy, col="red")
 
 
   ### Flower 1:
   lim = c(-R, R) + c(-2,2);
   plot.base(xlim = lim, ylim = lim)
-  xy = helix.rad(R=R, n=n[2], phi=pi)
+  xy = helix.rad(R=R, n=nr-9, phi=pi)
   lines(xy)
-  xy = helix.rad(R = R - 1, n=n[2], phi=pi)
+  xy = helix.rad(R = R - 1, n=nr-9, phi=pi)
   lines(xy, col="red")
 
 
   ### Flower 2:
   lim = c(-R, R)*2 + c(-1,1);
   plot.base(xlim = lim, ylim = lim)
-  xy = helix.rad(R=R, r=R, n=n[3], N=256)
+  xy = helix.rad(R=R, r=R, n=nr-9, N=256)
   lines(xy, col="red")
 
 
@@ -291,7 +291,7 @@ example.curves = function(R = 5, n = c(20,11,11,10), axt = c(1, 2)) {
   plot.base(xlim = lim, ylim = lim)
   abline(h=0, col="green", lty=2)
   for(r in c(3,4,6,9)) {
-    xy = helix.rad(R = R - 2/r, n=n[4], phi=pi, r = 2/r);
+    xy = helix.rad(R = R - 2/r, n=nr-10, phi=pi, r = 2/r);
     lines(xy, col="red");
   }
   par(par.old);
@@ -371,7 +371,7 @@ example.complexDuct = function(n = 8, lim = c(-10, 10)){
 
 ### The creation of the neuron
 #' @export
-example.neuronDesign = function(){
+example.neuronDesign = function(N = 5){
 
   par.old = par(mfrow = c(1,2));
 
@@ -385,7 +385,7 @@ example.neuronDesign = function(){
   n = 5;
   center = c(2, 3)
   plot.base()
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = N, center = center, phi = phi)
   lines(tmp)
 
   par(par.old);
@@ -397,7 +397,7 @@ example.neuronDesign = function(){
 example.neuron = function(phi = 0, n = 5){
   center = c(2, 3)
   plot.base()
-  tmp = neuron(n = n, center = center, phi = phi)
+  tmp = neuron(n = n, center = center, phi = phi, type = "Tree", col = NULL)
   lines(tmp)
 }
 
@@ -425,38 +425,33 @@ description.neuron = function(lbl = c("Axon", "Dendrites", "Nucleus"), title = "
 
 ### Multiple neurons
 #' @export
-example.neurons = function(){
+example.neurons = function(N = 5){
 
   ###
-  phi = 0;
-  n = 5;
   center = c(2, 3)
-  lim = c(-10, 10);
+  lim = c(-15, 15);
   plot.base(xlim = lim, ylim = lim, axt = NULL)
-  tmp = neuron(n = n, center = center, phi = phi, type = "Tree")
-  lines(tmp)
 
   ### First group
   ###
   phi = -pi/2;
   n = 5;
-  center2 = center + c(0, -5)
-  tmp = neuron(n = n, center = center2, phi = phi, type = "Tree")
-  plot.base(xlim = lim, ylim = lim, axt = NULL)
+  center2 = center + c(-6, -10)
+  tmp = neuron(n = N, center = center2, phi = phi, type = "Tree")
   lines(tmp)
 
   ###
   phi = -pi/1.5;
   n = 5;
-  center2 = center + c(5, 3)
-  tmp = neuron(n = n, center = center2, phi = phi, type = "Tree")
+  center2 = center + c(-1, -2)
+  tmp = neuron(n = N, center = center2, phi = phi, type = "Tree")
   lines(tmp)
 
   ###
-  phi = 2*pi - pi/6;
+  phi = 2*pi - pi/3;
   n = 5;
-  center2 = center + c(-8, 1)
-  tmp = neuron(n = n, center = center2, phi = phi, type = "Tree")
+  center2 = center + c(-11, -2)
+  tmp = neuron(n = N, center = center2, phi = phi, type = "Tree")
   lines(tmp)
 
   # Second group
@@ -464,31 +459,27 @@ example.neurons = function(){
   # TODO: All synapse types
   phi = 0;
   n = 5;
-  center = c(-9, 8)
-  lim = c(-10, 10);
-  plot.base(xlim = lim, ylim = lim, axt = NULL)
-  tmp = neuron(n = n, center = center, phi = phi, type = "Tree")
+  center = c(-9, 13)
+  #plot.base(xlim = lim, ylim = lim, axt = NULL)
+  tmp = neuron(n = N, center = center, phi = phi, type = "Tree")
   lines(tmp)
   ###
   phi = pi/2;
   n = 5;
-  center = c(-10, -2)
-  lim = c(-10, 10);
-  tmp = neuron(n = n, center = center, phi = phi, type = "Solid")
+  center = c(-10, 4)
+  tmp = neuron(n = N, center = center, phi = phi, type = "Solid")
   lines(tmp)
   ###
   phi = -pi;
   n = 5;
-  center = c(0, -2)
-  lim = c(-10, 10);
-  tmp = neuron(n = n, center = center, phi = phi, type = "Detail")
+  center = c(0, 4)
+  tmp = neuron(n = N, center = center, phi = phi, type = "Detail")
   lines(tmp)
   ###
   phi = -pi/2;
   n = 5;
-  center = c(1, 8)
-  lim = c(-10, 10);
-  tmp = neuron(n = n, center = center, phi = phi, type = "Radial")
+  center = c(1, 13.5)
+  tmp = neuron(n = N, center = center, phi = phi, type = "Radial")
   lines(tmp)
 }
 
@@ -544,7 +535,7 @@ example.arcs = function(){
 
 ### Examples of convex lenses
 #' @export
-example.lens = function(){
+example.lens = function(pos = c(0, 1/2, 1)){
 
   par.old = par(mfrow = c(2,2));
   R = 5;
@@ -565,7 +556,7 @@ example.lens = function(){
   lines(lens, col="#329624")
 
   ### Example 2: Group of Lenses
-  pos = c(0, 1/2, 1)
+  # pos = c(0, poz, 1)
   h = c(2, 3, 4)
   scale.R = c(1, 1.5, 2)
   x = c(0, 6); y = c(3, 2);
@@ -577,7 +568,7 @@ example.lens = function(){
   lines(lst)
 
   ### Example: Lens Group
-  pos = c(0, 1/3, 1)
+  # pos = c(0, poz, 1)
   h = c(2, 1.2, 1.5)
   scale.R = c(1, 1.5, 2)
   x = c(0, 6); y = c(0, 4);
