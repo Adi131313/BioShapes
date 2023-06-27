@@ -1,4 +1,20 @@
-###########################
+###################
+#
+# Bachelor Thesis
+#
+# Title: BioShapes
+#
+# Candidate: Adrian Cotoc
+# Faculty of Mathematics and Informatics, UVT
+#
+# Coordinator:
+#   Prof. Daniela Zaharie
+#   Dr. med. Leonard Mada (Syonic SRL)
+#
+# in collaboration with Syonic SRL
+# continous the work of Darian Voda
+#
+# GitHub: https://github.com/Adi131313/BioShapes
 
 #### Cell-like Objects ####
 

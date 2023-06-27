@@ -4,7 +4,7 @@
 #
 # Title: BioShapes
 #
-# Candidate: Darian Voda
+# Candidate: Adrian Cotoc
 # Faculty of Mathematics and Informatics, UVT
 #
 # Coordinator:
@@ -12,9 +12,9 @@
 #   Dr. med. Leonard Mada (Syonic SRL)
 #
 # in collaboration with Syonic SRL
+# continous the work of Darian Voda
 #
-# GitHub: https://github.com/DarianFlorianVoda/Diagram-Generator
-
+# GitHub: https://github.com/Adi131313/BioShapes
 
 ##########################
 #### Helper Functions ####
