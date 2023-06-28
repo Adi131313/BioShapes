@@ -282,7 +282,7 @@ example.curves = function(R = 5, nr = 20, axt = c(1, 2)) {
   ### Flower 2:
   lim = c(-R, R)*2 + c(-1,1);
   plot.base(xlim = lim, ylim = lim)
-  xy = helix.rad(R=R, r=R, n=nr-9, N=256)
+  xy = helix.rad(R=R, r=R, n=round(nr/2), N=256)
   lines(xy, col="red")
 
 
