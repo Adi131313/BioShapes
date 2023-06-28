@@ -485,15 +485,15 @@ example.neurons = function(N = 5){
 
 ### 3 Blood cells
 #' @export
-example.bloodCells = function(radius = 2){
+example.bloodCells = function(radius = 2, lwd = 10){
   radius = 2;
   lim = c(-radius, radius) * 4;
   plot.base(xlim = lim, ylim = lim)
-  tmp = draw_blood_cell(radius = radius, center = c(-3, -1))
+  tmp = draw_blood_cell(radius = radius, center = c(-3, -1), lwd = lwd)
   lines(tmp)
-  tmp = draw_blood_cell(radius = radius, center = c(3, 1))
+  tmp = draw_blood_cell(radius = radius, center = c(3, 1), lwd = lwd)
   lines(tmp)
-  tmp = draw_blood_cell(radius = radius, center = c(3, -5))
+  tmp = draw_blood_cell(radius = radius, center = c(3, -5), lwd = lwd)
   lines(tmp)
 }
 
@@ -535,7 +535,7 @@ example.arcs = function(){
 
 ### Examples of convex lenses
 #' @export
-example.lens = function(pos = c(0, 1/2, 1)){
+example.lens = function(pos = c(0, 1/2, 1), fill = "#6480D0"){
 
   par.old = par(mfrow = c(2,2));
   R = 5;
@@ -561,7 +561,6 @@ example.lens = function(pos = c(0, 1/2, 1)){
   scale.R = c(1, 1.5, 2)
   x = c(0, 6); y = c(3, 2);
   # fill: does NOT work with concave lenses;
-  fill = "#6480D0";
 
   lst = lens.group(x=x, y=y, h=h, pos=pos, l.scale = scale.R, fill=fill)
   plot.base()
@@ -573,7 +572,6 @@ example.lens = function(pos = c(0, 1/2, 1)){
   scale.R = c(1, 1.5, 2)
   x = c(0, 6); y = c(0, 4);
   # fill: does NOT work with concave lenses;
-  fill = "#6480D0";
   #
   lst = lens.group(x=x, y=y, h=h, pos=pos, l.scale = scale.R, fill=fill)
   plot.base()
