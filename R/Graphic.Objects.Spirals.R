@@ -158,10 +158,18 @@ helix.link = function(n, k=3, phi=pi/2) {
   return(list(id=id, div = tail(id, 1)));
 }
 
-#' @export
+
 ### DNA
+# S1 = Options for Segment 1;
+#  - L1: draw only 1 line if shorter than this;
+#  - L2: draw 2 lines if length between L2 & L1;
+#  - short: use enhanced algorithm for length < pi - short * d_theta;
+#' @export
 dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
-                   lwd=1, col = c("red", "green"), col.lines = col) {
+			lwd=1, lwd.lines = lwd,
+			col = c("red", "green"), col.lines = col,
+			S1 = list(L1 = 1.5, L2 = 2, short = 0.5)) {
+  phi = as.radians0(phi);
   p1 = c(x[1], y[1]); p2 = c(x[2], y[2]);
   h1 = helix(p1, p2, n=n, A=A, phi=phi[1], lwd=lwd, parts=0);
   h2 = helix(p1, p2, n=n, A=A, phi=phi[2], lwd=lwd, parts=0);
@@ -172,18 +180,38 @@ dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
   lst = c(Helix1 = h1, Helix2 = h2);
   if(n.lines == 0) return(as.bioshape(lst));
   #
+  if(is.helix.rev(phi)) {
+    col.lines = rev(col.lines);;
+  }
   pp  = which.intersect.sin(phi, n, to = n - 0.5);
   len = length(pp$x0);
   pi2 = 2*pi*n;
   p0  = c(0, pp$x0 / pi2);
   Ln  = dist.xy(x, y);
   slope = slope(x, y);
+  lenL1 = pi / (n.lines + 1);
+  phix0 = pp$x0[[1]];
+  hasL1 = phix0 >= lenL1;
   lstLL = list();
   # TODO: proper-processing of half-ends;
+  # print(cbind(phi, c(pp$x0[[1]], pp$x1[[1]])));
   for(i in seq(len)) {
     pS = p0[i];
     pE = p0[i + 1];
-    pp = seq(pS, pE, length.out = n.lines + 2);
+	# Starting-Segment:
+	if(i == 1) {
+		if( ! hasL1) next;
+		lenS1 = round(phix0 / lenL1) + 2;
+		if(phix0 < pi - S1$short * lenL1) {
+			# very short segment;
+			if(phix0 <= S1$L2*lenL1) lenS1 = ifelse(phix0 <= S1$L1*lenL1, 2, 3);
+			# include 1st line close to start of segment;
+			pp = seq(pS + lenL1/(4*pi2), pE, length.out = lenS1);
+			pp = c(pS, pp);
+		} else pp = seq(pS, pE, length.out = lenS1);
+	} else {
+		pp = seq(pS, pE, length.out = n.lines + 2);
+	}
     # pp = pp[- c(1, 6)];
     py = A * sin(pi2*pp + phi[1]);
     h1 = rotate(pp * Ln, py, slope=slope, p1);
@@ -197,10 +225,11 @@ dna.new = function(x, y, n=3, phi=c(pi/2, pi) + pi/4, A=1, n.lines = 6,
         y = c(h1$y[iL], h2$y[iL]), id = iL);
     });
     tmp = do.call(rbind, tmp);
+	tmp$lwd = lwd.lines;
     tmp$col = colL;
     lstLL = c(lstLL, list(tmp));
   }
-  lst = c(lstLL, lst);
+  lst = c(Lines = lstLL, lst);
   return(as.bioshape(lst));
 }
 
